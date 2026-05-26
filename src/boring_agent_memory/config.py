@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import json
-import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from .schema import DEFAULT_DB_PATH
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10.
+    import tomli as tomllib
 
 
 @dataclass(frozen=True)

@@ -11,6 +11,9 @@ requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "Boring Agent Memory contributors" }]
 keywords = ["agent-memory", "bm25", "sqlite", "fts5", "rag", "local-first"]
+dependencies = [
+  "tomli>=2.0; python_version < '3.11'",
+]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
