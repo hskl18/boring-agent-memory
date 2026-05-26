@@ -1,0 +1,17 @@
+index_path: ~/.bam/claude-code-memory.db
+source_type: claude_code_file
+
+include:
+  - ~/.claude/CLAUDE.md
+  - ~/.claude/skills
+  - docs
+
+exclude:
+  - "**/.env"
+  - "**/secrets/**"
+  - "**/auth.json"
+  - "**/*.sqlite"
+
+privacy:
+  redact_secrets: true
+  max_file_size_kb: 512

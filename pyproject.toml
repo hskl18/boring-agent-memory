@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boring-agent-memory"
+version = "0.1.0"
+description = "A boring, local-first BM25 memory layer for AI agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Boring Agent Memory contributors" }]
+keywords = ["agent-memory", "bm25", "sqlite", "fts5", "rag", "local-first"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Database",
+  "Topic :: Software Development :: Libraries",
+]
+
+[project.scripts]
+bam = "boring_agent_memory.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

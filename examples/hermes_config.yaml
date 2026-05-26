@@ -1,0 +1,15 @@
+# Backward-compatible example config.
+database: .bam/memory.db
+source_type: canonical_file
+include:
+  - ~/agent/memory/MEMORY.md
+  - ~/agent/memory/skills
+  - ~/agent/memory/reports/sanitized
+  - ~/project/*/docs
+exclude:
+  - "**/.git/**"
+  - "**/.env"
+  - "**/secrets/**"
+  - "**/*.pem"
+  - "**/*.key"
+max_bytes: 524288

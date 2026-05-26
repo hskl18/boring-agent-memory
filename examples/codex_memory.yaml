@@ -1,0 +1,17 @@
+index_path: ~/.bam/codex-memory.db
+source_type: codex_file
+
+include:
+  - ~/.codex/skills
+  - ~/.codex/memories/MEMORY.md
+  - docs
+
+exclude:
+  - "**/.env"
+  - "**/secrets/**"
+  - "**/auth.json"
+  - "**/*.sqlite"
+
+privacy:
+  redact_secrets: true
+  max_file_size_kb: 512

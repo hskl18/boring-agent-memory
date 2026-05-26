@@ -1,0 +1,17 @@
+index_path: ~/.bam/hermes-memory.db
+source_type: hermes_file
+
+include:
+  - ~/.hermes/skills
+  - ~/.hermes/bug-log.md
+  - ~/.hermes/reports/sanitized
+
+exclude:
+  - "**/.env"
+  - "**/secrets/**"
+  - "**/auth.json"
+  - "**/*.sqlite"
+
+privacy:
+  redact_secrets: true
+  max_file_size_kb: 512
