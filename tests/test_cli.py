@@ -77,7 +77,7 @@ class CliTests(unittest.TestCase):
                 ],
                 cwd=root,
                 env=env,
-                input='{"query":"canonical truth","limit":1}\n',
+                input=f'{{"query":"canonical truth","limit":1,"workspace":"{root}"}}\n',
                 text=True,
                 capture_output=True,
                 check=True,
@@ -89,4 +89,3 @@ class CliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

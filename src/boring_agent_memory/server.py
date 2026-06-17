@@ -22,9 +22,16 @@ def serve_stdio(
             query = str(request["query"])
             limit = int(request.get("limit", 5))
             source_type = request.get("source_type")
+            workspace = request.get("workspace")
             results = [
                 result.to_dict()
-                for result in query_memory(db_path, query, limit=limit, source_type=source_type)
+                for result in query_memory(
+                    db_path,
+                    query,
+                    limit=limit,
+                    source_type=source_type,
+                    workspace=workspace,
+                )
             ]
             response = {"ok": True, "query": query, "results": results}
         except Exception as exc:  # noqa: BLE001 - stdio server must report errors as data.

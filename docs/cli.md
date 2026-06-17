@@ -43,6 +43,7 @@ bam build \
 
 ```bash
 bam --db ~/.bam/agent-memory.db query "postingAvailable false" --limit 5 --json
+bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/app --json
 ```
 
 Results include:
@@ -55,6 +56,8 @@ Results include:
 - `score`
 - `snippet`
 - `strategy`
+
+Use `--workspace` to restrict results to a workspace recorded during indexing.
 
 ## inspect
 
@@ -90,7 +93,7 @@ bam --db ~/.bam/agent-memory.db serve --stdio
 Reads JSON lines from stdin:
 
 ```json
-{"query":"canonical source rule","limit":5,"source_type":"canonical_file"}
+{"query":"canonical source rule","limit":5,"source_type":"canonical_file","workspace":"~/project/app"}
 ```
 
 Writes JSON lines to stdout:

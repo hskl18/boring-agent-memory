@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from glob import glob
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -54,13 +55,7 @@ def iter_candidate_files(
     seen: set[Path] = set()
 
     for include in includes:
-        path = Path(include).expanduser()
-        if not path.is_absolute():
-            path = root / path
-        if not path.exists():
-            continue
-
-        candidates = [path] if path.is_file() else (p for p in path.rglob("*") if p.is_file())
+        candidates = _expand_include(include, root)
         for candidate in candidates:
             resolved = candidate.resolve()
             if resolved in seen:
@@ -73,6 +68,28 @@ def iter_candidate_files(
             files.append(resolved)
 
     return sorted(files, key=lambda p: p.as_posix())
+
+
+def _expand_include(include: str, root: Path) -> list[Path]:
+    path = Path(include).expanduser()
+    if not path.is_absolute():
+        path = root / path
+
+    pattern = path.as_posix()
+    if any(char in pattern for char in "*?[]"):
+        matches = [Path(match) for match in glob(pattern, recursive=True)]
+    elif path.exists():
+        matches = [path]
+    else:
+        matches = []
+
+    files: list[Path] = []
+    for match in matches:
+        if match.is_file():
+            files.append(match)
+        elif match.is_dir():
+            files.extend(p for p in match.rglob("*") if p.is_file())
+    return files
 
 
 def ingest_file(
@@ -139,4 +156,3 @@ def title_for_path(path: Path) -> str:
     if path.name.lower() in {"readme.md", "index.md"} and path.parent.name:
         return path.parent.name
     return path.name
-

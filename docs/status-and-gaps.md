@@ -14,8 +14,9 @@ trusted files -> SQLite FTS5/BM25 -> memory_query() -> cited source file -> agen
 - `bam` CLI entrypoint
 - local SQLite database initialization
 - SQLite FTS5 indexing
-- BM25 query ranking over title, content, and source path
+- BM25 query ranking over title, content, and source path using SQLite FTS5 rank configuration
 - explicit include paths for trusted files
+- glob include patterns for trusted file discovery
 - default exclude globs for `.env`, keys, secret folders, virtualenvs, git metadata, and common build caches
 - content redaction for common API keys, bearer tokens, private key blocks, and `SECRET` / `TOKEN` / `PASSWORD` style assignments
 - source-grounded query results with `source_path`, `title`, `source_type`, `score`, `snippet`, and retrieval `strategy`
@@ -24,6 +25,7 @@ trusted files -> SQLite FTS5/BM25 -> memory_query() -> cited source file -> agen
 - canonical source inspection via `bam inspect [SOURCE_PATH]`
 - agent-facing Python API via `memory_query()`
 - JSON-lines stdio server via `bam serve --stdio`
+- workspace filtering for CLI, Python API, and stdio queries
 - examples for Hermes-style, Codex, and Claude Code workflows
 - docs for integration, CLI, configuration, architecture, canonical-first memory, privacy, and comparison positioning
 - tests for index build, query ranking, privacy filters, CLI, Python API, demo flow, and stdio server
@@ -63,7 +65,6 @@ Use Boring Agent Memory for:
 - `bam build` rebuilds the whole index.
 - Removed files are handled by rebuild, not by an incremental watcher.
 - Markdown and code are indexed as plain text; there is no heading-aware chunking yet.
-- `workspace` is stored, but `bam query` does not yet expose a workspace filter.
 - `bam serve --stdio` is JSON-lines, not a full MCP server.
 - Privacy filters are guardrails, not a formal secret scanner.
 - Retrieval tests cover behavior, but there is no benchmark corpus or recall-quality scoring yet.

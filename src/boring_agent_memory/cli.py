@@ -36,6 +36,7 @@ def main(argv: list[str] | None = None) -> int:
     query_parser.add_argument("query")
     query_parser.add_argument("--limit", type=int, default=5)
     query_parser.add_argument("--source-type", default=None)
+    query_parser.add_argument("--workspace", default=None)
     query_parser.add_argument("--json", action="store_true")
 
     status_parser = subparsers.add_parser("status", help="Show index status")
@@ -90,6 +91,7 @@ def main(argv: list[str] | None = None) -> int:
                 query=args.query,
                 limit=args.limit,
                 source_type=args.source_type,
+                workspace=args.workspace,
             )
         ]
         if args.json:

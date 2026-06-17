@@ -5,18 +5,16 @@ This roadmap prioritizes product reliability over platform breadth.
 ## 0.1.x
 
 - Add heading-aware Markdown chunking.
-- Add `bam query --workspace`.
-- Add package build checks for wheel and sdist.
 - Add a small retrieval fixture corpus.
 - Add benchmark-style recall tests.
 - Improve config validation errors.
+- Add a stable JSON schema document for CLI and stdio responses.
 
 ## 0.2.x
 
 - Add incremental update mode.
 - Track removed files without requiring a full rebuild.
 - Add an optional file watcher.
-- Add a stable JSON schema for CLI and stdio responses.
 - Add a formal MCP-compatible single-tool server if users need it.
 
 ## Later

@@ -33,7 +33,25 @@ class IndexBuildTests(unittest.TestCase):
             self.assertEqual(metadata["extension"], ".md")
             conn.close()
 
+    def test_build_expands_include_globs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "project-a" / "docs").mkdir(parents=True)
+            (root / "project-b" / "docs").mkdir(parents=True)
+            (root / "project-a" / "docs" / "memory.md").write_text(
+                "Agent memory should support glob includes.\n",
+                encoding="utf-8",
+            )
+            (root / "project-b" / "docs" / "notes.md").write_text(
+                "Glob includes make example configs work.\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+
+            stats = build_index(db_path, ["project-*/docs"], workspace=root)
+
+            self.assertEqual(stats["indexed"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()
-

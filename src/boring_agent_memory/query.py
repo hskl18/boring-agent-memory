@@ -29,11 +29,13 @@ def query_memory(
     query: str,
     limit: int = 5,
     source_type: str | None = None,
+    workspace: Path | str | None = None,
 ) -> list[QueryResult]:
     conn = connect(db_path)
     init_db(conn)
     try:
-        results = _query_memory(conn, query, limit, source_type)
+        workspace_path = Path(workspace).expanduser().resolve() if workspace else None
+        results = _query_memory(conn, query, limit, source_type, workspace_path)
     finally:
         conn.close()
     return results
@@ -44,13 +46,14 @@ def _query_memory(
     query: str,
     limit: int,
     source_type: str | None,
+    workspace: Path | None,
 ) -> list[QueryResult]:
     seen: set[str] = set()
     results: list[QueryResult] = []
 
     for strategy, fts_query in build_fts_queries(query):
         try:
-            rows = run_fts_query(conn, fts_query, limit, source_type)
+            rows = run_fts_query(conn, fts_query, limit, source_type, workspace)
         except sqlite3.DatabaseError:
             continue
         for row in rows:
@@ -62,7 +65,7 @@ def _query_memory(
                 return results
 
     if len(results) < limit:
-        for row in run_like_query(conn, query, limit - len(results), source_type):
+        for row in run_like_query(conn, query, limit - len(results), source_type, workspace):
             if row["id"] in seen:
                 continue
             seen.add(row["id"])
@@ -98,12 +101,17 @@ def run_fts_query(
     fts_query: str,
     limit: int,
     source_type: str | None,
+    workspace: Path | None,
 ) -> list[sqlite3.Row]:
     params: list[object] = [fts_query]
     source_filter = ""
     if source_type:
         source_filter = "AND r.source_type = ?"
         params.append(source_type)
+    workspace_filter = ""
+    if workspace:
+        workspace_filter = "AND r.workspace = ?"
+        params.append(workspace.as_posix())
     params.append(limit)
 
     return conn.execute(
@@ -114,13 +122,15 @@ def run_fts_query(
           r.source_path,
           r.workspace,
           r.title,
-          bm25(records_fts, 2.5, 1.0, 0.25) AS score,
+          rank AS score,
           snippet(records_fts, 2, '[', ']', '...', 28) AS snippet
         FROM records_fts
         JOIN records r ON r.id = records_fts.id
         WHERE records_fts MATCH ?
+        AND rank MATCH 'bm25(2.5, 1.0, 0.25)'
         {source_filter}
-        ORDER BY score ASC
+        {workspace_filter}
+        ORDER BY rank ASC
         LIMIT ?
         """,
         params,
@@ -132,6 +142,7 @@ def run_like_query(
     query: str,
     limit: int,
     source_type: str | None,
+    workspace: Path | None,
 ) -> list[sqlite3.Row]:
     like = f"%{query.lower()}%"
     params: list[object] = [like, like, like]
@@ -139,6 +150,10 @@ def run_like_query(
     if source_type:
         source_filter = "AND source_type = ?"
         params.append(source_type)
+    workspace_filter = ""
+    if workspace:
+        workspace_filter = "AND workspace = ?"
+        params.append(workspace.as_posix())
     params.append(limit)
 
     return conn.execute(
@@ -158,6 +173,7 @@ def run_like_query(
           OR lower(source_path) LIKE ?
         )
         {source_filter}
+        {workspace_filter}
         ORDER BY
           CASE
             WHEN lower(title) LIKE ? THEN 0

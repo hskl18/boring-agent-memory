@@ -14,6 +14,7 @@ def connect(db_path: Path | str = DEFAULT_DB_PATH) -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
+    conn.execute("PRAGMA secure_delete=ON")
     return conn
 
 
@@ -47,6 +48,7 @@ def init_db(conn: sqlite3.Connection) -> None:
         );
         """
     )
+    _enable_fts_secure_delete(conn)
     conn.commit()
 
 
@@ -65,4 +67,11 @@ def clear_index(conn: sqlite3.Connection) -> None:
     conn.execute("DELETE FROM records_fts")
     conn.execute("DELETE FROM records")
     conn.commit()
+    conn.execute("VACUUM")
 
+
+def _enable_fts_secure_delete(conn: sqlite3.Connection) -> None:
+    try:
+        conn.execute("INSERT INTO records_fts(records_fts, rank) VALUES('secure-delete', 1)")
+    except sqlite3.DatabaseError:
+        pass

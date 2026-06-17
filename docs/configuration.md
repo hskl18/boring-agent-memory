@@ -40,7 +40,7 @@ privacy:
 : Label stored on indexed records. Use this to separate sources such as `skill_file`, `project_doc`, or `canonical_file`.
 
 `include`
-: List of files or directories to index. Directories are scanned recursively.
+: List of files, directories, or glob patterns to index. Directories are scanned recursively.
 
 `exclude`
 : Glob patterns to skip. These are added to the default privacy excludes.
@@ -53,7 +53,7 @@ privacy:
 
 ## Path Resolution
 
-Relative `index_path` and `workspace` values are resolved relative to the config file location. Relative `include` values are resolved relative to `workspace`, or the current directory when no workspace is set.
+Relative `index_path` and `workspace` values are resolved relative to the config file location. Relative `include` values are resolved relative to `workspace`, or the current directory when no workspace is set. Include entries may use glob patterns such as `~/project/*/docs` or `docs/**/*.md`.
 
 ## Privacy Defaults
 

@@ -1,5 +1,7 @@
 # Boring Agent Memory
 
+[![tests](https://github.com/hskl18/boring-agent-memory/actions/workflows/tests.yml/badge.svg)](https://github.com/hskl18/boring-agent-memory/actions/workflows/tests.yml)
+
 Local-first memory retrieval for agents that should remember source-grounded facts, not vibes.
 
 Boring Agent Memory indexes trusted local files into SQLite FTS5/BM25 and gives agents a small `memory_query()` interface. Query results include source paths and snippets, so the agent can read the canonical file before answering or acting.
@@ -25,6 +27,7 @@ Canonical files are the docs, skills, logs, ledgers, and reports you already tru
 ## What It Does
 
 - Indexes explicit local files and directories.
+- Expands include globs such as `~/project/*/docs`.
 - Ranks results with SQLite FTS5/BM25.
 - Returns `source_path`, `title`, `source_type`, `score`, and `snippet`.
 - Provides CLI, Python API, and JSON-lines stdio interfaces.
@@ -137,6 +140,7 @@ Query it:
 
 ```bash
 bam --db ~/.bam/agent-memory.db query "rollback policy for database migrations" --limit 5 --json
+bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/app --json
 ```
 
 Inspect whether a cited source is stale:
@@ -224,6 +228,7 @@ See [docs/privacy-model.md](docs/privacy-model.md).
 - [Architecture](docs/architecture.md)
 - [Privacy model](docs/privacy-model.md)
 - [Canonical-first memory](docs/canonical-first-memory.md)
+- [Research notes](docs/research-notes.md)
 - [Roadmap](docs/roadmap.md)
 
 ## Project Status
@@ -233,9 +238,11 @@ Boring Agent Memory currently provides:
 - local SQLite FTS5 index
 - BM25 ranking
 - config-file build
+- glob include patterns
 - source-grounded snippets
 - privacy filters
 - canonical staleness inspection
+- workspace filtering
 - Python `memory_query()` API
 - JSON-lines stdio agent interface
 - docs and examples for Hermes-style, Codex, and Claude Code workflows

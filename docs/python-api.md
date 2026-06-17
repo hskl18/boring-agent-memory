@@ -12,6 +12,7 @@ results = memory_query(
     limit=5,
     source_type="canonical_file",
     db_path="~/.bam/agent-memory.db",
+    workspace="~/project/app",
 )
 ```
 

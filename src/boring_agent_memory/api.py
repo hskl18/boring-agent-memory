@@ -11,6 +11,7 @@ def memory_query(
     limit: int = 5,
     source_type: str | None = None,
     db_path: Path | str = DEFAULT_DB_PATH,
+    workspace: Path | str | None = None,
 ) -> list[QueryResult]:
     """Small agent-facing query API."""
     return query_memory(
@@ -18,4 +19,5 @@ def memory_query(
         query=query,
         limit=limit,
         source_type=source_type,
+        workspace=workspace,
     )

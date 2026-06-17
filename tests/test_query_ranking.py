@@ -47,7 +47,38 @@ class QueryRankingTests(unittest.TestCase):
             self.assertEqual(len(results), 1)
             self.assertEqual(results[0].title, "route.md")
 
+    def test_query_can_filter_by_workspace(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            workspace_a = root / "workspace-a"
+            workspace_b = root / "workspace-b"
+            (workspace_a / "docs").mkdir(parents=True)
+            (workspace_a / "docs" / "policy.md").write_text(
+                "The rollback policy requires reading canonical files.\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, [str(workspace_a / "docs")], workspace=workspace_a)
+
+            results = query_memory(
+                db_path,
+                "rollback policy",
+                limit=5,
+                workspace=workspace_a,
+            )
+
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].workspace, workspace_a.resolve().as_posix())
+            self.assertEqual(
+                query_memory(
+                    db_path,
+                    "rollback policy",
+                    limit=5,
+                    workspace=workspace_b,
+                ),
+                [],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
-

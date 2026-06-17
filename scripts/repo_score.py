@@ -26,6 +26,7 @@ CHECKS = {
     "config_docs": ("docs/configuration.md", "Configuration"),
     "api_docs": ("docs/python-api.md", "Python API"),
     "roadmap": ("docs/roadmap.md", "Roadmap"),
+    "research_notes": ("docs/research-notes.md", "Research Notes"),
     "contributing": ("CONTRIBUTING.md", "Contributing"),
     "security": ("SECURITY.md", "Security Policy"),
     "changelog": ("CHANGELOG.md", "0.1.0 - Unreleased"),
