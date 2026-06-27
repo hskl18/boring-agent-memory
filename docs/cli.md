@@ -92,6 +92,7 @@ bam eval --fixture evals/fixtures --golden evals/golden.jsonl --json
 
 Runs the deterministic retrieval/safety fixture and reports recall, source
 accuracy, snippet term coverage, privacy leak count, and stale-source behavior.
+`--fixtures` is accepted as an alias for `--fixture`.
 
 ## serve
 
