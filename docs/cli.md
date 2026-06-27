@@ -84,6 +84,15 @@ bam health --json
 
 Checks database existence and SQLite FTS5 support.
 
+## eval
+
+```bash
+bam eval --fixture evals/fixtures --golden evals/golden.jsonl --json
+```
+
+Runs the deterministic retrieval/safety fixture and reports recall, source
+accuracy, snippet term coverage, privacy leak count, and stale-source behavior.
+
 ## serve
 
 ```bash

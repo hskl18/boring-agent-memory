@@ -5,8 +5,6 @@ This roadmap prioritizes product reliability over platform breadth.
 ## 0.1.x
 
 - Add heading-aware Markdown chunking.
-- Add a small retrieval fixture corpus.
-- Add benchmark-style recall tests.
 - Improve config validation errors.
 - Add a stable JSON schema document for CLI and stdio responses.
 
@@ -22,7 +20,7 @@ This roadmap prioritizes product reliability over platform breadth.
 - Optional local embedding fallback after BM25.
 - Optional graph layer for explicit source-derived relationships.
 - Privacy leak test suite with synthetic secrets.
-- Retrieval evaluation harness with recall@k and source accuracy.
+- Larger retrieval benchmark with more fixture domains and baseline comparisons.
 
 ## Non-Goals
 

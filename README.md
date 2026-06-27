@@ -34,6 +34,7 @@ Canonical files are the docs, skills, logs, ledgers, and reports you already tru
 - Redacts common secret patterns before indexing.
 - Skips common secret-bearing paths by default.
 - Lets you inspect whether an indexed source is stale.
+- Includes a deterministic retrieval/safety eval fixture.
 - Requires no hosted service, embedding API, vector database, or account.
 
 ## What It Is Not
@@ -84,6 +85,29 @@ Example output shape:
   }
 }
 ```
+
+## Evaluation Baseline
+
+Run the deterministic fixture eval:
+
+```bash
+bam eval --json
+```
+
+Current fixture baseline:
+
+```text
+cases: 7
+recall_at_1: 1.000
+recall_at_3: 1.000
+mrr: 1.000
+source_accuracy: 1.000
+snippet_term_rate: 1.000
+privacy_leak_count: 0
+stale_detection_rate: 1.000
+```
+
+This is a local regression fixture, not a broad semantic-memory benchmark. It tests the product claim that many practical agent memory questions can be handled with BM25 over trusted files when results include source paths, snippets, redaction, and canonical verification. See [docs/evaluation.md](docs/evaluation.md).
 
 ## Install
 
@@ -198,6 +222,7 @@ bam query QUERY [--limit N] [--source-type TYPE] [--json]
 bam status [--json]
 bam health [--json]
 bam inspect [SOURCE_PATH] [--json]
+bam eval [--json]
 bam serve --stdio
 ```
 
@@ -228,6 +253,7 @@ See [docs/privacy-model.md](docs/privacy-model.md).
 - [Architecture](docs/architecture.md)
 - [Privacy model](docs/privacy-model.md)
 - [Canonical-first memory](docs/canonical-first-memory.md)
+- [Evaluation](docs/evaluation.md)
 - [Research notes](docs/research-notes.md)
 - [Roadmap](docs/roadmap.md)
 
@@ -243,6 +269,7 @@ Boring Agent Memory currently provides:
 - privacy filters
 - canonical staleness inspection
 - workspace filtering
+- deterministic retrieval/safety eval fixture
 - Python `memory_query()` API
 - JSON-lines stdio agent interface
 - docs and examples for Hermes-style, Codex, and Claude Code workflows

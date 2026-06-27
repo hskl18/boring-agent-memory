@@ -11,7 +11,17 @@ requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Boring Agent Memory contributors" }]
-keywords = ["agent-memory", "bm25", "sqlite", "fts5", "rag", "local-first"]
+keywords = [
+  "agent-memory",
+  "bm25",
+  "sqlite",
+  "fts5",
+  "rag",
+  "local-first",
+  "retrieval",
+  "source-grounded",
+  "privacy-preserving",
+]
 dependencies = [
   "tomli>=2.0; python_version < '3.11'",
 ]
@@ -25,6 +35,11 @@ classifiers = [
   "Topic :: Database",
   "Topic :: Software Development :: Libraries",
 ]
+
+[project.urls]
+Homepage = "https://github.com/hskl18/boring-agent-memory"
+Repository = "https://github.com/hskl18/boring-agent-memory"
+Issues = "https://github.com/hskl18/boring-agent-memory/issues"
 
 [project.scripts]
 bam = "boring_agent_memory.cli:main"

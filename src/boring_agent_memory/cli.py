@@ -8,6 +8,7 @@ from pathlib import Path
 from . import __version__
 from .canonical import list_canonical_sources, verify_canonical_source
 from .config import load_config
+from .eval import run_eval
 from .index import build_index
 from .query import query_memory
 from .schema import DEFAULT_DB_PATH, connect, fts5_available, init_db
@@ -49,6 +50,22 @@ def main(argv: list[str] | None = None) -> int:
 
     health_parser = subparsers.add_parser("health", help="Run local health checks")
     health_parser.add_argument("--json", action="store_true")
+
+    eval_parser = subparsers.add_parser("eval", help="Run deterministic memory retrieval evals")
+    eval_parser.add_argument(
+        "--fixture",
+        "--fixtures",
+        dest="fixtures",
+        default="evals/fixtures",
+        help="Directory containing eval fixture files",
+    )
+    eval_parser.add_argument(
+        "--golden",
+        default="evals/golden.jsonl",
+        help="JSONL file with golden eval cases",
+    )
+    eval_parser.add_argument("--limit", type=int, default=3)
+    eval_parser.add_argument("--json", action="store_true")
 
     serve_parser = subparsers.add_parser("serve", help="Serve a tiny JSON-lines query interface")
     serve_parser.add_argument("--stdio", action="store_true", help="Read JSON lines from stdin")
@@ -118,6 +135,19 @@ def main(argv: list[str] | None = None) -> int:
         health["ok"] = health["sqlite_fts5"] and health["database_exists"]
         return emit(health, args.json)
 
+    if args.command == "eval":
+        report = run_eval(
+            fixture_dir=args.fixtures,
+            golden_path=args.golden,
+            db_path=db_path if args.db else None,
+            limit=args.limit,
+        )
+        if args.json:
+            print(json.dumps(report, indent=2, ensure_ascii=False))
+        else:
+            print_eval_report(report)
+        return 0
+
     if args.command == "serve":
         if not args.stdio:
             parser.error("serve currently requires --stdio")
@@ -172,6 +202,19 @@ def print_results(results: list[dict[str, object]]) -> None:
         print(f"{result['title']}  score={result['score']}")
         print(f"  {result['source_path']}")
         print(f"  {result['snippet']}")
+
+
+def print_eval_report(report: dict[str, object]) -> None:
+    metrics = report["metrics"]
+    assert isinstance(metrics, dict)
+    print(f"cases: {metrics['cases']}")
+    print(f"recall_at_1: {metrics['recall_at_1']:.3f}")
+    print(f"recall_at_3: {metrics['recall_at_3']:.3f}")
+    print(f"mrr: {metrics['mrr']:.3f}")
+    print(f"source_accuracy: {metrics['source_accuracy']:.3f}")
+    print(f"snippet_term_rate: {metrics['snippet_term_rate']:.3f}")
+    print(f"privacy_leak_count: {metrics['privacy_leak_count']}")
+    print(f"stale_detection_rate: {metrics['stale_detection_rate']:.3f}")
 
 
 if __name__ == "__main__":

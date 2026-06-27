@@ -26,28 +26,32 @@ trusted files -> SQLite FTS5/BM25 -> memory_query() -> cited source file -> agen
 - agent-facing Python API via `memory_query()`
 - JSON-lines stdio server via `bam serve --stdio`
 - workspace filtering for CLI, Python API, and stdio queries
+- deterministic eval fixture via `bam eval`
 - examples for Hermes-style, Codex, and Claude Code workflows
 - docs for integration, CLI, configuration, architecture, canonical-first memory, privacy, and comparison positioning
-- tests for index build, query ranking, privacy filters, CLI, Python API, demo flow, and stdio server
+- tests for index build, query ranking, privacy filters, CLI, Python API, evals, demo flow, and stdio server
 
 ## Verified Commands
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests
 python scripts/repo_score.py
-python -m pip install -e . --dry-run
+PYTHONPATH=src python -m boring_agent_memory.cli eval --json
+python -m build
+python -m twine check dist/*
 ```
 
 Latest local result:
 
 ```text
-Ran 10 tests
+Ran the unit test suite
 OK
 
 score: 100
 failed: []
 
-Would install boring-agent-memory-0.1.0
+eval recall_at_1: 1.000
+eval privacy_leak_count: 0
 ```
 
 ## Good Fits
@@ -67,6 +71,6 @@ Use Boring Agent Memory for:
 - Markdown and code are indexed as plain text; there is no heading-aware chunking yet.
 - `bam serve --stdio` is JSON-lines, not a full MCP server.
 - Privacy filters are guardrails, not a formal secret scanner.
-- Retrieval tests cover behavior, but there is no benchmark corpus or recall-quality scoring yet.
+- The included eval fixture is a small regression corpus, not a broad benchmark.
 
 See [roadmap.md](roadmap.md) for planned work.
