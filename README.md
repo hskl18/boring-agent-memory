@@ -2,11 +2,19 @@
 
 [![tests](https://github.com/hskl18/boring-agent-memory/actions/workflows/tests.yml/badge.svg)](https://github.com/hskl18/boring-agent-memory/actions/workflows/tests.yml)
 
-Local-first memory retrieval for agents that should remember source-grounded facts, not vibes.
+Canonical memory infrastructure for agents that need trusted recall, not another black-box brain.
 
-Boring Agent Memory indexes trusted local files into SQLite FTS5/BM25 and gives agents a small `memory_query()` interface. Query results include source paths and snippets, so the agent can read the canonical file before answering or acting.
+Most agent memory failures are not failures of semantic search. They are failures of trust: stale state, missing provenance, private data captured by default, and memory overriding the source of truth.
 
-It is for agent builders who want durable recall without auto-capturing every chat, sending private notes to a hosted vector database, or letting stale memory override current files.
+Boring Agent Memory turns the files your agent already trusts into a measurable local recall layer. It indexes canonical docs, skills, runbooks, bug logs, ADRs, ledgers, and sanitized reports with SQLite FTS5/BM25, then returns source paths and snippets through a small `memory_query()` interface.
+
+The bet is simple:
+
+```text
+For many agent workflows, trusted files + BM25 + source verification is enough.
+```
+
+Not because semantic memory is useless, but because a large class of agent memory is operational recall: rules, paths, field names, incidents, workflow decisions, and exact phrases that already live in files.
 
 ## Why This Exists
 
@@ -23,6 +31,18 @@ trusted local files
 ```
 
 Canonical files are the docs, skills, logs, ledgers, and reports you already trust as the source of truth. The index is only a recall layer over those files.
+
+## Why BM25 First
+
+BM25 is not a compromise here; it is the right default for a large set of agent-memory tasks:
+
+- workflow rules often contain exact terms, paths, field names, errors, and product-specific phrases
+- lexical search is deterministic, cheap, debuggable, and easy to run locally
+- source-grounded snippets make it obvious why a result matched
+- rebuilds are reproducible from canonical files
+- no embedding model has to see private notes before the first useful recall result
+
+Semantic search can be useful later. It should be a fallback, not the foundation that silently becomes truth.
 
 ## What It Does
 
@@ -91,7 +111,12 @@ Example output shape:
 Run the deterministic fixture eval:
 
 ```bash
-bam eval --json
+bam eval --json \
+  --min-recall-at-1 1.0 \
+  --min-source-accuracy 1.0 \
+  --min-snippet-term-rate 1.0 \
+  --min-stale-detection-rate 1.0 \
+  --max-privacy-leaks 0
 ```
 
 Current fixture baseline:
@@ -108,6 +133,17 @@ stale_detection_rate: 1.000
 ```
 
 This is a local regression fixture, not a broad semantic-memory benchmark. It tests the product claim that many practical agent memory questions can be handled with BM25 over trusted files when results include source paths, snippets, redaction, and canonical verification. See [docs/evaluation.md](docs/evaluation.md).
+
+## Tradeoffs
+
+Boring Agent Memory is intentionally opinionated:
+
+- It is strong for exact operational recall, but not a replacement for semantic search over vague queries.
+- It depends on useful canonical files; it will not turn messy notes into reliable state.
+- It does not automatically learn from every conversation, because auto-capture is where privacy and stale-truth risks start.
+- It provides a local CLI/API layer, not a hosted dashboard or memory SaaS.
+
+The roadmap keeps those constraints. Features should improve measurable, source-grounded local recall without turning the index into authoritative state.
 
 ## Install
 

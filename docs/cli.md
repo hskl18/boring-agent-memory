@@ -87,12 +87,16 @@ Checks database existence and SQLite FTS5 support.
 ## eval
 
 ```bash
-bam eval --fixture evals/fixtures --golden evals/golden.jsonl --json
+bam eval --fixtures evals/fixtures --golden evals/golden.jsonl --json \
+  --min-recall-at-1 1.0 \
+  --min-source-accuracy 1.0 \
+  --max-privacy-leaks 0
 ```
 
 Runs the deterministic retrieval/safety fixture and reports recall, source
 accuracy, snippet term coverage, privacy leak count, and stale-source behavior.
-`--fixtures` is accepted as an alias for `--fixture`.
+When threshold flags are provided, `bam eval` exits non-zero if a metric fails.
+`--fixture` is accepted as a compatibility alias for `--fixtures`.
 
 ## serve
 

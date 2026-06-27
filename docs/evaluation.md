@@ -20,7 +20,13 @@ The fixture corpus covers common memory-layer risks:
 ## Run
 
 ```bash
-bam eval --json
+bam eval --json \
+  --min-recall-at-1 1.0 \
+  --min-recall-at-3 1.0 \
+  --min-source-accuracy 1.0 \
+  --min-snippet-term-rate 1.0 \
+  --min-stale-detection-rate 1.0 \
+  --max-privacy-leaks 0
 ```
 
 From a source checkout without installing:
@@ -38,6 +44,24 @@ PYTHONPATH=src python -m boring_agent_memory.cli eval --json
 - `snippet_term_rate`: snippet/title contain the expected evidence terms.
 - `privacy_leak_count`: secret-shaped or forbidden terms found in returned snippets.
 - `stale_detection_rate`: stale or historical sources do not outrank canonical sources.
+
+## Quality Gates
+
+`bam eval` can enforce thresholds and return a non-zero exit code when the memory layer regresses:
+
+```bash
+bam eval \
+  --min-recall-at-1 1.0 \
+  --min-source-accuracy 1.0 \
+  --max-privacy-leaks 0
+```
+
+The JSON output includes:
+
+- `passed`: whether all configured gates passed
+- `failures`: human-readable gate failures
+
+The GitHub Actions workflow uses these gates so eval quality is checked on every push.
 
 ## Current Fixture Baseline
 

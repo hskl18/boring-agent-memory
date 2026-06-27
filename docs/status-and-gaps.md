@@ -1,6 +1,6 @@
 # Project Status
 
-Boring Agent Memory is a working local-first memory retrieval layer for agents.
+Boring Agent Memory is a working canonical-memory infrastructure layer for agents.
 
 It provides a small, auditable path from trusted local files to source-grounded agent recall:
 
@@ -36,7 +36,7 @@ trusted files -> SQLite FTS5/BM25 -> memory_query() -> cited source file -> agen
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests
 python scripts/repo_score.py
-PYTHONPATH=src python -m boring_agent_memory.cli eval --json
+PYTHONPATH=src python -m boring_agent_memory.cli eval --json --min-recall-at-1 1.0 --max-privacy-leaks 0
 python -m build
 python -m twine check dist/*
 ```

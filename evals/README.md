@@ -23,7 +23,10 @@ bam eval --fixtures evals/fixtures --golden evals/golden.jsonl
 For CI or scripts:
 
 ```bash
-bam eval --fixtures evals/fixtures --golden evals/golden.jsonl --json
+bam eval --fixtures evals/fixtures --golden evals/golden.jsonl --json \
+  --min-recall-at-1 1.0 \
+  --min-source-accuracy 1.0 \
+  --max-privacy-leaks 0
 ```
 
 Reported metrics:

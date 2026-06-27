@@ -71,6 +71,35 @@ def run_eval(
     }
 
 
+def evaluate_gates(
+    report: dict[str, Any],
+    min_recall_at_1: float | None = None,
+    min_recall_at_3: float | None = None,
+    min_source_accuracy: float | None = None,
+    min_snippet_term_rate: float | None = None,
+    min_stale_detection_rate: float | None = None,
+    max_privacy_leaks: int | None = None,
+) -> list[str]:
+    metrics = report["metrics"]
+    failures: list[str] = []
+    threshold_checks = {
+        "recall_at_1": min_recall_at_1,
+        "recall_at_3": min_recall_at_3,
+        "source_accuracy": min_source_accuracy,
+        "snippet_term_rate": min_snippet_term_rate,
+        "stale_detection_rate": min_stale_detection_rate,
+    }
+    for metric, minimum in threshold_checks.items():
+        if minimum is not None and float(metrics[metric]) < minimum:
+            failures.append(f"{metric}={metrics[metric]} is below required {minimum}")
+
+    if max_privacy_leaks is not None and int(metrics["privacy_leak_count"]) > max_privacy_leaks:
+        failures.append(
+            f"privacy_leak_count={metrics['privacy_leak_count']} exceeds allowed {max_privacy_leaks}"
+        )
+    return failures
+
+
 def load_cases(golden_path: Path) -> list[EvalCase]:
     cases: list[EvalCase] = []
     for line_number, line in enumerate(golden_path.read_text(encoding="utf-8").splitlines(), start=1):

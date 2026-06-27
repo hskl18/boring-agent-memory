@@ -8,7 +8,7 @@ from pathlib import Path
 from . import __version__
 from .canonical import list_canonical_sources, verify_canonical_source
 from .config import load_config
-from .eval import run_eval
+from .eval import evaluate_gates, run_eval
 from .index import build_index
 from .query import query_memory
 from .schema import DEFAULT_DB_PATH, connect, fts5_available, init_db
@@ -65,6 +65,12 @@ def main(argv: list[str] | None = None) -> int:
         help="JSONL file with golden eval cases",
     )
     eval_parser.add_argument("--limit", type=int, default=3)
+    eval_parser.add_argument("--min-recall-at-1", type=float, default=None)
+    eval_parser.add_argument("--min-recall-at-3", type=float, default=None)
+    eval_parser.add_argument("--min-source-accuracy", type=float, default=None)
+    eval_parser.add_argument("--min-snippet-term-rate", type=float, default=None)
+    eval_parser.add_argument("--min-stale-detection-rate", type=float, default=None)
+    eval_parser.add_argument("--max-privacy-leaks", type=int, default=None)
     eval_parser.add_argument("--json", action="store_true")
 
     serve_parser = subparsers.add_parser("serve", help="Serve a tiny JSON-lines query interface")
@@ -142,11 +148,22 @@ def main(argv: list[str] | None = None) -> int:
             db_path=db_path if args.db else None,
             limit=args.limit,
         )
+        failures = evaluate_gates(
+            report,
+            min_recall_at_1=args.min_recall_at_1,
+            min_recall_at_3=args.min_recall_at_3,
+            min_source_accuracy=args.min_source_accuracy,
+            min_snippet_term_rate=args.min_snippet_term_rate,
+            min_stale_detection_rate=args.min_stale_detection_rate,
+            max_privacy_leaks=args.max_privacy_leaks,
+        )
+        report["passed"] = not failures
+        report["failures"] = failures
         if args.json:
             print(json.dumps(report, indent=2, ensure_ascii=False))
         else:
             print_eval_report(report)
-        return 0
+        return 0 if not failures else 1
 
     if args.command == "serve":
         if not args.stdio:
@@ -215,6 +232,11 @@ def print_eval_report(report: dict[str, object]) -> None:
     print(f"snippet_term_rate: {metrics['snippet_term_rate']:.3f}")
     print(f"privacy_leak_count: {metrics['privacy_leak_count']}")
     print(f"stale_detection_rate: {metrics['stale_detection_rate']:.3f}")
+    failures = report.get("failures", [])
+    if failures:
+        print("failures:")
+        for failure in failures:
+            print(f"- {failure}")
 
 
 if __name__ == "__main__":

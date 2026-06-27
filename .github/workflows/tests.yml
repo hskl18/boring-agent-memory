@@ -27,7 +27,14 @@ jobs:
       - name: Run repo score
         run: python scripts/repo_score.py
       - name: Run memory eval
-        run: bam eval --json
+        run: >
+          bam eval --json
+          --min-recall-at-1 1.0
+          --min-recall-at-3 1.0
+          --min-source-accuracy 1.0
+          --min-snippet-term-rate 1.0
+          --min-stale-detection-rate 1.0
+          --max-privacy-leaks 0
       - name: Build package
         run: |
           python -m pip install build twine

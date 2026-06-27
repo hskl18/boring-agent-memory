@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 CHECKS = {
-    "readme_public_positioning": ("README.md", "Local-first memory retrieval for agents that should remember source-grounded facts"),
+    "readme_public_positioning": ("README.md", "Canonical memory infrastructure for agents"),
     "license": ("LICENSE", "MIT License"),
     "package_metadata": ("pyproject.toml", "boring-agent-memory"),
     "manifest": ("MANIFEST.in", "recursive-include docs *.md"),
