@@ -52,6 +52,43 @@ class IndexBuildTests(unittest.TestCase):
 
             self.assertEqual(stats["indexed"], 2)
 
+    def test_full_rebuild_removes_a_deleted_source(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = root / "docs"
+            docs.mkdir()
+            retained = docs / "retained.md"
+            deleted = docs / "deleted.md"
+            retained.write_text("Retained canonical rule.\n", encoding="utf-8")
+            deleted.write_text("Deleted canonical rule.\n", encoding="utf-8")
+            db_path = root / ".bam" / "memory.db"
+
+            self.assertEqual(build_index(db_path, ["docs"], workspace=root)["indexed"], 2)
+            deleted.unlink()
+            self.assertEqual(build_index(db_path, ["docs"], workspace=root)["indexed"], 1)
+
+            conn = sqlite3.connect(db_path)
+            paths = [row[0] for row in conn.execute("SELECT source_path FROM records")]
+            conn.close()
+            self.assertEqual(paths, [retained.resolve().as_posix()])
+
+    def test_corrupt_index_fails_without_modifying_canonical_source(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = root / "docs"
+            docs.mkdir()
+            source = docs / "policy.md"
+            content = "Canonical policy remains the source of truth.\n"
+            source.write_text(content, encoding="utf-8")
+            db_path = root / ".bam" / "memory.db"
+            db_path.parent.mkdir()
+            db_path.write_bytes(b"not a sqlite database")
+
+            with self.assertRaises(sqlite3.DatabaseError):
+                build_index(db_path, ["docs"], workspace=root)
+
+            self.assertEqual(source.read_text(encoding="utf-8"), content)
+
 
 if __name__ == "__main__":
     unittest.main()
