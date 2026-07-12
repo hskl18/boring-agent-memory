@@ -8,6 +8,19 @@ Boring Agent Memory has three layers:
 
 The index is not the source of truth. It is a recall cache over files the user already trusts.
 
+```mermaid
+flowchart LR
+    A["Explicitly included trusted files"] --> B["Path filtering and secret redaction"]
+    B --> C["Rebuildable SQLite records and FTS5 index"]
+    C --> D["Phrase, token AND, token OR, and LIKE retrieval"]
+    D --> E["Source path, ranked snippet, and metadata"]
+    E --> F["Caller verifies the canonical file"]
+    F --> G["Answer or state-changing action"]
+```
+
+The benchmark reuses the same ingest and query path, then compares it with exact phrase grep over the redacted corpus.
+The benchmark report is evidence about retrieval behavior, not another runtime layer.
+
 ## Data Model
 
 Each indexed record stores:
@@ -42,4 +55,3 @@ Every result includes a source path and snippet. Agents should read the source b
 - no graph memory requirement
 - no hosted service requirement
 - no broad tool surface
-

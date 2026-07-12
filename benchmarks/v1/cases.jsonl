@@ -1,0 +1,120 @@
+{"category": "exact_operational", "expected_source": "canonical/deployments.md", "id": "exact_operational_01", "query": "current cobalt rollback window"}
+{"category": "vague_semantic", "expected_source": "canonical/deployments.md", "id": "vague_semantic_01", "query": "what is the cobalt rule for rollback"}
+{"category": "stale_conflict", "expected_source": "canonical/deployments.md", "forbidden_sources": ["history/deployments-legacy.md"], "id": "stale_conflict_01", "query": "current cobalt rollback window fifteen minutes"}
+{"category": "secret_bearing", "expected_source": "privacy/deployments-credentials.md", "forbidden_terms": ["fixture-cobalt-01-never-valid"], "id": "secret_bearing_01", "query": "cobalt service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/deployments/operations.md", "id": "path_scoping_01", "query": "runbooks/deployments/operations.md cobalt"}
+{"category": "exact_operational", "expected_source": "canonical/database.md", "id": "exact_operational_02", "query": "current maple migration guard"}
+{"category": "vague_semantic", "expected_source": "canonical/database.md", "id": "vague_semantic_02", "query": "what is the maple rule for migration"}
+{"category": "stale_conflict", "expected_source": "canonical/database.md", "forbidden_sources": ["history/database-legacy.md"], "id": "stale_conflict_02", "query": "current maple migration guard shadow read"}
+{"category": "secret_bearing", "expected_source": "privacy/database-credentials.md", "forbidden_terms": ["fixture-maple-02-never-valid"], "id": "secret_bearing_02", "query": "maple service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/database/operations.md", "id": "path_scoping_02", "query": "runbooks/database/operations.md maple"}
+{"category": "exact_operational", "expected_source": "canonical/browser.md", "id": "exact_operational_03", "query": "current saffron authenticated check"}
+{"category": "vague_semantic", "expected_source": "canonical/browser.md", "id": "vague_semantic_03", "query": "what is the saffron rule for authenticated"}
+{"category": "stale_conflict", "expected_source": "canonical/browser.md", "forbidden_sources": ["history/browser-legacy.md"], "id": "stale_conflict_03", "query": "current saffron authenticated check real profile"}
+{"category": "secret_bearing", "expected_source": "privacy/browser-credentials.md", "forbidden_terms": ["fixture-saffron-03-never-valid"], "id": "secret_bearing_03", "query": "saffron service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/browser/operations.md", "id": "path_scoping_03", "query": "runbooks/browser/operations.md saffron"}
+{"category": "exact_operational", "expected_source": "canonical/billing.md", "id": "exact_operational_04", "query": "current quartz invoice retry"}
+{"category": "vague_semantic", "expected_source": "canonical/billing.md", "id": "vague_semantic_04", "query": "what is the quartz rule for invoice"}
+{"category": "stale_conflict", "expected_source": "canonical/billing.md", "forbidden_sources": ["history/billing-legacy.md"], "id": "stale_conflict_04", "query": "current quartz invoice retry three attempts"}
+{"category": "secret_bearing", "expected_source": "privacy/billing-credentials.md", "forbidden_terms": ["fixture-quartz-04-never-valid"], "id": "secret_bearing_04", "query": "quartz service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/billing/operations.md", "id": "path_scoping_04", "query": "runbooks/billing/operations.md quartz"}
+{"category": "exact_operational", "expected_source": "canonical/queues.md", "id": "exact_operational_05", "query": "current ember dead letter policy"}
+{"category": "vague_semantic", "expected_source": "canonical/queues.md", "id": "vague_semantic_05", "query": "what is the ember rule for dead"}
+{"category": "stale_conflict", "expected_source": "canonical/queues.md", "forbidden_sources": ["history/queues-legacy.md"], "id": "stale_conflict_05", "query": "current ember dead letter policy seven days"}
+{"category": "secret_bearing", "expected_source": "privacy/queues-credentials.md", "forbidden_terms": ["fixture-ember-05-never-valid"], "id": "secret_bearing_05", "query": "ember service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/queues/operations.md", "id": "path_scoping_05", "query": "runbooks/queues/operations.md ember"}
+{"category": "exact_operational", "expected_source": "canonical/search.md", "id": "exact_operational_06", "query": "current cedar index rebuild"}
+{"category": "vague_semantic", "expected_source": "canonical/search.md", "id": "vague_semantic_06", "query": "what is the cedar rule for index"}
+{"category": "stale_conflict", "expected_source": "canonical/search.md", "forbidden_sources": ["history/search-legacy.md"], "id": "stale_conflict_06", "query": "current cedar index rebuild nightly"}
+{"category": "secret_bearing", "expected_source": "privacy/search-credentials.md", "forbidden_terms": ["fixture-cedar-06-never-valid"], "id": "secret_bearing_06", "query": "cedar service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/search/operations.md", "id": "path_scoping_06", "query": "runbooks/search/operations.md cedar"}
+{"category": "exact_operational", "expected_source": "canonical/alerts.md", "id": "exact_operational_07", "query": "current indigo paging threshold"}
+{"category": "vague_semantic", "expected_source": "canonical/alerts.md", "id": "vague_semantic_07", "query": "what is the indigo rule for paging"}
+{"category": "stale_conflict", "expected_source": "canonical/alerts.md", "forbidden_sources": ["history/alerts-legacy.md"], "id": "stale_conflict_07", "query": "current indigo paging threshold five failures"}
+{"category": "secret_bearing", "expected_source": "privacy/alerts-credentials.md", "forbidden_terms": ["fixture-indigo-07-never-valid"], "id": "secret_bearing_07", "query": "indigo service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/alerts/operations.md", "id": "path_scoping_07", "query": "runbooks/alerts/operations.md indigo"}
+{"category": "exact_operational", "expected_source": "canonical/storage.md", "id": "exact_operational_08", "query": "current willow retention rule"}
+{"category": "vague_semantic", "expected_source": "canonical/storage.md", "id": "vague_semantic_08", "query": "what is the willow rule for retention"}
+{"category": "stale_conflict", "expected_source": "canonical/storage.md", "forbidden_sources": ["history/storage-legacy.md"], "id": "stale_conflict_08", "query": "current willow retention rule thirty days"}
+{"category": "secret_bearing", "expected_source": "privacy/storage-credentials.md", "forbidden_terms": ["fixture-willow-08-never-valid"], "id": "secret_bearing_08", "query": "willow service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/storage/operations.md", "id": "path_scoping_08", "query": "runbooks/storage/operations.md willow"}
+{"category": "exact_operational", "expected_source": "canonical/releases.md", "id": "exact_operational_09", "query": "current topaz approval gate"}
+{"category": "vague_semantic", "expected_source": "canonical/releases.md", "id": "vague_semantic_09", "query": "what is the topaz rule for approval"}
+{"category": "stale_conflict", "expected_source": "canonical/releases.md", "forbidden_sources": ["history/releases-legacy.md"], "id": "stale_conflict_09", "query": "current topaz approval gate two reviewers"}
+{"category": "secret_bearing", "expected_source": "privacy/releases-credentials.md", "forbidden_terms": ["fixture-topaz-09-never-valid"], "id": "secret_bearing_09", "query": "topaz service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/releases/operations.md", "id": "path_scoping_09", "query": "runbooks/releases/operations.md topaz"}
+{"category": "exact_operational", "expected_source": "canonical/backups.md", "id": "exact_operational_10", "query": "current harbor restore drill"}
+{"category": "vague_semantic", "expected_source": "canonical/backups.md", "id": "vague_semantic_10", "query": "what is the harbor rule for restore"}
+{"category": "stale_conflict", "expected_source": "canonical/backups.md", "forbidden_sources": ["history/backups-legacy.md"], "id": "stale_conflict_10", "query": "current harbor restore drill every quarter"}
+{"category": "secret_bearing", "expected_source": "privacy/backups-credentials.md", "forbidden_terms": ["fixture-harbor-10-never-valid"], "id": "secret_bearing_10", "query": "harbor service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/backups/operations.md", "id": "path_scoping_10", "query": "runbooks/backups/operations.md harbor"}
+{"category": "exact_operational", "expected_source": "canonical/imports.md", "id": "exact_operational_11", "query": "current juniper duplicate handling"}
+{"category": "vague_semantic", "expected_source": "canonical/imports.md", "id": "vague_semantic_11", "query": "what is the juniper rule for duplicate"}
+{"category": "stale_conflict", "expected_source": "canonical/imports.md", "forbidden_sources": ["history/imports-legacy.md"], "id": "stale_conflict_11", "query": "current juniper duplicate handling idempotency key"}
+{"category": "secret_bearing", "expected_source": "privacy/imports-credentials.md", "forbidden_terms": ["fixture-juniper-11-never-valid"], "id": "secret_bearing_11", "query": "juniper service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/imports/operations.md", "id": "path_scoping_11", "query": "runbooks/imports/operations.md juniper"}
+{"category": "exact_operational", "expected_source": "canonical/exports.md", "id": "exact_operational_12", "query": "current marble archive format"}
+{"category": "vague_semantic", "expected_source": "canonical/exports.md", "id": "vague_semantic_12", "query": "what is the marble rule for archive"}
+{"category": "stale_conflict", "expected_source": "canonical/exports.md", "forbidden_sources": ["history/exports-legacy.md"], "id": "stale_conflict_12", "query": "current marble archive format newline json"}
+{"category": "secret_bearing", "expected_source": "privacy/exports-credentials.md", "forbidden_terms": ["fixture-marble-12-never-valid"], "id": "secret_bearing_12", "query": "marble service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/exports/operations.md", "id": "path_scoping_12", "query": "runbooks/exports/operations.md marble"}
+{"category": "exact_operational", "expected_source": "canonical/sessions.md", "id": "exact_operational_13", "query": "current orchid idle timeout"}
+{"category": "vague_semantic", "expected_source": "canonical/sessions.md", "id": "vague_semantic_13", "query": "what is the orchid rule for idle"}
+{"category": "stale_conflict", "expected_source": "canonical/sessions.md", "forbidden_sources": ["history/sessions-legacy.md"], "id": "stale_conflict_13", "query": "current orchid idle timeout twenty minutes"}
+{"category": "secret_bearing", "expected_source": "privacy/sessions-credentials.md", "forbidden_terms": ["fixture-orchid-13-never-valid"], "id": "secret_bearing_13", "query": "orchid service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/sessions/operations.md", "id": "path_scoping_13", "query": "runbooks/sessions/operations.md orchid"}
+{"category": "exact_operational", "expected_source": "canonical/webhooks.md", "id": "exact_operational_14", "query": "current canyon signature check"}
+{"category": "vague_semantic", "expected_source": "canonical/webhooks.md", "id": "vague_semantic_14", "query": "what is the canyon rule for signature"}
+{"category": "stale_conflict", "expected_source": "canonical/webhooks.md", "forbidden_sources": ["history/webhooks-legacy.md"], "id": "stale_conflict_14", "query": "current canyon signature check sha256 digest"}
+{"category": "secret_bearing", "expected_source": "privacy/webhooks-credentials.md", "forbidden_terms": ["fixture-canyon-14-never-valid"], "id": "secret_bearing_14", "query": "canyon service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/webhooks/operations.md", "id": "path_scoping_14", "query": "runbooks/webhooks/operations.md canyon"}
+{"category": "exact_operational", "expected_source": "canonical/caching.md", "id": "exact_operational_15", "query": "current violet invalidation rule"}
+{"category": "vague_semantic", "expected_source": "canonical/caching.md", "id": "vague_semantic_15", "query": "what is the violet rule for invalidation"}
+{"category": "stale_conflict", "expected_source": "canonical/caching.md", "forbidden_sources": ["history/caching-legacy.md"], "id": "stale_conflict_15", "query": "current violet invalidation rule version tag"}
+{"category": "secret_bearing", "expected_source": "privacy/caching-credentials.md", "forbidden_terms": ["fixture-violet-15-never-valid"], "id": "secret_bearing_15", "query": "violet service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/caching/operations.md", "id": "path_scoping_15", "query": "runbooks/caching/operations.md violet"}
+{"category": "exact_operational", "expected_source": "canonical/uploads.md", "id": "exact_operational_16", "query": "current silver file size cap"}
+{"category": "vague_semantic", "expected_source": "canonical/uploads.md", "id": "vague_semantic_16", "query": "what is the silver rule for file"}
+{"category": "stale_conflict", "expected_source": "canonical/uploads.md", "forbidden_sources": ["history/uploads-legacy.md"], "id": "stale_conflict_16", "query": "current silver file size cap ten megabytes"}
+{"category": "secret_bearing", "expected_source": "privacy/uploads-credentials.md", "forbidden_terms": ["fixture-silver-16-never-valid"], "id": "secret_bearing_16", "query": "silver service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/uploads/operations.md", "id": "path_scoping_16", "query": "runbooks/uploads/operations.md silver"}
+{"category": "exact_operational", "expected_source": "canonical/workers.md", "id": "exact_operational_17", "query": "current plum retry backoff"}
+{"category": "vague_semantic", "expected_source": "canonical/workers.md", "id": "vague_semantic_17", "query": "what is the plum rule for retry"}
+{"category": "stale_conflict", "expected_source": "canonical/workers.md", "forbidden_sources": ["history/workers-legacy.md"], "id": "stale_conflict_17", "query": "current plum retry backoff exponential jitter"}
+{"category": "secret_bearing", "expected_source": "privacy/workers-credentials.md", "forbidden_terms": ["fixture-plum-17-never-valid"], "id": "secret_bearing_17", "query": "plum service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/workers/operations.md", "id": "path_scoping_17", "query": "runbooks/workers/operations.md plum"}
+{"category": "exact_operational", "expected_source": "canonical/analytics.md", "id": "exact_operational_18", "query": "current spruce event sampling"}
+{"category": "vague_semantic", "expected_source": "canonical/analytics.md", "id": "vague_semantic_18", "query": "what is the spruce rule for event"}
+{"category": "stale_conflict", "expected_source": "canonical/analytics.md", "forbidden_sources": ["history/analytics-legacy.md"], "id": "stale_conflict_18", "query": "current spruce event sampling one percent"}
+{"category": "secret_bearing", "expected_source": "privacy/analytics-credentials.md", "forbidden_terms": ["fixture-spruce-18-never-valid"], "id": "secret_bearing_18", "query": "spruce service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/analytics/operations.md", "id": "path_scoping_18", "query": "runbooks/analytics/operations.md spruce"}
+{"category": "exact_operational", "expected_source": "canonical/feature-flags.md", "id": "exact_operational_19", "query": "current coral rollout policy"}
+{"category": "vague_semantic", "expected_source": "canonical/feature-flags.md", "id": "vague_semantic_19", "query": "what is the coral rule for rollout"}
+{"category": "stale_conflict", "expected_source": "canonical/feature-flags.md", "forbidden_sources": ["history/feature-flags-legacy.md"], "id": "stale_conflict_19", "query": "current coral rollout policy staff cohort"}
+{"category": "secret_bearing", "expected_source": "privacy/feature-flags-credentials.md", "forbidden_terms": ["fixture-coral-19-never-valid"], "id": "secret_bearing_19", "query": "coral service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/feature-flags/operations.md", "id": "path_scoping_19", "query": "runbooks/feature-flags/operations.md coral"}
+{"category": "exact_operational", "expected_source": "canonical/incidents.md", "id": "exact_operational_20", "query": "current pearl status cadence"}
+{"category": "vague_semantic", "expected_source": "canonical/incidents.md", "id": "vague_semantic_20", "query": "what is the pearl rule for status"}
+{"category": "stale_conflict", "expected_source": "canonical/incidents.md", "forbidden_sources": ["history/incidents-legacy.md"], "id": "stale_conflict_20", "query": "current pearl status cadence every thirty minutes"}
+{"category": "secret_bearing", "expected_source": "privacy/incidents-credentials.md", "forbidden_terms": ["fixture-pearl-20-never-valid"], "id": "secret_bearing_20", "query": "pearl service credential handling"}
+{"category": "path_scoping", "expected_source": "runbooks/incidents/operations.md", "id": "path_scoping_20", "query": "runbooks/incidents/operations.md pearl"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_01", "query": "unrepresented zephyr-01 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_02", "query": "unrepresented zephyr-02 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_03", "query": "unrepresented zephyr-03 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_04", "query": "unrepresented zephyr-04 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_05", "query": "unrepresented zephyr-05 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_06", "query": "unrepresented zephyr-06 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_07", "query": "unrepresented zephyr-07 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_08", "query": "unrepresented zephyr-08 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_09", "query": "unrepresented zephyr-09 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_10", "query": "unrepresented zephyr-10 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_11", "query": "unrepresented zephyr-11 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_12", "query": "unrepresented zephyr-12 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_13", "query": "unrepresented zephyr-13 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_14", "query": "unrepresented zephyr-14 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_15", "query": "unrepresented zephyr-15 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_16", "query": "unrepresented zephyr-16 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_17", "query": "unrepresented zephyr-17 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_18", "query": "unrepresented zephyr-18 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_19", "query": "unrepresented zephyr-19 lunar procedure"}
+{"category": "negative_no_answer", "expected_source": null, "id": "negative_no_answer_20", "query": "unrepresented zephyr-20 lunar procedure"}

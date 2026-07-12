@@ -77,3 +77,5 @@ stale_detection_rate: 1.000
 ```
 
 This is a small regression fixture, not a broad industry benchmark. It is meant to keep the core product behavior honest as the project adds chunking, incremental indexing, and optional retrieval strategies.
+
+For the separate 120-query strategy comparison, see [Benchmark v1](benchmark-v1.md).

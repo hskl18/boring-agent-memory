@@ -134,6 +134,19 @@ stale_detection_rate: 1.000
 
 This is a local regression fixture, not a broad semantic-memory benchmark. It tests the product claim that many practical agent memory questions can be handled with BM25 over trusted files when results include source paths, snippets, redaction, and canonical verification. See [docs/evaluation.md](docs/evaluation.md).
 
+The separate versioned `benchmark-v1` corpus contains 120 sanitized synthetic queries across exact operational recall, vague wording, stale conflicts, secret-bearing documents, path-heavy lookups, and negative no-answer cases.
+It compares the current BM25 pipeline with a literal exact-phrase grep baseline over the same redacted corpus.
+
+| Strategy | Recall@1 | Recall@3 | MRR | No-answer precision | Privacy leaks |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| BM25 | 0.990 | 1.000 | 0.995 | 1.000 | 0 |
+| Exact phrase grep | 0.200 | 0.200 | 0.200 | 1.000 | 0 |
+| Embeddings | not run | not run | not run | not run | not run |
+| Hybrid | not run | not run | not run | not run | not run |
+
+These are deterministic fixture results, not production traffic or a claim that lexical retrieval solves broad semantic memory.
+See [docs/benchmark-v1.md](docs/benchmark-v1.md) for the corpus design, reproducibility command, latency snapshot, and failure analysis.
+
 ## Tradeoffs
 
 Boring Agent Memory is intentionally opinionated:
