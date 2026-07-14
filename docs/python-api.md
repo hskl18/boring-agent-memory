@@ -50,3 +50,4 @@ from boring_agent_memory.canonical import verify_canonical_source
 ```
 
 `build_index()` and `update_index()` are stable enough for local integration, but `memory_query()` remains the intended agent-facing surface.
+`verify_canonical_source()` returns `verification_available: false` and `content_hash_match: null` for migrated legacy rows whose raw-byte baseline is unknowable until a full rebuild.

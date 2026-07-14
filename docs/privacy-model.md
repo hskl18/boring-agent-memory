@@ -13,7 +13,8 @@ Raw source hashes detect exact file changes without storing unredacted content.
 The default exclusions skip `.env` files, secret directories, private keys, `.git`, dependency directories, virtual environments, and caches.
 The content filter masks common API keys, bearer tokens, private key blocks, and assignment lines containing `SECRET`, `TOKEN`, `PASSWORD`, `API_KEY`, or `PRIVATE_KEY` before chunking or persistence.
 
-The same redacted chunk text is the only text passed to an optional embedding adapter.
+Every embedding-bound title, heading, chunk, and query is passed through the same secret redaction policy at the adapter boundary.
+Source paths and citations are not passed to the embedding adapter.
 The adapter is local-only and no-download by default.
 This project does not implement a hosted embedding provider.
 

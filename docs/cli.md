@@ -90,6 +90,7 @@ bam --db ~/.bam/agent-memory.db inspect /path/to/source.md --json
 
 Without a path, `inspect` lists indexed sources.
 With a path, it compares the indexed raw source hash to the current file.
+For a migrated legacy row, raw hash verification reports unavailable until `bam build` creates a new raw-byte baseline.
 
 ## status and health
 

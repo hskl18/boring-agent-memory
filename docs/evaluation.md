@@ -44,6 +44,8 @@ PYTHONPATH=src python scripts/run_benchmark_v2.py \
 The benchmark records every evaluated case and its top results.
 Summary metrics can therefore be regenerated from the raw rows without rerunning retrieval.
 It records corpus and case hashes, environment metadata, per-strategy index configuration, build time, query latency, index size, source rank, evidence rank, stale-conflict accuracy, and privacy leaks.
+Raw result identities use a stable logical benchmark namespace and therefore reproduce across random temporary workspaces.
+Timing, index size, and environment metadata remain run-specific.
 
 The adversarial corpus covers embedded synthetic secrets, stale canonical conflicts, duplicate headings with exact line spans, vague paraphrases, code symbols, and a negative query.
 The incremental scenario separately covers heading edits, renames, and removal.

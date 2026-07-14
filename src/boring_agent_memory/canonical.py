@@ -35,15 +35,19 @@ def verify_canonical_source(db_path: Path | str, source_path: Path | str) -> dic
             current_hash = hashlib.sha256(resolved.read_bytes()).hexdigest()
         except OSError as exc:
             read_error = str(exc)
+    raw_hash_available = bool(row["source_hash"])
     result: dict[str, object] = {
         "source_path": resolved.as_posix(),
         "indexed": True,
         "exists": resolved.exists(),
-        "content_hash_match": current_hash == row["source_hash"],
-        "indexed_hash": row["source_hash"],
+        "content_hash_match": current_hash == row["source_hash"] if raw_hash_available else None,
+        "verification_available": raw_hash_available,
+        "indexed_hash": row["source_hash"] or None,
         "current_hash": current_hash,
         "indexed_at": row["updated_at"],
     }
+    if not raw_hash_available:
+        result["reason"] = "legacy_raw_hash_unavailable"
     if read_error:
         result["read_error"] = read_error
     return result

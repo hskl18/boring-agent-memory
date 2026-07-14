@@ -6,6 +6,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Protocol, Sequence, cast
 
+from .privacy import redact_secrets
 from .query import QueryResult
 from .schema import connect, init_db
 
@@ -42,23 +43,31 @@ class FastEmbedAdapter:
                 "optional embeddings require: pip install 'boring-agent-memory[embeddings]'"
             ) from exc
 
-        kwargs: dict[str, object] = {
-            "model_name": model_name,
-            "local_files_only": not allow_download,
-        }
-        if resolved_model_path is not None:
-            kwargs["specific_model_path"] = resolved_model_path.as_posix()
-        if cache_dir is not None:
-            kwargs["cache_dir"] = Path(cache_dir).expanduser().resolve().as_posix()
-        self._model = TextEmbedding(**kwargs)
+        resolved_cache_dir = (
+            Path(cache_dir).expanduser().resolve().as_posix()
+            if cache_dir is not None
+            else None
+        )
+        self._model = TextEmbedding(
+            model_name=model_name,
+            cache_dir=resolved_cache_dir,
+            local_files_only=not allow_download,
+            specific_model_path=(
+                resolved_model_path.as_posix()
+                if resolved_model_path is not None
+                else None
+            ),
+        )
         self.model_id = model_name
         self.allow_download = allow_download
         self.model_path = resolved_model_path
 
     def embed_documents(self, texts: Sequence[str]) -> list[list[float]]:
-        return [_vector(values) for values in self._model.embed(list(texts))]
+        redacted_texts = [redact_secrets(text)[0] for text in texts]
+        return [_vector(values) for values in self._model.embed(redacted_texts)]
 
     def embed_query(self, text: str) -> list[float]:
+        text = redact_secrets(text)[0]
         query_embed = getattr(self._model, "query_embed", None)
         values = next(iter(query_embed(text) if query_embed else self._model.embed([text])))
         return _vector(values)
@@ -82,7 +91,9 @@ class DenseIndex:
         adapter: EmbeddingAdapter,
         documents: Sequence[EmbeddingDocument],
     ) -> DenseIndex:
-        vectors = adapter.embed_documents([document.text for document in documents])
+        vectors = adapter.embed_documents(
+            [redact_secrets(document.text)[0] for document in documents]
+        )
         if len(vectors) != len(documents):
             raise ValueError("embedding adapter returned the wrong number of vectors")
         dimensions = {len(vector) for vector in vectors}
@@ -95,7 +106,7 @@ class DenseIndex:
         )
 
     def query(self, text: str, limit: int = 5) -> list[QueryResult]:
-        query_vector = self.adapter.embed_query(text)
+        query_vector = self.adapter.embed_query(redact_secrets(text)[0])
         if self.vectors and len(query_vector) != len(self.vectors[0]):
             raise ValueError("query vector dimension does not match the dense index")
         scored = [
@@ -169,9 +180,12 @@ def load_embedding_documents(
             snippet=row["content"],
             strategy="dense",
         )
-        text = "\n".join(
-            value for value in (row["title"], row["heading"], row["content"]) if value
+        embedding_fields = (
+            redact_secrets(value)[0]
+            for value in (row["title"], row["heading"], row["content"])
+            if value
         )
+        text = "\n".join(embedding_fields)
         documents.append(EmbeddingDocument(result=result, text=text))
     return documents
 

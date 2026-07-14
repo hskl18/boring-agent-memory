@@ -14,6 +14,34 @@ from boring_agent_memory.query import query_memory
 
 
 class IndexUpdateTests(unittest.TestCase):
+    def test_front_insertion_keeps_existing_citation_identity_bound_to_same_text(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            source = root / "docs" / "policy.md"
+            source.write_text(
+                "# Policy\n\nAlpha durable meaning.\n\nBeta durable meaning.\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root, chunk_size=30)
+            before = query_memory(db_path, "Alpha durable meaning", limit=1)[0]
+
+            source.write_text(
+                "# Policy\n\nInserted different meaning.\n\nAlpha durable meaning.\n\nBeta durable meaning.\n",
+                encoding="utf-8",
+            )
+            update_index(db_path, ["docs"], workspace=root, chunk_size=30)
+            after = query_memory(db_path, "Alpha durable meaning", limit=1)[0]
+            inserted = query_memory(db_path, "Inserted different meaning", limit=1)[0]
+
+            self.assertEqual(before.chunk_id, after.chunk_id)
+            self.assertIn(
+                "Alpha durable meaning.",
+                after.snippet.replace("[", "").replace("]", ""),
+            )
+            self.assertNotEqual(after.chunk_id, inserted.chunk_id)
+
     def test_dry_run_and_apply_report_exact_add_modify_move_remove_changes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -116,6 +116,7 @@ Example output shape:
   "canonical_verification": {
     "indexed": true,
     "exists": true,
+    "verification_available": true,
     "content_hash_match": true
   }
 }

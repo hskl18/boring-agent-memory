@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import unicodedata
-from dataclasses import dataclass
+from collections import Counter
+from dataclasses import dataclass, replace
 
 
-CHUNKER_VERSION = 1
+CHUNKER_VERSION = 2
 DEFAULT_CHUNK_SIZE = 1600
 
 
@@ -60,6 +62,7 @@ def chunk_text(
 
     chunks: list[TextChunk] = []
     section_ordinals: dict[str, int] = {}
+    identity_keys: list[tuple[str, str]] = []
     pending: list[_Block] = []
     pending_size = 0
     pending_key: str | None = None
@@ -71,6 +74,9 @@ def chunk_text(
         key = pending[0].heading_key
         ordinal = section_ordinals.get(key, 0)
         section_ordinals[key] = ordinal + 1
+        chunk_content = "\n\n".join(block.content for block in pending).strip()
+        identity_key = (_semantic_heading_key(key), chunk_content)
+        identity_keys.append(identity_key)
         chunks.append(
             _make_chunk(
                 document_id=document_id,
@@ -79,7 +85,7 @@ def chunk_text(
                 ordinal=ordinal,
                 start_line=pending[0].start_line,
                 end_line=pending[-1].end_line,
-                content="\n\n".join(block.content for block in pending).strip(),
+                content=chunk_content,
             )
         )
         pending = []
@@ -97,7 +103,35 @@ def chunk_text(
             if block.protected and len(block.content) > max_chars:
                 flush()
     flush()
-    return tuple(chunks)
+    identity_totals = Counter(identity_keys)
+    duplicate_structure = hashlib.sha256(
+        json.dumps(
+            identity_keys,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    return tuple(
+        replace(
+            chunk,
+            id=_chunk_id(
+                document_id,
+                chunk.heading_key,
+                chunk.content,
+                identity_occurrence,
+                identity_totals[identity_key],
+                (
+                    duplicate_structure
+                    if identity_totals[identity_key] > 1
+                    else None
+                ),
+            ),
+        )
+        for chunk, identity_key, identity_occurrence in _identity_occurrence_rows(
+            chunks,
+            identity_keys,
+        )
+    )
 
 
 def _markdown_blocks(content: str) -> list[_Block]:
@@ -304,10 +338,20 @@ def _make_chunk(
     start_line: int,
     end_line: int,
     content: str,
+    identity_ordinal: int = 0,
+    identity_total: int = 1,
+    duplicate_structure: str | None = None,
 ) -> TextChunk:
-    stable_key = f"{document_id}\0{CHUNKER_VERSION}\0{heading_key}\0{ordinal}"
+    chunk_id = _chunk_id(
+        document_id,
+        heading_key,
+        content,
+        identity_ordinal,
+        identity_total,
+        duplicate_structure,
+    )
     return TextChunk(
-        id=hashlib.sha256(stable_key.encode("utf-8")).hexdigest(),
+        id=chunk_id,
         heading=heading,
         heading_key=heading_key,
         ordinal=ordinal,
@@ -316,6 +360,43 @@ def _make_chunk(
         content=content,
         content_hash=hashlib.sha256(content.encode("utf-8")).hexdigest(),
     )
+
+
+def _chunk_id(
+    document_id: str,
+    heading_key: str,
+    content: str,
+    identity_ordinal: int,
+    identity_total: int,
+    duplicate_structure: str | None,
+) -> str:
+    stable_key = json.dumps(
+        [
+            document_id,
+            CHUNKER_VERSION,
+            _semantic_heading_key(heading_key),
+            content,
+            identity_ordinal,
+            identity_total,
+            duplicate_structure,
+        ],
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(stable_key.encode("utf-8")).hexdigest()
+
+
+def _identity_occurrence_rows(
+    chunks: list[TextChunk],
+    identity_keys: list[tuple[str, str]],
+) -> list[tuple[TextChunk, tuple[str, str], int]]:
+    occurrences: dict[tuple[str, str], int] = {}
+    rows: list[tuple[TextChunk, tuple[str, str], int]] = []
+    for chunk, identity_key in zip(chunks, identity_keys):
+        occurrence = occurrences.get(identity_key, 0)
+        occurrences[identity_key] = occurrence + 1
+        rows.append((chunk, identity_key, occurrence))
+    return rows
 
 
 def _heading_context(stack: list[tuple[int, str, str]]) -> tuple[str, str]:
@@ -333,9 +414,12 @@ def _starts_table(lines: list[str], index: int) -> bool:
 
 
 def _slug(value: str) -> str:
-    normalized = unicodedata.normalize("NFC", value).casefold()
-    normalized = " ".join(normalized.split()) or "section"
-    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()[:16]
+    normalized = unicodedata.normalize("NFC", value) or "section"
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def _semantic_heading_key(heading_key: str) -> str:
+    return "/".join(part.rsplit("@", 1)[0] for part in heading_key.split("/"))
 
 
 def _line_count(content: str) -> int:

@@ -10,6 +10,18 @@ ROOT = Path(__file__).resolve().parents[1]
 BENCHMARK = ROOT / "benchmarks" / "v1"
 
 
+class FakeEmbeddingAdapter:
+    model_id = "fixture/fake"
+
+    @staticmethod
+    def embed_documents(texts: list[str]) -> list[list[float]]:
+        return [[float(len(text)), 1.0] for text in texts]
+
+    @staticmethod
+    def embed_query(text: str) -> list[float]:
+        return [float(len(text)), 1.0]
+
+
 class BenchmarkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -88,23 +100,12 @@ class AdversarialBenchmarkTests(unittest.TestCase):
         self.assertGreater(chunked["evidence_recall_at_3"], whole["evidence_recall_at_3"])
 
     def test_explicit_fake_adapter_runs_dense_and_hybrid_slots(self) -> None:
-        class FakeAdapter:
-            model_id = "fixture/fake"
-
-            @staticmethod
-            def embed_documents(texts: list[str]) -> list[list[float]]:
-                return [[float(len(text)), 1.0] for text in texts]
-
-            @staticmethod
-            def embed_query(text: str) -> list[float]:
-                return [float(len(text)), 1.0]
-
         benchmark = ROOT / "benchmarks" / "v2"
         report = run_benchmark(
             benchmark / "corpus",
             benchmark / "cases.jsonl",
             benchmark_name="benchmark-v2",
-            embedding_adapter=FakeAdapter(),
+            embedding_adapter=FakeEmbeddingAdapter(),
         )
 
         self.assertEqual(report["strategies"]["dense"]["status"], "run")
@@ -119,6 +120,32 @@ class AdversarialBenchmarkTests(unittest.TestCase):
                 self.report["strategies"][strategy]["index"]["config_fingerprint"],
             )
 
+    def test_raw_case_identities_repeat_across_random_workspaces(self) -> None:
+        benchmark = ROOT / "benchmarks" / "v2"
+        first = run_benchmark(
+            benchmark / "corpus",
+            benchmark / "cases.jsonl",
+            benchmark_name="benchmark-v2",
+            embedding_adapter=FakeEmbeddingAdapter(),
+        )
+        second = run_benchmark(
+            benchmark / "corpus",
+            benchmark / "cases.jsonl",
+            benchmark_name="benchmark-v2",
+            embedding_adapter=FakeEmbeddingAdapter(),
+        )
+
+        for strategy in (
+            "whole_document_bm25",
+            "chunked_bm25",
+            "exact_phrase_grep",
+            "dense",
+            "hybrid_rrf",
+        ):
+            self.assertEqual(
+                first["strategies"][strategy]["cases"],
+                second["strategies"][strategy]["cases"],
+            )
 
 if __name__ == "__main__":
     unittest.main()

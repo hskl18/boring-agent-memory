@@ -30,14 +30,27 @@ def build_index(
     source_type: str = "file",
     max_bytes: int = 512 * 1024,
     chunk_size: int = DEFAULT_CHUNK_SIZE,
+    identity_namespace: str | None = None,
 ) -> dict[str, int]:
     excludes = excludes or []
     workspace_path = _workspace_path(workspace)
     records, skipped = _ingest_candidates(
-        includes, excludes, workspace_path, source_type, max_bytes, chunk_size
+        includes,
+        excludes,
+        workspace_path,
+        source_type,
+        max_bytes,
+        chunk_size,
+        identity_namespace,
     )
     config_json, fingerprint = index_configuration(
-        includes, excludes, workspace_path, source_type, max_bytes, chunk_size
+        includes,
+        excludes,
+        workspace_path,
+        source_type,
+        max_bytes,
+        chunk_size,
+        identity_namespace,
     )
 
     conn = connect(db_path)
@@ -68,6 +81,7 @@ def update_index(
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     dry_run: bool = False,
     before_commit: Callable[[sqlite3.Connection], None] | None = None,
+    identity_namespace: str | None = None,
 ) -> dict[str, object]:
     """Apply a hash-based index update in one transaction."""
     path = Path(db_path)
@@ -77,10 +91,22 @@ def update_index(
     excludes = excludes or []
     workspace_path = _workspace_path(workspace)
     records, skipped = _ingest_candidates(
-        includes, excludes, workspace_path, source_type, max_bytes, chunk_size
+        includes,
+        excludes,
+        workspace_path,
+        source_type,
+        max_bytes,
+        chunk_size,
+        identity_namespace,
     )
     config_json, fingerprint = index_configuration(
-        includes, excludes, workspace_path, source_type, max_bytes, chunk_size
+        includes,
+        excludes,
+        workspace_path,
+        source_type,
+        max_bytes,
+        chunk_size,
+        identity_namespace,
     )
 
     if dry_run:
@@ -212,6 +238,7 @@ def index_configuration(
     source_type: str,
     max_bytes: int,
     chunk_size: int,
+    identity_namespace: str | None = None,
 ) -> tuple[str, str]:
     payload = {
         "schema_version": SCHEMA_VERSION,
@@ -223,6 +250,7 @@ def index_configuration(
         "source_type": source_type,
         "max_bytes": max_bytes,
         "document_id_version": 1,
+        "identity_namespace": identity_namespace,
         "redaction_version": REDACTION_VERSION,
         "tokenizer": "unicode61",
         "privacy_policy": hashlib.sha256(
@@ -249,6 +277,7 @@ def _ingest_candidates(
     source_type: str,
     max_bytes: int,
     chunk_size: int,
+    identity_namespace: str | None,
 ) -> tuple[list[IngestedRecord], int]:
     records: list[IngestedRecord] = []
     skipped = 0
@@ -264,6 +293,7 @@ def _ingest_candidates(
                 source_type=source_type,
                 max_bytes=max_bytes,
                 chunk_size=chunk_size,
+                identity_namespace=identity_namespace,
             )
         except OSError as exc:
             raise OSError(f"failed to read candidate source {file_path}: {exc}") from exc

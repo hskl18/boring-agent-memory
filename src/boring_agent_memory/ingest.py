@@ -101,6 +101,7 @@ def ingest_file(
     source_type: str = "file",
     max_bytes: int = 512 * 1024,
     chunk_size: int = DEFAULT_CHUNK_SIZE,
+    identity_namespace: str | None = None,
 ) -> IngestedRecord | None:
     stat = path.stat()
     if stat.st_size > max_bytes:
@@ -124,7 +125,12 @@ def ingest_file(
         relative_path = resolved.relative_to(root).as_posix()
     except ValueError:
         relative_path = resolved.as_posix()
-    identity = f"{source_type}\0{root.as_posix()}\0{relative_path}"
+    identity_scope = (
+        f"namespace:{identity_namespace}"
+        if identity_namespace is not None
+        else root.as_posix()
+    )
+    identity = f"{source_type}\0{identity_scope}\0{relative_path}"
     record_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
     title = title_for_path(resolved)
     metadata = {

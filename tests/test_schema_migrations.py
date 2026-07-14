@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
 
+from boring_agent_memory.canonical import verify_canonical_source
 from boring_agent_memory.index import update_index
 from boring_agent_memory.query import query_memory
 from boring_agent_memory.schema import SCHEMA_VERSION, connect, init_db, schema_version
@@ -38,8 +40,88 @@ class SchemaMigrationTests(unittest.TestCase):
             self.assertEqual(schema_version(conn), SCHEMA_VERSION)
             self.assertEqual(conn.execute("SELECT count(*) FROM documents").fetchone()[0], 1)
             self.assertEqual(conn.execute("SELECT count(*) FROM chunks").fetchone()[0], 1)
+            expected_hash = hashlib.sha256(b"Legacy migration marker.").hexdigest()
+            self.assertEqual(
+                conn.execute("SELECT content_hash FROM documents").fetchone()[0],
+                expected_hash,
+            )
+            self.assertEqual(
+                conn.execute("SELECT content_hash FROM chunks").fetchone()[0],
+                expected_hash,
+            )
             conn.close()
             self.assertEqual(query_memory(db_path, "Legacy migration marker", limit=1)[0].title, "policy.md")
+
+    def test_unchanged_redacted_legacy_source_reports_raw_hash_unavailable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "policy.md"
+            source.write_text(
+                "DEPLOY_TOKEN=abcdefghijklmnopqrstuvwxyz123456\n",
+                encoding="utf-8",
+            )
+            redacted_content = "DEPLOY_TOKEN=[REDACTED]\n"
+            db_path = root / "legacy.db"
+            raw = sqlite3.connect(db_path)
+            self._create_legacy_schema(raw)
+            raw.execute(
+                "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    "legacy-id",
+                    "file",
+                    source.resolve().as_posix(),
+                    root.resolve().as_posix(),
+                    "policy.md",
+                    redacted_content,
+                    hashlib.sha256(redacted_content.encode("utf-8")).hexdigest(),
+                    '{"redactions": 1}',
+                    "2026-01-01T00:00:00+00:00",
+                ),
+            )
+            raw.commit()
+            raw.close()
+
+            verification = verify_canonical_source(db_path, source)
+
+            self.assertTrue(verification["indexed"])
+            self.assertTrue(verification["exists"])
+            self.assertIsNone(verification["content_hash_match"])
+            self.assertFalse(verification["verification_available"])
+            self.assertEqual(verification["reason"], "legacy_raw_hash_unavailable")
+
+    def test_changed_source_during_legacy_migration_is_never_marked_current(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "policy.md"
+            source.write_text("Current source text.\n", encoding="utf-8")
+            db_path = root / "legacy.db"
+            raw = sqlite3.connect(db_path)
+            self._create_legacy_schema(raw)
+            raw.execute(
+                "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    "legacy-id",
+                    "file",
+                    source.resolve().as_posix(),
+                    root.resolve().as_posix(),
+                    "policy.md",
+                    "Old indexed text.\n",
+                    hashlib.sha256(b"Old indexed text.\n").hexdigest(),
+                    '{"redactions": 0}',
+                    "2026-01-01T00:00:00+00:00",
+                ),
+            )
+            raw.commit()
+            raw.close()
+
+            verification = verify_canonical_source(db_path, source)
+
+            self.assertIsNone(verification["content_hash_match"])
+            self.assertFalse(verification["verification_available"])
+            self.assertNotEqual(
+                verification["current_hash"],
+                hashlib.sha256(b"Old indexed text.\n").hexdigest(),
+            )
 
     def test_dry_run_does_not_migrate_legacy_schema(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

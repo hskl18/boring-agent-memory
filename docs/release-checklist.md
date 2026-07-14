@@ -16,6 +16,8 @@ The version must be `bam 0.2.0` and must match `pyproject.toml` package metadata
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests
+ruff check --target-version py310 src tests scripts
+mypy src/boring_agent_memory
 python scripts/repo_score.py
 PYTHONPATH=src python -m boring_agent_memory.cli eval --json \
   --min-recall-at-1 1.0 \

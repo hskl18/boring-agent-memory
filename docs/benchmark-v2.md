@@ -54,7 +54,9 @@ PYTHONPATH=src python scripts/run_incremental_scenario.py
 ```
 
 The committed JSON snapshot contains all raw cases, environment metadata, corpus hashes, and path-normalized configuration fingerprints.
+Benchmark indexing uses a stable logical identity namespace before retrieval, so raw document and chunk identities do not depend on the random temporary workspace and cannot perturb tie-breaking.
 Benchmark fingerprints replace the temporary workspace with a stable placeholder so identical runs reproduce across checkout locations.
+The stable raw cases, corpus hashes, and normalized configuration are reproducible, while timing, file size, and environment fields remain descriptive and can differ between runs.
 
 ## Evidence Limit
 

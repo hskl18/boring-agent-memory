@@ -24,9 +24,11 @@ flowchart LR
 `PRAGMA user_version` is the authoritative index schema version.
 Schema version 2 stores `documents`, `chunks`, `chunks_fts`, and one `index_metadata` row.
 Legacy unversioned indexes migrate inside one SQLite transaction and remain queryable after migration.
+Because legacy indexes did not store raw-byte hashes, migrated rows expose canonical verification as unavailable until a full rebuild instead of treating a redacted hash as raw evidence.
 An unknown future schema is rejected instead of being rewritten.
 
-Each document stores a path-derived deterministic ID, a raw-byte source hash, a redacted-content hash, source metadata, and the redacted full text.
+Each newly built document stores a path-derived deterministic ID, a raw-byte source hash, a redacted-content hash, source metadata, and the redacted full text.
+Migrated documents recompute redacted-content hashes from their stored text and leave the unavailable raw hash empty.
 Each chunk stores a deterministic ID, heading ancestry, a duplicate-heading key, a structural ordinal, a source line span, and redacted text.
 The FTS table indexes chunk title, heading, content, and source path.
 
@@ -35,8 +37,12 @@ The FTS table indexes chunk title, heading, content, and source path.
 Markdown is split by heading ancestry and structural blocks.
 Fenced code, lists, block quotes, and tables stay intact even when one protected block exceeds the preferred chunk size.
 Ordinary paragraphs can be split to stay within the configured bound.
-Chunk IDs exclude content hashes, timestamps, and line numbers, so body edits and line shifts within the same structural section do not invalidate the citation identity.
-Duplicate and non-ASCII headings use normalized digests plus occurrence indexes to avoid collisions.
+Chunk IDs are content-addressed over the document identity, exact NFC-normalized structural heading ancestry, exact redacted chunk text, duplicate-content multiplicity, and an occurrence index.
+An ID can survive unrelated insertions, deletions, and line shifts only while it still names the same semantic content.
+Splits, merges, heading changes, and body changes produce new IDs instead of silently rebinding old IDs.
+Duplicate content receives unique IDs and is handled fail-closed.
+Any document chunk-structure change invalidates each identical-content identity group because a stateless chunker cannot safely distinguish old physical occurrences after insertions, deletions, or replacements.
+Duplicate and non-ASCII headings retain separate structural keys for ordering and storage constraints.
 
 Non-Markdown text uses paragraph-aware bounded chunks.
 A chunk size of `0` creates one whole-document chunk and is used only for controlled comparisons.
@@ -71,7 +77,8 @@ Agents should read the cited source before making state-changing claims.
 
 The default installation does not contain an embedding runtime and never downloads a model.
 The `embeddings` extra provides a FastEmbed adapter that requires a concrete local model path unless download permission is explicitly enabled.
-Only redacted chunk text is sent to the adapter, and text never leaves the machine through this implementation.
+Titles, headings, chunk text, and queries are redacted again at the embedding boundary before they are sent to the adapter.
+Source paths and citations are not embedding inputs, and text never leaves the machine through this implementation.
 Hybrid ranking uses weighted reciprocal rank fusion rather than mixing incomparable BM25 and cosine scores.
 Lexical and dense candidate pools use the same recorded depth before fusion.
 

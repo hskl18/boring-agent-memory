@@ -52,6 +52,6 @@ Benchmark v1 remains a larger synthetic lexical comparison, but it is also not p
 - Optional dense vectors are built in memory for evaluation and are not persisted in SQLite.
 - The stdio interface is not a formal MCP server.
 - Protected Markdown blocks may exceed the preferred chunk-size bound.
-- Migrated legacy indexes use the old redacted hash as the best available source hash until the next full build.
+- Migrated legacy indexes remain queryable but report raw canonical verification as unavailable until the next full build.
 - Privacy filters are guardrails, not a formal secret scanner.
 - Real sanitized workload evidence and user-centered retrieval error analysis remain future work.

@@ -24,6 +24,16 @@ jobs:
         run: python -m pip install -e .
       - name: Run tests
         run: python -m unittest discover -s tests
+      - name: Install quality tools
+        run: python -m pip install 'mypy>=1.14,<3' 'ruff>=0.9,<1'
+      - name: Run lint
+        run: ruff check --target-version py310 src tests scripts
+      - name: Run default-install type checks
+        run: mypy src/boring_agent_memory
+      - name: Install optional embedding dependencies
+        run: python -m pip install -e '.[embeddings]'
+      - name: Run embedding-extra type checks
+        run: mypy src/boring_agent_memory
       - name: Run repo score
         run: python scripts/repo_score.py
       - name: Run memory eval

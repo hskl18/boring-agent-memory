@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import hashlib
 import sqlite3
 from pathlib import Path
 
-from .chunking import CHUNKER_VERSION
+from .chunking import chunk_text
 
 
 DEFAULT_DB_PATH = Path(".bam/memory.db")
@@ -144,6 +143,7 @@ def _migrate_v1_to_v2(conn: sqlite3.Connection) -> None:
     _create_v2_schema(conn)
 
     for row in legacy_rows:
+        chunk = chunk_text(row["id"], row["content"], "", max_chars=0)[0]
         conn.execute(
             """
             INSERT INTO documents (
@@ -158,15 +158,12 @@ def _migrate_v1_to_v2(conn: sqlite3.Connection) -> None:
                 row["workspace"],
                 row["title"],
                 row["content"],
-                row["content_hash"],
-                row["content_hash"],
+                "",
+                chunk.content_hash,
                 row["metadata_json"],
                 row["updated_at"],
             ),
         )
-        stable_key = f"{row['id']}\0{CHUNKER_VERSION}\0document\00"
-        chunk_id = hashlib.sha256(stable_key.encode("utf-8")).hexdigest()
-        line_count = max(1, len(row["content"].splitlines()))
         conn.execute(
             """
             INSERT INTO chunks (
@@ -174,14 +171,20 @@ def _migrate_v1_to_v2(conn: sqlite3.Connection) -> None:
               start_line, end_line, content, content_hash
             ) VALUES (?, ?, '', 'document', 0, 1, ?, ?, ?)
             """,
-            (chunk_id, row["id"], line_count, row["content"], row["content_hash"]),
+            (
+                chunk.id,
+                row["id"],
+                chunk.end_line,
+                chunk.content,
+                chunk.content_hash,
+            ),
         )
         conn.execute(
             """
             INSERT INTO chunks_fts (chunk_id, title, heading, content, source_path)
             VALUES (?, ?, '', ?, ?)
             """,
-            (chunk_id, row["title"], row["content"], row["source_path"]),
+            (chunk.id, row["title"], chunk.content, row["source_path"]),
         )
 
     conn.execute("DROP TABLE legacy_records")

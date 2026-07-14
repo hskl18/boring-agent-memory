@@ -18,7 +18,7 @@ from .embeddings import (
     reciprocal_rank_fusion,
 )
 from .index import build_index
-from .ingest import ingest_file, iter_candidate_files
+from .ingest import IngestedRecord, ingest_file, iter_candidate_files
 from .privacy import SECRET_PATTERNS
 from .query import QueryResult, query_memory
 from .schema import connect, init_db
@@ -48,6 +48,7 @@ def run_benchmark(
     corpus_dir = Path(corpus_dir).expanduser().resolve()
     cases_path = Path(cases_path).expanduser().resolve()
     cases = load_benchmark_cases(cases_path)
+    identity_namespace = f"benchmark:{benchmark_name}"
 
     with tempfile.TemporaryDirectory() as tmp:
         workspace = (Path(tmp) / "corpus").resolve()
@@ -55,9 +56,19 @@ def run_benchmark(
         whole_db = Path(tmp) / "whole.db"
         chunked_db = Path(tmp) / "chunked.db"
 
-        whole_index = build_benchmark_index(whole_db, workspace, chunk_size=0)
-        chunked_index = build_benchmark_index(chunked_db, workspace, chunk_size=chunk_size)
-        records = load_redacted_records(workspace)
+        whole_index = build_benchmark_index(
+            whole_db,
+            workspace,
+            chunk_size=0,
+            identity_namespace=identity_namespace,
+        )
+        chunked_index = build_benchmark_index(
+            chunked_db,
+            workspace,
+            chunk_size=chunk_size,
+            identity_namespace=identity_namespace,
+        )
+        records = load_redacted_records(workspace, identity_namespace)
 
         whole_bm25 = evaluate_strategy(
             cases,
@@ -180,7 +191,12 @@ def run_benchmark(
     }
 
 
-def build_benchmark_index(db_path: Path, workspace: Path, chunk_size: int) -> dict[str, Any]:
+def build_benchmark_index(
+    db_path: Path,
+    workspace: Path,
+    chunk_size: int,
+    identity_namespace: str,
+) -> dict[str, Any]:
     started = time.perf_counter()
     build = build_index(
         db_path=db_path,
@@ -188,6 +204,7 @@ def build_benchmark_index(db_path: Path, workspace: Path, chunk_size: int) -> di
         workspace=workspace,
         source_type="benchmark_fixture",
         chunk_size=chunk_size,
+        identity_namespace=identity_namespace,
     )
     build_ms = elapsed_ms(started)
     conn = connect(db_path)
@@ -244,37 +261,51 @@ def load_benchmark_cases(path: Path) -> list[BenchmarkCase]:
     return cases
 
 
-def load_redacted_records(workspace: Path) -> list[tuple[str, str]]:
-    records: list[tuple[str, str]] = []
+def load_redacted_records(
+    workspace: Path,
+    identity_namespace: str,
+) -> list[IngestedRecord]:
+    records: list[IngestedRecord] = []
     for path in iter_candidate_files([workspace.as_posix()], workspace=workspace):
-        record = ingest_file(path, workspace=workspace, source_type="benchmark_fixture")
+        record = ingest_file(
+            path,
+            workspace=workspace,
+            source_type="benchmark_fixture",
+            identity_namespace=identity_namespace,
+        )
         if record:
-            records.append((record.source_path, f"{record.title}\n{record.content}"))
+            records.append(record)
     return records
 
 
 def exact_phrase_grep(
-    records: list[tuple[str, str]], query: str, limit: int
+    records: list[IngestedRecord], query: str, limit: int
 ) -> list[QueryResult]:
     needle = query.casefold().strip()
     if not needle:
         return []
     matches: list[QueryResult] = []
-    for source_path, text in records:
-        if needle not in text.casefold() and needle not in source_path.casefold():
+    for record in records:
+        text = f"{record.title}\n{record.content}"
+        if needle not in text.casefold() and needle not in record.source_path.casefold():
             continue
+        result_id = hashlib.sha256(
+            f"{record.id}\0exact_phrase_grep\0{record.content_hash}".encode("utf-8")
+        ).hexdigest()
         matches.append(
             QueryResult(
-                id=source_path,
-                chunk_id=source_path,
+                id=record.id,
+                chunk_id=result_id,
                 source_type="benchmark_fixture",
-                source_path=source_path,
-                workspace=str(Path(source_path).parent),
-                title=Path(source_path).name,
+                source_path=record.source_path,
+                workspace=record.workspace,
+                title=record.title,
                 heading="",
                 start_line=1,
                 end_line=max(1, len(text.splitlines())),
-                citation=f"{source_path}:L1-L{max(1, len(text.splitlines()))}",
+                citation=(
+                    f"{record.source_path}:L1-L{max(1, len(text.splitlines()))}"
+                ),
                 score=0.0,
                 snippet="[exact phrase match]",
                 strategy="exact_phrase_grep",

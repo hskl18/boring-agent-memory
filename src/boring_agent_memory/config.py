@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -8,10 +9,10 @@ from typing import Any
 from .chunking import DEFAULT_CHUNK_SIZE
 from .schema import DEFAULT_DB_PATH
 
-try:
+if sys.version_info >= (3, 11):
     import tomllib as toml_loader
-except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10.
-    import tomli as toml_loader  # type: ignore[no-redef]
+else:  # pragma: no cover - exercised on Python 3.10.
+    import tomli as toml_loader
 
 
 @dataclass(frozen=True)
