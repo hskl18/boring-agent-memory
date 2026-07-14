@@ -25,6 +25,20 @@ class CanonicalVerificationTests(unittest.TestCase):
             after = verify_canonical_source(db_path, source)
             self.assertFalse(after["content_hash_match"])
 
+    def test_verify_large_source_uses_indexed_raw_hash_without_default_size_limit(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            source = root / "docs" / "large.md"
+            source.write_bytes(b"# Large\n\n" + (b"x" * 600_000))
+            db_path = root / ".bam" / "memory.db"
+
+            build_index(db_path, ["docs"], workspace=root, max_bytes=700_000)
+            verification = verify_canonical_source(db_path, source)
+
+            self.assertTrue(verification["content_hash_match"])
+            self.assertEqual(verification["indexed_hash"], verification["current_hash"])
+
 
 if __name__ == "__main__":
     unittest.main()

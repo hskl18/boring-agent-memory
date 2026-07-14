@@ -1,0 +1,3 @@
+{"id":"edit_heading","operation":"replace","source":"canonical/deployments.md","expected":{"modified":1}}
+{"id":"rename_source","operation":"rename","source":"canonical/invitations.md","destination":"canonical/invite-policy.md","expected":{"moved":1}}
+{"id":"remove_source","operation":"delete","source":"lifecycle/removed-source.md","expected":{"removed":1,"query_absent":"obsolete-lantern-rule"}}

@@ -86,6 +86,64 @@ class CliTests(unittest.TestCase):
             self.assertTrue(response["ok"])
             self.assertEqual(response["results"][0]["title"], "canonical.md")
 
+    def test_cli_update_dry_run_and_apply(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            source = root / "docs" / "canonical.md"
+            source.write_text("Original CLI update value.\n", encoding="utf-8")
+            db_path = root / ".bam" / "memory.db"
+            env = {**os.environ, "PYTHONPATH": str(ROOT / "src")}
+            base = [
+                sys.executable,
+                "-m",
+                "boring_agent_memory.cli",
+                "--db",
+                str(db_path),
+            ]
+            source_args = ["--include", "docs", "--workspace", str(root), "--json"]
+            subprocess.run(
+                [*base, "build", *source_args],
+                cwd=root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            source.write_text("Replacement CLI update value.\n", encoding="utf-8")
+
+            dry_run = subprocess.run(
+                [*base, "update", *source_args, "--dry-run"],
+                cwd=root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(json.loads(dry_run.stdout)["modified"], 1)
+
+            applied = subprocess.run(
+                [*base, "update", *source_args],
+                cwd=root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertTrue(json.loads(applied.stdout)["applied"])
+
+            query = subprocess.run(
+                [*base, "query", "Replacement CLI", "--json"],
+                cwd=root,
+                env=env,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            payload = json.loads(query.stdout)
+            self.assertIn("citation", payload["results"][0])
+            self.assertIn("chunk_id", payload["results"][0])
+
 
 if __name__ == "__main__":
     unittest.main()

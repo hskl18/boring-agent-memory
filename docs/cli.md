@@ -1,6 +1,6 @@
 # CLI Reference
 
-The `bam` CLI manages local indexing, querying, status checks, and stdio serving.
+The `bam` CLI manages local indexing, incremental updates, querying, inspection, evaluation, and stdio serving.
 
 ## Global Options
 
@@ -8,16 +8,22 @@ The `bam` CLI manages local indexing, querying, status checks, and stdio serving
 bam [--db PATH] COMMAND
 ```
 
-`--db` defaults to `.bam/memory.db`. Config files can also set `index_path`.
+`--db` defaults to `.bam/memory.db`.
+Config files can also set `index_path`.
+
+```bash
+bam --version
+```
+
+The version is derived from installed package metadata.
 
 ## init
 
 ```bash
-bam init
 bam init --json
 ```
 
-Creates the SQLite database and FTS5 tables.
+This creates schema version 2 or transactionally migrates a legacy index.
 
 ## build
 
@@ -25,19 +31,30 @@ Creates the SQLite database and FTS5 tables.
 bam build --config memory.yaml --json
 ```
 
-or:
-
 ```bash
 bam build \
   --include docs \
   --include ~/.agent/skills \
   --exclude "**/.env" \
-  --exclude "**/secrets/**" \
   --source-type canonical_file \
+  --chunk-size 1600 \
   --json
 ```
 
-`build` clears and rebuilds the index from candidate files.
+`build` scans and chunks candidate files before replacing the complete index in one transaction.
+The JSON report includes document, chunk, and skipped-file counts.
+
+## update
+
+```bash
+bam update --config memory.yaml --dry-run --json
+bam update --config memory.yaml --json
+```
+
+`update` compares raw source hashes and reports additions, modifications, unique moves, removals, unchanged documents, and replacement chunk counts.
+`--dry-run` opens a checkpointed database in immutable read-only mode and never migrates, writes, or creates SQLite sidecars.
+It refuses to run when a non-empty WAL file indicates pending checkpoint work.
+An update is rejected when its effective indexing configuration differs from the last full build.
 
 ## query
 
@@ -49,10 +66,15 @@ bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/ap
 Results include:
 
 - `id`
+- `chunk_id`
 - `source_type`
 - `source_path`
 - `workspace`
 - `title`
+- `heading`
+- `start_line`
+- `end_line`
+- `citation`
 - `score`
 - `snippet`
 - `strategy`
@@ -66,23 +88,18 @@ bam --db ~/.bam/agent-memory.db inspect
 bam --db ~/.bam/agent-memory.db inspect /path/to/source.md --json
 ```
 
-Without a path, `inspect` lists indexed sources. With a path, it compares the indexed content hash to the current file.
+Without a path, `inspect` lists indexed sources.
+With a path, it compares the indexed raw source hash to the current file.
 
-## status
+## status and health
 
 ```bash
 bam status --json
-```
-
-Shows whether the database exists, record count, and source-type counts.
-
-## health
-
-```bash
 bam health --json
 ```
 
-Checks database existence and SQLite FTS5 support.
+Status reports schema version, document count, chunk count, source types, and the active configuration fingerprint.
+Health also checks SQLite FTS5 availability.
 
 ## eval
 
@@ -93,10 +110,8 @@ bam eval --fixtures evals/fixtures --golden evals/golden.jsonl --json \
   --max-privacy-leaks 0
 ```
 
-Runs the deterministic retrieval/safety fixture and reports recall, source
-accuracy, snippet term coverage, privacy leak count, and stale-source behavior.
-When threshold flags are provided, `bam eval` exits non-zero if a metric fails.
-`--fixture` is accepted as a compatibility alias for `--fixtures`.
+The command exits non-zero when a configured retrieval, staleness, or privacy gate fails.
+`--fixture` remains a compatibility alias for `--fixtures`.
 
 ## serve
 
@@ -104,14 +119,8 @@ When threshold flags are provided, `bam eval` exits non-zero if a metric fails.
 bam --db ~/.bam/agent-memory.db serve --stdio
 ```
 
-Reads JSON lines from stdin:
+The server reads one JSON request per line and returns one JSON response per line.
 
 ```json
 {"query":"canonical source rule","limit":5,"source_type":"canonical_file","workspace":"~/project/app"}
-```
-
-Writes JSON lines to stdout:
-
-```json
-{"ok":true,"query":"canonical source rule","results":[]}
 ```

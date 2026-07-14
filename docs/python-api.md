@@ -20,7 +20,10 @@ Returns a list of `QueryResult` objects:
 
 ```python
 for result in results:
-    print(result.source_path)
+    print(result.citation)
+    print(result.chunk_id)
+    print(result.heading)
+    print(result.start_line, result.end_line)
     print(result.title)
     print(result.score)
     print(result.snippet)
@@ -34,15 +37,16 @@ payload = [result.to_dict() for result in results]
 
 ## Agent Rule
 
-`memory_query()` returns recall hints, not authority. Agents should read the cited source path before making current-state claims or state-changing edits.
+`memory_query()` returns recall hints, not authority.
+Agents should read the cited source path and line span before making current-state claims or state-changing edits.
 
 ## Lower-Level APIs
 
 The package also exposes internal modules for building and inspecting indexes:
 
 ```python
-from boring_agent_memory.index import build_index
+from boring_agent_memory.index import build_index, update_index
 from boring_agent_memory.canonical import verify_canonical_source
 ```
 
-These are stable enough for local use, but `memory_query()` is the intended agent-facing surface.
+`build_index()` and `update_index()` are stable enough for local integration, but `memory_query()` remains the intended agent-facing surface.

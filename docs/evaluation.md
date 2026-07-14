@@ -1,23 +1,14 @@
 # Evaluation
 
-Boring Agent Memory includes a deterministic eval because the core claim is measurable:
+Boring Agent Memory keeps two separate evidence surfaces.
+The seven-case regression eval protects stable product behavior on every pull request.
+Benchmark v2 compares whole-document and chunked BM25 with committed raw case rows and optional local dense and hybrid slots.
 
-> For many day-to-day agent workflows, BM25 over trusted files can provide enough recall when results are source-grounded and the agent verifies canonical files before acting.
+Neither surface uses a hosted service, paid API, or LLM judge.
 
-The eval is intentionally local and dependency-light. It does not use an LLM judge, embeddings, or hosted services.
+## Regression Eval
 
-## What It Measures
-
-The fixture corpus covers common memory-layer risks:
-
-- retrieving a canonical workflow rule instead of an older report
-- finding source-grounded deployment and browser workflow notes
-- handling punctuation-heavy route queries
-- redacting secret-shaped fixture values
-- keeping stale or historical sources from outranking canonical files
-- detecting when an indexed canonical file has changed after the index was built
-
-## Run
+The regression fixture covers canonical rules, punctuation-heavy routes, secret redaction, stale-source detection, and source verification.
 
 ```bash
 bam eval --json \
@@ -29,41 +20,7 @@ bam eval --json \
   --max-privacy-leaks 0
 ```
 
-From a source checkout without installing:
-
-```bash
-PYTHONPATH=src python -m boring_agent_memory.cli eval --json
-```
-
-## Metrics
-
-- `recall_at_1`: expected source is the first result.
-- `recall_at_3`: expected source appears within the first three results.
-- `mrr`: mean reciprocal rank of the expected source.
-- `source_accuracy`: top result is the expected source.
-- `snippet_term_rate`: snippet/title contain the expected evidence terms.
-- `privacy_leak_count`: secret-shaped or forbidden terms found in returned snippets.
-- `stale_detection_rate`: stale or historical sources do not outrank canonical sources.
-
-## Quality Gates
-
-`bam eval` can enforce thresholds and return a non-zero exit code when the memory layer regresses:
-
-```bash
-bam eval \
-  --min-recall-at-1 1.0 \
-  --min-source-accuracy 1.0 \
-  --max-privacy-leaks 0
-```
-
-The JSON output includes:
-
-- `passed`: whether all configured gates passed
-- `failures`: human-readable gate failures
-
-The GitHub Actions workflow uses these gates so eval quality is checked on every push.
-
-## Current Fixture Baseline
+Current regression baseline:
 
 ```text
 cases: 7
@@ -76,6 +33,40 @@ privacy_leak_count: 0
 stale_detection_rate: 1.000
 ```
 
-This is a small regression fixture, not a broad industry benchmark. It is meant to keep the core product behavior honest as the project adds chunking, incremental indexing, and optional retrieval strategies.
+## Benchmark v2
 
-For the separate 120-query strategy comparison, see [Benchmark v1](benchmark-v1.md).
+```bash
+PYTHONPATH=src python scripts/run_benchmark_v2.py \
+  --check \
+  --output benchmarks/v2/results/python-3.14-macos-arm64.json
+```
+
+The benchmark records every evaluated case and its top results.
+Summary metrics can therefore be regenerated from the raw rows without rerunning retrieval.
+It records corpus and case hashes, environment metadata, per-strategy index configuration, build time, query latency, index size, source rank, evidence rank, stale-conflict accuracy, and privacy leaks.
+
+The adversarial corpus covers embedded synthetic secrets, stale canonical conflicts, duplicate headings with exact line spans, vague paraphrases, code symbols, and a negative query.
+The incremental scenario separately covers heading edits, renames, and removal.
+
+See [benchmark-v2.md](benchmark-v2.md) for results and evidence limits.
+
+## Optional Dense and Hybrid Evaluation
+
+Install the optional runtime only when needed:
+
+```bash
+python -m pip install -e '.[embeddings]'
+```
+
+The no-download path requires an explicit model directory:
+
+```bash
+PYTHONPATH=src python scripts/run_benchmark_v2.py \
+  --embedding-model BAAI/bge-small-en-v1.5 \
+  --embedding-model-path /path/to/local/model \
+  --output /tmp/benchmark-v2-hybrid.json
+```
+
+Remote model acquisition requires the additional explicit `--allow-model-download` flag.
+Dense and hybrid results remain `not_run` in the committed core snapshot because no model was installed or downloaded for the default verification.
+No dense or hybrid quality claim is made without committed raw evidence and a recorded model environment.

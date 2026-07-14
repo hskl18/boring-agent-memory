@@ -219,7 +219,7 @@ def ranked_forbidden_sources(
     sources: tuple[str, ...],
 ) -> dict[str, int | None]:
     forbidden = set(sources)
-    ranks = {source: None for source in sources}
+    ranks: dict[str, int | None] = {source: None for source in sources}
     for result in results:
         relative = relative_source(result.source_path, workspace)
         if relative in forbidden:

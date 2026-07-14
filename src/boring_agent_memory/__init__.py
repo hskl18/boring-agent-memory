@@ -1,7 +1,12 @@
 """Boring Agent Memory."""
 
+from importlib.metadata import PackageNotFoundError, version
+
 from .api import memory_query
 
-__version__ = "0.1.0"
+try:
+    __version__ = version("boring-agent-memory")
+except PackageNotFoundError:
+    __version__ = "0+unknown"
 
 __all__ = ["__version__", "memory_query"]

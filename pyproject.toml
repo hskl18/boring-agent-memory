@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "boring-agent-memory"
-version = "0.1.0"
+version = "0.2.0"
 description = "A boring, local-first BM25 memory layer for AI agents."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -25,6 +25,7 @@ keywords = [
 dependencies = [
   "tomli>=2.0; python_version < '3.11'",
 ]
+
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -34,6 +35,11 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Topic :: Database",
   "Topic :: Software Development :: Libraries",
+]
+
+[project.optional-dependencies]
+embeddings = [
+  "fastembed>=0.8.0,<0.9",
 ]
 
 [project.urls]

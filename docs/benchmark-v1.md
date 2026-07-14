@@ -26,7 +26,8 @@ It contains no user messages, credentials, inboxes, browser data, or production 
 The BM25 strategy is the production query path: phrase search, token AND, token OR, and the existing LIKE fallback.
 The exact phrase grep baseline performs a case-insensitive literal substring search over the same redacted records.
 The grep baseline is intentionally simple and establishes how much the tokenized retrieval pipeline adds beyond literal matching.
-Embeddings and hybrid retrieval are recorded as `not_run` because no provider-neutral model and cost boundary have been selected.
+The current runner also reports whole-document and chunked BM25 through the version 2 indexing pipeline.
+Dense and hybrid retrieval remain `not_run` unless an explicit local adapter is provided through the benchmark v2 surface.
 
 ## Metrics
 
@@ -62,7 +63,7 @@ The checked-in macOS arm64 snapshot is in [`benchmarks/v1/results/python-3.14-ma
 Latency is environment-specific and is not a CI threshold.
 CI gates the corpus size, Recall@3, no-answer precision, and zero privacy leakage instead.
 
-## Current Result
+## Historical Checked-In Result
 
 | Strategy | Recall@1 | Recall@3 | MRR | Source accuracy | No-answer precision | Stale conflict | Privacy leaks |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -72,6 +73,8 @@ CI gates the corpus size, Recall@3, no-answer precision, and zero privacy leakag
 On the checked-in Python 3.14.3, SQLite 3.51.3, macOS arm64 snapshot, BM25 rebuilt the 80-document index in 18.680 ms and produced a 163,840-byte SQLite index.
 Median BM25 query latency was 0.856 ms and p95 was 1.061 ms.
 Exact phrase grep was faster at this small corpus size, but retrieved only 20 percent of positive cases.
+The snapshot predates schema version 2 and is retained as historical evidence.
+The current runner evaluates both whole-document and chunked BM25 and records raw rows under the benchmark schema version 2 report.
 
 ## Failure Analysis
 
@@ -90,6 +93,7 @@ Production claims would require real sanitized workloads and user-centered error
 
 ## Index Lifecycle Coverage
 
-The current product performs a full rebuild rather than incremental indexing.
-Tests verify that canonical file changes are detected, deleted sources disappear after a rebuild, and a corrupt SQLite file fails without modifying canonical source files.
-Automatic corruption recovery and incremental change application remain future work and are not implied by this benchmark.
+Version 0.2.0 adds atomic incremental additions, modifications, unique moves, and removals.
+The executable benchmark v2 lifecycle scenario verifies one edit, one rename, and one deletion through dry-run and apply.
+Automatic corruption recovery remains future work.
+See [Benchmark v2](benchmark-v2.md) for current chunk-level and lifecycle evidence.
