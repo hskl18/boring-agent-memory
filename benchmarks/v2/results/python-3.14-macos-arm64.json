@@ -17,7 +17,7 @@
   "environment": {
     "bam_version": "0.2.0",
     "fastembed": null,
-    "git_commit": "e9af60e1c4c33ca51399499918b62250851ea5d0",
+    "git_commit": "ea73136f7e4fbbb1af1ec84ed4bc797b9c2de77f",
     "git_dirty": false,
     "machine": "arm64",
     "python": "3.14.3",
@@ -44,7 +44,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "chunk_id": "0130da0267b3a15506bdd38c51dc7488b2b9869e75820451392f2970d6706ee2",
               "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
               "end_line": 5,
               "heading": "Invitations > Retry",
@@ -70,7 +70,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "f2e870f63d5dcf5a9cf94a8ee458b9bd39f58102e34d369bb309bfb11dd958f1",
+              "chunk_id": "2ec3576045514c73b89af0b5f674a8ad7a44ba9904e3b31e2e9773c676369fa5",
               "citation": "canonical/invitations.md#Invitations > Retry:L7-L9",
               "end_line": 9,
               "heading": "Invitations > Retry",
@@ -78,7 +78,7 @@
               "start_line": 7
             },
             {
-              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "chunk_id": "cf56183cff58407a3f5f8f4a1518b66b8a6e799bd871ddf11c15cb5b6ac74196",
               "citation": "code/routes.md#Operator symbols:L1-L5",
               "end_line": 5,
               "heading": "Operator symbols",
@@ -104,7 +104,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "chunk_id": "cf56183cff58407a3f5f8f4a1518b66b8a6e799bd871ddf11c15cb5b6ac74196",
               "citation": "code/routes.md#Operator symbols:L1-L5",
               "end_line": 5,
               "heading": "Operator symbols",
@@ -130,7 +130,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "chunk_id": "cf56183cff58407a3f5f8f4a1518b66b8a6e799bd871ddf11c15cb5b6ac74196",
               "citation": "code/routes.md#Operator symbols:L1-L5",
               "end_line": 5,
               "heading": "Operator symbols",
@@ -138,7 +138,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "chunk_id": "0d51b8bc98bcd13d9d00017c2636df88e785618e7c55bd12cf86eb54fa1631ab",
               "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
               "end_line": 3,
               "heading": "Backup lifecycle",
@@ -146,7 +146,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "chunk_id": "ade682506ecf1896abb8c2ed04aed505ce01cbd28b74e257b15dcb64eb3fde9e",
               "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
               "end_line": 4,
               "heading": "Removed source fixture",
@@ -172,7 +172,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "chunk_id": "cf56183cff58407a3f5f8f4a1518b66b8a6e799bd871ddf11c15cb5b6ac74196",
               "citation": "code/routes.md#Operator symbols:L1-L5",
               "end_line": 5,
               "heading": "Operator symbols",
@@ -180,7 +180,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "f2e870f63d5dcf5a9cf94a8ee458b9bd39f58102e34d369bb309bfb11dd958f1",
+              "chunk_id": "2ec3576045514c73b89af0b5f674a8ad7a44ba9904e3b31e2e9773c676369fa5",
               "citation": "canonical/invitations.md#Invitations > Retry:L7-L9",
               "end_line": 9,
               "heading": "Invitations > Retry",
@@ -206,7 +206,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "chunk_id": "2ee09c9b4083e45499af72113a29f5b7d9a63790973ba5e9e8f9e94a17bc8f16",
               "citation": "privacy/credentials.md#Credential handling:L1-L12",
               "end_line": 12,
               "heading": "Credential handling",
@@ -214,7 +214,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "chunk_id": "a74a16229021458e3e76c9f6600418eca043633801724525f138809785f2fb32",
               "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
               "end_line": 4,
               "heading": "Historical deployment note",
@@ -222,7 +222,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "chunk_id": "617feff5b1fd7c3c5bd74bfdeec35a1929a867682987f7424f6a849dba0421f5",
               "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
               "end_line": 4,
               "heading": "Current deployment policy",
@@ -248,7 +248,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "chunk_id": "2ee09c9b4083e45499af72113a29f5b7d9a63790973ba5e9e8f9e94a17bc8f16",
               "citation": "privacy/credentials.md#Credential handling:L1-L12",
               "end_line": 12,
               "heading": "Credential handling",
@@ -256,7 +256,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "chunk_id": "ade682506ecf1896abb8c2ed04aed505ce01cbd28b74e257b15dcb64eb3fde9e",
               "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
               "end_line": 4,
               "heading": "Removed source fixture",
@@ -282,7 +282,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "chunk_id": "617feff5b1fd7c3c5bd74bfdeec35a1929a867682987f7424f6a849dba0421f5",
               "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
               "end_line": 4,
               "heading": "Current deployment policy",
@@ -290,7 +290,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "chunk_id": "a74a16229021458e3e76c9f6600418eca043633801724525f138809785f2fb32",
               "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
               "end_line": 4,
               "heading": "Historical deployment note",
@@ -316,7 +316,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "chunk_id": "617feff5b1fd7c3c5bd74bfdeec35a1929a867682987f7424f6a849dba0421f5",
               "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
               "end_line": 4,
               "heading": "Current deployment policy",
@@ -324,7 +324,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "chunk_id": "a74a16229021458e3e76c9f6600418eca043633801724525f138809785f2fb32",
               "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
               "end_line": 4,
               "heading": "Historical deployment note",
@@ -332,7 +332,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "chunk_id": "0130da0267b3a15506bdd38c51dc7488b2b9869e75820451392f2970d6706ee2",
               "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
               "end_line": 5,
               "heading": "Invitations > Retry",
@@ -358,7 +358,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "chunk_id": "0d51b8bc98bcd13d9d00017c2636df88e785618e7c55bd12cf86eb54fa1631ab",
               "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
               "end_line": 3,
               "heading": "Backup lifecycle",
@@ -366,7 +366,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "chunk_id": "a74a16229021458e3e76c9f6600418eca043633801724525f138809785f2fb32",
               "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
               "end_line": 4,
               "heading": "Historical deployment note",
@@ -374,7 +374,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "chunk_id": "2ee09c9b4083e45499af72113a29f5b7d9a63790973ba5e9e8f9e94a17bc8f16",
               "citation": "privacy/credentials.md#Credential handling:L1-L12",
               "end_line": 12,
               "heading": "Credential handling",
@@ -400,7 +400,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "chunk_id": "0130da0267b3a15506bdd38c51dc7488b2b9869e75820451392f2970d6706ee2",
               "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
               "end_line": 5,
               "heading": "Invitations > Retry",
@@ -408,7 +408,7 @@
               "start_line": 3
             },
             {
-              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "chunk_id": "ade682506ecf1896abb8c2ed04aed505ce01cbd28b74e257b15dcb64eb3fde9e",
               "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
               "end_line": 4,
               "heading": "Removed source fixture",
@@ -416,7 +416,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "chunk_id": "0d51b8bc98bcd13d9d00017c2636df88e785618e7c55bd12cf86eb54fa1631ab",
               "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
               "end_line": 3,
               "heading": "Backup lifecycle",
@@ -520,14 +520,15 @@
       },
       "failures": [],
       "index": {
-        "build_ms": 4.6,
+        "build_ms": 3.902,
         "chunk_size": 1600,
         "chunks": 9,
         "config": {
           "chunk_size": 1600,
-          "chunker_version": 1,
+          "chunker_version": 2,
           "document_id_version": 1,
           "excludes": [],
+          "identity_namespace": "benchmark:benchmark-v2",
           "includes": [
             "<BENCHMARK_CORPUS>"
           ],
@@ -539,13 +540,13 @@
           "tokenizer": "unicode61",
           "workspace": "<BENCHMARK_CORPUS>"
         },
-        "config_fingerprint": "8cea35779bb97bae4329d36f2c8cee30bd1610966eeedaee79bc7a969614ce32",
+        "config_fingerprint": "cb588615daa111ded9e36d148b8aaf10378a8e899716b24cd3451a99a03cfeab",
         "documents": 7,
-        "size_bytes": 77824
+        "size_bytes": 86016
       },
       "latency_ms": {
-        "median": 0.688,
-        "p95": 0.859
+        "median": 0.573,
+        "p95": 0.641
       },
       "metrics": {
         "cases": 12,
@@ -1075,7 +1076,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1101,7 +1102,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1109,7 +1110,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1135,7 +1136,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1161,7 +1162,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1169,7 +1170,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1177,7 +1178,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1203,7 +1204,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1211,7 +1212,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1237,7 +1238,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1245,7 +1246,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1253,7 +1254,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1279,7 +1280,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1287,7 +1288,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1313,7 +1314,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1321,7 +1322,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1347,7 +1348,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1355,7 +1356,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1363,7 +1364,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1389,7 +1390,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1397,7 +1398,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1405,7 +1406,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1431,7 +1432,7 @@
           "rank": 2,
           "results": [
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1439,7 +1440,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1447,7 +1448,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1566,7 +1567,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1592,7 +1593,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1600,7 +1601,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1626,7 +1627,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1652,7 +1653,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1660,7 +1661,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1668,7 +1669,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1694,7 +1695,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1702,7 +1703,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1728,7 +1729,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1736,7 +1737,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1744,7 +1745,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1770,7 +1771,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1778,7 +1779,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1804,7 +1805,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1812,7 +1813,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1838,7 +1839,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "chunk_id": "023e502a421b26aa898048c18510063105888290eaa53c809d1cc541c93bc04e",
               "citation": "canonical/deployments.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1846,7 +1847,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "chunk_id": "2b17d06fab4fa393f57e9a9b091dda7cf6bffb32cf6caddf7dd20ccda5ad920e",
               "citation": "history/deployments-old.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1854,7 +1855,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "chunk_id": "9f1ff505a8e021080e35cbdd18e660fe72fd2830b163146e50fe52f87d0d87e5",
               "citation": "code/routes.md:L1-L5",
               "end_line": 5,
               "heading": "",
@@ -1880,7 +1881,7 @@
           "rank": 1,
           "results": [
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1888,7 +1889,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1896,7 +1897,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "chunk_id": "fd602224cd1bc2dd685828654e88b47dc9c4b263705fbbdbafe4c56c89ed17e0",
               "citation": "privacy/credentials.md:L1-L12",
               "end_line": 12,
               "heading": "",
@@ -1922,7 +1923,7 @@
           "rank": 2,
           "results": [
             {
-              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "chunk_id": "eb159207b9cc672daf2b9b12828141cbfd2c146b6849c3c2b6562e052ef00302",
               "citation": "lifecycle/removed-source.md:L1-L4",
               "end_line": 4,
               "heading": "",
@@ -1930,7 +1931,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "chunk_id": "af122a781956433a85cc4b333cfe07db091b3b941e5a9cd132800f7bff2f21af",
               "citation": "canonical/invitations.md:L1-L9",
               "end_line": 9,
               "heading": "",
@@ -1938,7 +1939,7 @@
               "start_line": 1
             },
             {
-              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "chunk_id": "5b8e7c4d279c7d35bc0af3f0bf17b09cdb9bae4b62ac1982484027874f6ae598",
               "citation": "canonical/backups.md:L1-L3",
               "end_line": 3,
               "heading": "",
@@ -1950,14 +1951,15 @@
         }
       ],
       "index": {
-        "build_ms": 5.707,
+        "build_ms": 4.781,
         "chunk_size": 0,
         "chunks": 7,
         "config": {
           "chunk_size": 0,
-          "chunker_version": 1,
+          "chunker_version": 2,
           "document_id_version": 1,
           "excludes": [],
+          "identity_namespace": "benchmark:benchmark-v2",
           "includes": [
             "<BENCHMARK_CORPUS>"
           ],
@@ -1969,13 +1971,13 @@
           "tokenizer": "unicode61",
           "workspace": "<BENCHMARK_CORPUS>"
         },
-        "config_fingerprint": "2d4db451b78b747b36dc7b6ebdd0259a0bfdbd94714f0499630a2599d91b4f97",
+        "config_fingerprint": "8d9a1d23959e7654266077e5a0488c26874551c6a430d70bf499704f23059526",
         "documents": 7,
         "size_bytes": 77824
       },
       "latency_ms": {
-        "median": 0.762,
-        "p95": 0.858
+        "median": 0.585,
+        "p95": 0.685
       },
       "metrics": {
         "cases": 12,

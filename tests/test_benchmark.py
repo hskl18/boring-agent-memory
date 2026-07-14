@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -146,6 +147,33 @@ class AdversarialBenchmarkTests(unittest.TestCase):
                 first["strategies"][strategy]["cases"],
                 second["strategies"][strategy]["cases"],
             )
+
+    def test_committed_snapshot_matches_reproducible_raw_evidence(self) -> None:
+        snapshot_path = (
+            ROOT / "benchmarks" / "v2" / "results" / "python-3.14-macos-arm64.json"
+        )
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(snapshot["corpus"], self.report["corpus"])
+        for strategy in (
+            "whole_document_bm25",
+            "chunked_bm25",
+            "exact_phrase_grep",
+        ):
+            self.assertEqual(
+                snapshot["strategies"][strategy]["cases"],
+                self.report["strategies"][strategy]["cases"],
+            )
+            self.assertEqual(
+                snapshot["strategies"][strategy]["metrics"],
+                self.report["strategies"][strategy]["metrics"],
+            )
+        for strategy in ("whole_document_bm25", "chunked_bm25"):
+            self.assertEqual(
+                snapshot["strategies"][strategy]["index"]["config_fingerprint"],
+                self.report["strategies"][strategy]["index"]["config_fingerprint"],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
