@@ -12,10 +12,15 @@ from .snippets import plain_snippet
 @dataclass(frozen=True)
 class QueryResult:
     id: str
+    chunk_id: str
     source_type: str
     source_path: str
     workspace: str
     title: str
+    heading: str
+    start_line: int
+    end_line: int
+    citation: str
     score: float
     snippet: str
     strategy: str
@@ -48,28 +53,37 @@ def _query_memory(
     source_type: str | None,
     workspace: Path | None,
 ) -> list[QueryResult]:
-    seen: set[str] = set()
+    seen_documents: set[str] = set()
     results: list[QueryResult] = []
 
     for strategy, fts_query in build_fts_queries(query):
         try:
-            rows = run_fts_query(conn, fts_query, limit, source_type, workspace)
+            rows = run_fts_query(conn, fts_query, max(limit * 4, limit), source_type, workspace)
         except sqlite3.DatabaseError:
             continue
         for row in rows:
-            if row["id"] in seen:
+            if row["id"] in seen_documents:
                 continue
-            seen.add(row["id"])
+            seen_documents.add(row["id"])
             results.append(row_to_result(row, strategy, query))
             if len(results) >= limit:
                 return results
 
     if len(results) < limit:
-        for row in run_like_query(conn, query, limit - len(results), source_type, workspace):
-            if row["id"] in seen:
+        rows = run_like_query(
+            conn,
+            query,
+            max((limit - len(results)) * 4, limit),
+            source_type,
+            workspace,
+        )
+        for row in rows:
+            if row["id"] in seen_documents:
                 continue
-            seen.add(row["id"])
+            seen_documents.add(row["id"])
             results.append(row_to_result(row, "like", query))
+            if len(results) >= limit:
+                break
 
     return results[:limit]
 
@@ -106,31 +120,36 @@ def run_fts_query(
     params: list[object] = [fts_query]
     source_filter = ""
     if source_type:
-        source_filter = "AND r.source_type = ?"
+        source_filter = "AND d.source_type = ?"
         params.append(source_type)
     workspace_filter = ""
     if workspace:
-        workspace_filter = "AND r.workspace = ?"
+        workspace_filter = "AND d.workspace = ?"
         params.append(workspace.as_posix())
     params.append(limit)
 
     return conn.execute(
         f"""
         SELECT
-          r.id,
-          r.source_type,
-          r.source_path,
-          r.workspace,
-          r.title,
+          d.id,
+          c.id AS chunk_id,
+          d.source_type,
+          d.source_path,
+          d.workspace,
+          d.title,
+          c.heading,
+          c.start_line,
+          c.end_line,
           rank AS score,
-          snippet(records_fts, 2, '[', ']', '...', 28) AS snippet
-        FROM records_fts
-        JOIN records r ON r.id = records_fts.id
-        WHERE records_fts MATCH ?
-        AND rank MATCH 'bm25(2.5, 1.0, 0.25)'
+          snippet(chunks_fts, 3, '[', ']', '...', 28) AS snippet
+        FROM chunks_fts
+        JOIN chunks c ON c.id = chunks_fts.chunk_id
+        JOIN documents d ON d.id = c.document_id
+        WHERE chunks_fts MATCH ?
+        AND rank MATCH 'bm25(0.0, 2.5, 1.8, 1.0, 0.25)'
         {source_filter}
         {workspace_filter}
-        ORDER BY rank ASC
+        ORDER BY rank ASC, c.id ASC
         LIMIT ?
         """,
         params,
@@ -145,45 +164,52 @@ def run_like_query(
     workspace: Path | None,
 ) -> list[sqlite3.Row]:
     like = f"%{query.lower()}%"
-    params: list[object] = [like, like, like]
+    params: list[object] = [like, like, like, like]
     source_filter = ""
     if source_type:
-        source_filter = "AND source_type = ?"
+        source_filter = "AND d.source_type = ?"
         params.append(source_type)
     workspace_filter = ""
     if workspace:
-        workspace_filter = "AND workspace = ?"
+        workspace_filter = "AND d.workspace = ?"
         params.append(workspace.as_posix())
     params.append(limit)
 
     return conn.execute(
         f"""
         SELECT
-          id,
-          source_type,
-          source_path,
-          workspace,
-          title,
+          d.id,
+          c.id AS chunk_id,
+          d.source_type,
+          d.source_path,
+          d.workspace,
+          d.title,
+          c.heading,
+          c.start_line,
+          c.end_line,
           999.0 AS score,
-          content AS snippet
-        FROM records
+          c.content AS snippet
+        FROM chunks c
+        JOIN documents d ON d.id = c.document_id
         WHERE (
-          lower(title) LIKE ?
-          OR lower(content) LIKE ?
-          OR lower(source_path) LIKE ?
+          lower(d.title) LIKE ?
+          OR lower(c.heading) LIKE ?
+          OR lower(c.content) LIKE ?
+          OR lower(d.source_path) LIKE ?
         )
         {source_filter}
         {workspace_filter}
         ORDER BY
           CASE
-            WHEN lower(title) LIKE ? THEN 0
-            WHEN lower(source_path) LIKE ? THEN 1
+            WHEN lower(d.title) LIKE ? THEN 0
+            WHEN lower(d.source_path) LIKE ? THEN 1
             ELSE 2
           END,
-          title ASC
+          d.title ASC,
+          c.ordinal ASC
         LIMIT ?
         """,
-        [*params[:3], like, like, *params[3:]],
+        [*params[:4], like, like, *params[4:]],
     ).fetchall()
 
 
@@ -191,12 +217,22 @@ def row_to_result(row: sqlite3.Row, strategy: str, query: str) -> QueryResult:
     snippet = row["snippet"]
     if strategy == "like":
         snippet = plain_snippet(snippet, query)
+    heading = row["heading"]
+    location = f"L{row['start_line']}-L{row['end_line']}"
+    citation = f"{row['source_path']}:{location}"
+    if heading:
+        citation = f"{row['source_path']}#{heading}:{location}"
     return QueryResult(
         id=row["id"],
+        chunk_id=row["chunk_id"],
         source_type=row["source_type"],
         source_path=row["source_path"],
         workspace=row["workspace"],
         title=row["title"],
+        heading=heading,
+        start_line=int(row["start_line"]),
+        end_line=int(row["end_line"]),
+        citation=citation,
         score=float(row["score"]),
         snippet=snippet,
         strategy=strategy,

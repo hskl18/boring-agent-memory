@@ -133,7 +133,7 @@ Check whether an indexed source still matches disk:
 bam --db ~/.bam/hermes-memory.db inspect ~/.hermes/skills/job-workflow/SKILL.md --json
 ```
 
-If `content_hash_match` is false, rebuild:
+If `content_hash_match` is false or `verification_available` is false, rebuild:
 
 ```bash
 bam build --config memory.yaml

@@ -4,9 +4,11 @@
 
 Canonical memory infrastructure for agents that need trusted recall, not another black-box brain.
 
-Most agent memory failures are not failures of semantic search. They are failures of trust: stale state, missing provenance, private data captured by default, and memory overriding the source of truth.
+Most agent memory failures are not failures of semantic search.
+They are failures of trust: stale state, missing provenance, private data captured by default, and memory overriding the source of truth.
 
-Boring Agent Memory turns the files your agent already trusts into a measurable local recall layer. It indexes canonical docs, skills, runbooks, bug logs, ADRs, ledgers, and sanitized reports with SQLite FTS5/BM25, then returns source paths and snippets through a small `memory_query()` interface.
+Boring Agent Memory turns the files your agent already trusts into a measurable local recall layer.
+It indexes canonical docs, skills, runbooks, bug logs, ADRs, ledgers, and sanitized reports with SQLite FTS5/BM25, then returns source paths and snippets through a small `memory_query()` interface.
 
 The bet is simple:
 
@@ -18,19 +20,23 @@ Not because semantic memory is useless, but because a large class of agent memor
 
 ## Why This Exists
 
-Agents often forget project rules, workflow decisions, bug fixes, and operating constraints. Many memory systems solve that by capturing everything or storing vague summaries as if they were truth. That creates privacy risk, stale state, and noisy prompts.
+Agents often forget project rules, workflow decisions, bug fixes, and operating constraints.
+Many memory systems solve that by capturing everything or storing vague summaries as if they were truth.
+That creates privacy risk, stale state, and noisy prompts.
 
 Boring Agent Memory takes the opposite approach:
 
 ```text
 trusted local files
+-> deterministic heading-aware chunks
 -> local SQLite FTS5 / BM25 index
--> source-grounded snippets
+-> source-grounded line citations
 -> agent reads the cited file
 -> answer or action
 ```
 
-Canonical files are the docs, skills, logs, ledgers, and reports you already trust as the source of truth. The index is only a recall layer over those files.
+Canonical files are the docs, skills, logs, ledgers, and reports you already trust as the source of truth.
+The index is only a recall layer over those files.
 
 ## Why BM25 First
 
@@ -42,20 +48,26 @@ BM25 is not a compromise here; it is the right default for a large set of agent-
 - rebuilds are reproducible from canonical files
 - no embedding model has to see private notes before the first useful recall result
 
-Semantic search can be useful later. It should be a fallback, not the foundation that silently becomes truth.
+Semantic search can be useful as an explicit fallback.
+Version 0.2.0 includes an optional local adapter for controlled dense and hybrid evaluation, while BM25 remains the default and canonical files remain authoritative.
 
 ## What It Does
 
 - Indexes explicit local files and directories.
 - Expands include globs such as `~/project/*/docs`.
+- Chunks Markdown by heading ancestry while preserving code fences, lists, tables, and line spans.
+- Uses deterministic document and chunk identifiers.
 - Ranks results with SQLite FTS5/BM25.
-- Returns `source_path`, `title`, `source_type`, `score`, and `snippet`.
+- Returns `source_path`, `heading`, `start_line`, `end_line`, `citation`, `score`, and `snippet`.
+- Applies hash-based additions, edits, unique moves, and removals with `bam update`.
+- Reports exact changes without writing through `bam update --dry-run`.
+- Migrates and mutates the SQLite index transactionally.
 - Provides CLI, Python API, and JSON-lines stdio interfaces.
 - Redacts common secret patterns before indexing.
 - Skips common secret-bearing paths by default.
 - Lets you inspect whether an indexed source is stale.
 - Includes a deterministic retrieval/safety eval fixture.
-- Requires no hosted service, embedding API, vector database, or account.
+- Requires no hosted service, embedding API, vector database, model download, or account.
 
 ## What It Is Not
 
@@ -69,7 +81,9 @@ Semantic search can be useful later. It should be a fallback, not the foundation
 The rule is:
 
 ```text
-Canonical files first. BM25 recall second. Model memory last.
+Canonical files first.
+BM25 recall second.
+Model memory last.
 ```
 
 ## 60-Second Demo
@@ -88,6 +102,7 @@ Example output shape:
 {
   "build": {
     "indexed": 2,
+    "chunks": 2,
     "skipped": 0
   },
   "query_results": [
@@ -101,6 +116,7 @@ Example output shape:
   "canonical_verification": {
     "indexed": true,
     "exists": true,
+    "verification_available": true,
     "content_hash_match": true
   }
 }
@@ -132,20 +148,22 @@ privacy_leak_count: 0
 stale_detection_rate: 1.000
 ```
 
-This is a local regression fixture, not a broad semantic-memory benchmark. It tests the product claim that many practical agent memory questions can be handled with BM25 over trusted files when results include source paths, snippets, redaction, and canonical verification. See [docs/evaluation.md](docs/evaluation.md).
+This is a local regression fixture, not a broad semantic-memory benchmark.
+It tests the product claim that many practical agent memory questions can be handled with BM25 over trusted files when results include source paths, snippets, redaction, and canonical verification.
+See [docs/evaluation.md](docs/evaluation.md).
 
-The separate versioned `benchmark-v1` corpus contains 120 sanitized synthetic queries across exact operational recall, vague wording, stale conflicts, secret-bearing documents, path-heavy lookups, and negative no-answer cases.
-It compares the current BM25 pipeline with a literal exact-phrase grep baseline over the same redacted corpus.
+Benchmark v1 remains the larger 120-query historical lexical baseline.
+Benchmark v2 adds raw per-case evidence, exact heading and line expectations, whole-document versus chunked BM25, and explicit optional dense and hybrid slots.
 
-| Strategy | Recall@1 | Recall@3 | MRR | No-answer precision | Privacy leaks |
+| Strategy | Recall@1 | Recall@3 | Evidence Recall@1 | Evidence Recall@3 | Privacy leaks |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| BM25 | 0.990 | 1.000 | 0.995 | 1.000 | 0 |
-| Exact phrase grep | 0.200 | 0.200 | 0.200 | 1.000 | 0 |
-| Embeddings | not run | not run | not run | not run | not run |
-| Hybrid | not run | not run | not run | not run | not run |
+| Whole-document BM25 | 0.9091 | 1.0000 | 0.0000 | 0.0000 | 0 |
+| Chunked BM25 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 0 |
+| Dense | not run | not run | not run | not run | not run |
+| Hybrid RRF | not run | not run | not run | not run | not run |
 
-These are deterministic fixture results, not production traffic or a claim that lexical retrieval solves broad semantic memory.
-See [docs/benchmark-v1.md](docs/benchmark-v1.md) for the corpus design, reproducibility command, latency snapshot, and failure analysis.
+These are deterministic synthetic fixture results, not production traffic or a broad semantic-memory claim.
+See [docs/benchmark-v2.md](docs/benchmark-v2.md) for raw-evidence design, reproduction, and limits.
 
 ## Tradeoffs
 
@@ -156,7 +174,8 @@ Boring Agent Memory is intentionally opinionated:
 - It does not automatically learn from every conversation, because auto-capture is where privacy and stale-truth risks start.
 - It provides a local CLI/API layer, not a hosted dashboard or memory SaaS.
 
-The roadmap keeps those constraints. Features should improve measurable, source-grounded local recall without turning the index into authoritative state.
+The roadmap keeps those constraints.
+Features should improve measurable, source-grounded local recall without turning the index into authoritative state.
 
 ## Install
 
@@ -172,6 +191,15 @@ Check the installation:
 bam health --json
 ```
 
+Optional local embedding evaluation is isolated behind an extra:
+
+```bash
+python -m pip install -e '.[embeddings]'
+```
+
+Installing the extra does not download a model.
+The adapter requires an explicit local model path unless download permission is separately enabled.
+
 ## Quick Start With Your Files
 
 Create a config:
@@ -185,6 +213,7 @@ Edit `memory.yaml` so `include` points at files you trust:
 ```yaml
 index_path: ~/.bam/agent-memory.db
 source_type: canonical_file
+chunk_size: 1600
 
 include:
   - ~/agent/skills
@@ -207,6 +236,13 @@ Build the index:
 
 ```bash
 bam build --config memory.yaml --json
+```
+
+Preview and apply later file changes:
+
+```bash
+bam update --config memory.yaml --dry-run --json
+bam update --config memory.yaml --json
 ```
 
 Query it:
@@ -237,7 +273,7 @@ results = memory_query(
 )
 
 for result in results:
-    print(result.source_path)
+    print(result.citation)
     print(result.snippet)
 ```
 
@@ -267,6 +303,7 @@ Copy [examples/hermes_agent_instructions.md](examples/hermes_agent_instructions.
 bam init
 bam build --config memory.yaml
 bam build --include PATH [--include PATH ...] [--exclude GLOB ...]
+bam update --config memory.yaml [--dry-run]
 bam query QUERY [--limit N] [--source-type TYPE] [--json]
 bam status [--json]
 bam health [--json]
@@ -279,9 +316,11 @@ The default database path is `.bam/memory.db`.
 
 ## Privacy Model
 
-Boring Agent Memory indexes only paths you explicitly include. It skips common secret-bearing paths such as `.env`, key files, `.git`, and `secrets` folders, and it redacts common API keys, private key blocks, bearer tokens, and `PASSWORD` / `TOKEN` / `SECRET` style assignments.
+Boring Agent Memory indexes only paths you explicitly include.
+It skips common secret-bearing paths such as `.env`, key files, `.git`, and `secrets` folders, and it redacts common API keys, private key blocks, bearer tokens, and `PASSWORD` / `TOKEN` / `SECRET` style assignments.
 
-These filters are guardrails, not a formal secret scanner. Do not include raw inboxes, raw browser profiles, credential stores, auth files, or unsanitized transcripts.
+These filters are guardrails, not a formal secret scanner.
+Do not include raw inboxes, raw browser profiles, credential stores, auth files, or unsanitized transcripts.
 
 See [docs/privacy-model.md](docs/privacy-model.md).
 
@@ -311,7 +350,11 @@ See [docs/privacy-model.md](docs/privacy-model.md).
 Boring Agent Memory currently provides:
 
 - local SQLite FTS5 index
+- versioned transactional schema
+- deterministic heading-aware chunks and line citations
 - BM25 ranking
+- atomic hash-based incremental updates
+- read-only update dry runs
 - config-file build
 - glob include patterns
 - source-grounded snippets
@@ -319,6 +362,8 @@ Boring Agent Memory currently provides:
 - canonical staleness inspection
 - workspace filtering
 - deterministic retrieval/safety eval fixture
+- whole-document versus chunked BM25 benchmark with raw cases
+- optional local dense and hybrid evaluation adapter
 - Python `memory_query()` API
 - JSON-lines stdio agent interface
 - docs and examples for Hermes-style, Codex, and Claude Code workflows
@@ -328,7 +373,8 @@ See [docs/status-and-gaps.md](docs/status-and-gaps.md) for current capabilities 
 
 ## Contributing
 
-Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), and read [SECURITY.md](SECURITY.md) before sharing logs, configs, or memory fixtures.
+Contributions are welcome.
+Start with [CONTRIBUTING.md](CONTRIBUTING.md), and read [SECURITY.md](SECURITY.md) before sharing logs, configs, or memory fixtures.
 
 ## License
 

@@ -1,30 +1,29 @@
 # Roadmap
 
-This roadmap prioritizes product reliability over platform breadth.
+This roadmap prioritizes reliability and evidence over platform breadth.
 
-## 0.1.x
+## Shipped in 0.2.0
 
-- Add heading-aware Markdown chunking.
-- Improve config validation errors.
-- Add a stable JSON schema document for CLI and stdio responses.
+- Versioned transactional schema migration.
+- Deterministic heading-aware Markdown chunks and line citations.
+- Atomic `bam build` and hash-based `bam update`.
+- Read-only incremental dry runs with move and removal reporting.
+- Optional local FastEmbed adapter and weighted reciprocal rank fusion.
+- Evidence-complete benchmark v2 for whole-document and chunked BM25.
+- Adversarial retrieval and lifecycle fixtures.
+- One authoritative package version.
 
-## 0.2.x
+## Next
 
-- Add incremental update mode.
-- Track removed files without requiring a full rebuild.
-- Add an optional file watcher.
-- Add a formal MCP-compatible single-tool server if users need it.
-
-## Later
-
-- Optional local embedding fallback after BM25.
-- Optional graph layer for explicit source-derived relationships.
-- Privacy leak test suite with synthetic secrets.
-- Larger retrieval benchmark with more fixture domains and baseline comparisons.
+- Add an optional file watcher that delegates to the same transactional update path.
+- Persist local dense vectors only if a real workflow demonstrates the need.
+- Add a formal MCP-compatible single-tool server if interoperability requires it.
+- Expand benchmark v2 with independently authored sanitized workloads.
+- Add corruption recovery that never mutates canonical sources.
 
 ## Non-Goals
 
-- hosted vector database by default
-- automatic capture of all chats or tool output
-- treating memory as authoritative state
-- large tool surfaces that expand agent context unnecessarily
+- Hosted vector database by default.
+- Automatic capture of all chats or tool output.
+- Treating memory as authoritative state.
+- Large tool surfaces that expand agent context unnecessarily.

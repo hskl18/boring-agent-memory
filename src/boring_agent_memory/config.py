@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .chunking import DEFAULT_CHUNK_SIZE
 from .schema import DEFAULT_DB_PATH
 
-try:
-    import tomllib
-except ModuleNotFoundError:  # pragma: no cover - exercised on Python 3.10.
-    import tomli as tomllib
+if sys.version_info >= (3, 11):
+    import tomllib as toml_loader
+else:  # pragma: no cover - exercised on Python 3.10.
+    import tomli as toml_loader
 
 
 @dataclass(frozen=True)
@@ -21,6 +23,7 @@ class MemoryConfig:
     workspace: Path | None = None
     source_type: str = "file"
     max_file_size_kb: int = 512
+    chunk_size: int = DEFAULT_CHUNK_SIZE
 
     @property
     def max_bytes(self) -> int:
@@ -31,7 +34,8 @@ def load_config(path: Path | str) -> MemoryConfig:
     config_path = Path(path).expanduser()
     raw = _load_mapping(config_path)
     base_dir = config_path.resolve().parent
-    privacy = raw.get("privacy") if isinstance(raw.get("privacy"), dict) else {}
+    privacy_value = raw.get("privacy")
+    privacy: dict[str, Any] = privacy_value if isinstance(privacy_value, dict) else {}
 
     index_path = _path_value(raw.get("index_path", raw.get("database")), DEFAULT_DB_PATH, base_dir)
     workspace = _optional_path_value(raw.get("workspace"), base_dir)
@@ -47,6 +51,7 @@ def load_config(path: Path | str) -> MemoryConfig:
         workspace=workspace,
         source_type=str(raw.get("source_type", "file")),
         max_file_size_kb=max_file_size_kb,
+        chunk_size=int(raw.get("chunk_size", DEFAULT_CHUNK_SIZE)),
     )
 
 
@@ -56,7 +61,7 @@ def _load_mapping(path: Path) -> dict[str, Any]:
     if suffix == ".json":
         data = json.loads(text)
     elif suffix == ".toml":
-        data = tomllib.loads(text)
+        data = toml_loader.loads(text)
     elif suffix in {".yaml", ".yml"}:
         data = _parse_simple_yaml(text)
     else:

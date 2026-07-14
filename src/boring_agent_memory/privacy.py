@@ -5,6 +5,9 @@ import re
 from pathlib import Path
 
 
+REDACTION_VERSION = 2
+
+
 DEFAULT_EXCLUDE_GLOBS = (
     "**/.git/**",
     "**/__pycache__/**",
@@ -76,6 +79,7 @@ def redact_secrets(content: str) -> tuple[str, int]:
 
 def _replacement(match: re.Match[str]) -> str:
     if match.lastindex:
-        return f"{match.group(1)}[REDACTED]"
-    return "[REDACTED]"
-
+        replacement = f"{match.group(1)}[REDACTED]"
+    else:
+        replacement = "[REDACTED]"
+    return replacement + ("\n" * match.group(0).count("\n"))

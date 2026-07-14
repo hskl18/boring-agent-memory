@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+from .chunking import DEFAULT_CHUNK_SIZE, TextChunk, chunk_text
 from .privacy import redact_secrets, should_exclude_path
 
 
@@ -40,9 +41,11 @@ class IngestedRecord:
     workspace: str
     title: str
     content: str
+    source_hash: str
     content_hash: str
     metadata_json: str
     updated_at: str
+    chunks: tuple[TextChunk, ...]
 
 
 def iter_candidate_files(
@@ -97,6 +100,8 @@ def ingest_file(
     workspace: Path | None = None,
     source_type: str = "file",
     max_bytes: int = 512 * 1024,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    identity_namespace: str | None = None,
 ) -> IngestedRecord | None:
     stat = path.stat()
     if stat.st_size > max_bytes:
@@ -111,18 +116,31 @@ def ingest_file(
     except UnicodeDecodeError:
         content = raw.decode("utf-8", errors="replace")
 
+    source_hash = hashlib.sha256(raw).hexdigest()
     content, redactions = redact_secrets(content)
     content_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
     resolved = path.expanduser().resolve()
-    record_id = hashlib.sha256(resolved.as_posix().encode("utf-8")).hexdigest()
     root = (workspace or Path.cwd()).expanduser().resolve()
+    try:
+        relative_path = resolved.relative_to(root).as_posix()
+    except ValueError:
+        relative_path = resolved.as_posix()
+    identity_scope = (
+        f"namespace:{identity_namespace}"
+        if identity_namespace is not None
+        else root.as_posix()
+    )
+    identity = f"{source_type}\0{identity_scope}\0{relative_path}"
+    record_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
     title = title_for_path(resolved)
     metadata = {
         "bytes": stat.st_size,
         "mtime": datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat(),
         "extension": resolved.suffix.lower(),
         "redactions": redactions,
+        "relative_path": relative_path,
     }
+    chunks = chunk_text(record_id, content, resolved.suffix.lower(), max_chars=chunk_size)
 
     return IngestedRecord(
         id=record_id,
@@ -131,19 +149,19 @@ def ingest_file(
         workspace=root.as_posix(),
         title=title,
         content=content,
+        source_hash=source_hash,
         content_hash=content_hash,
         metadata_json=json.dumps(metadata, sort_keys=True),
         updated_at=datetime.now(timezone.utc).isoformat(),
+        chunks=chunks,
     )
 
 
 def looks_like_text_file(path: Path) -> bool:
     if path.suffix.lower() in TEXT_EXTENSIONS:
         return True
-    try:
-        chunk = path.read_bytes()[:2048]
-    except OSError:
-        return False
+    with path.open("rb") as source:
+        chunk = source.read(2048)
     if b"\x00" in chunk:
         return False
     if not chunk:

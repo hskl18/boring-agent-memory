@@ -3,15 +3,16 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
+from collections.abc import Mapping
 from pathlib import Path
 
 from . import __version__
 from .canonical import list_canonical_sources, verify_canonical_source
 from .config import load_config
 from .eval import evaluate_gates, run_eval
-from .index import build_index
+from .index import build_index, update_index
 from .query import query_memory
-from .schema import DEFAULT_DB_PATH, connect, fts5_available, init_db
+from .schema import DEFAULT_DB_PATH, connect, fts5_available, init_db, schema_version
 from .server import serve_stdio
 
 
@@ -31,7 +32,19 @@ def main(argv: list[str] | None = None) -> int:
     build_parser.add_argument("--workspace", default=None, help="Workspace root for relative includes")
     build_parser.add_argument("--source-type", default=None)
     build_parser.add_argument("--max-bytes", type=int, default=None)
+    build_parser.add_argument("--chunk-size", type=int, default=None)
     build_parser.add_argument("--json", action="store_true")
+
+    update_parser = subparsers.add_parser("update", help="Incrementally update a local index")
+    update_parser.add_argument("--config", help="YAML, TOML, or JSON memory config")
+    update_parser.add_argument("--include", action="append", default=[], help="File or directory to index")
+    update_parser.add_argument("--exclude", action="append", default=[], help="Glob to exclude")
+    update_parser.add_argument("--workspace", default=None, help="Workspace root for relative includes")
+    update_parser.add_argument("--source-type", default=None)
+    update_parser.add_argument("--max-bytes", type=int, default=None)
+    update_parser.add_argument("--chunk-size", type=int, default=None)
+    update_parser.add_argument("--dry-run", action="store_true")
+    update_parser.add_argument("--json", action="store_true")
 
     query_parser = subparsers.add_parser("query", help="Query the local memory index")
     query_parser.add_argument("query")
@@ -86,24 +99,47 @@ def main(argv: list[str] | None = None) -> int:
         conn.close()
         return emit({"database": db_path.as_posix(), "fts5": ok}, args.json)
 
-    if args.command == "build":
+    if args.command in {"build", "update"}:
         config = load_config(args.config) if args.config else None
         db_path = Path(args.db) if args.db else (config.index_path if config else DEFAULT_DB_PATH)
         includes = [*(config.include if config else ()), *args.include]
         excludes = [*(config.exclude if config else ()), *args.exclude]
         workspace = args.workspace or (config.workspace if config else None)
         source_type = args.source_type or (config.source_type if config else "file")
-        max_bytes = args.max_bytes or (config.max_bytes if config else 512 * 1024)
+        max_bytes = args.max_bytes if args.max_bytes is not None else (config.max_bytes if config else 512 * 1024)
+        chunk_size = args.chunk_size if args.chunk_size is not None else (config.chunk_size if config else 1600)
         if not includes:
-            parser.error("build requires --include or --config with include paths")
-        stats = build_index(
-            db_path=db_path,
-            includes=list(includes),
-            excludes=list(excludes),
-            workspace=workspace,
-            source_type=source_type,
-            max_bytes=max_bytes,
-        )
+            parser.error(f"{args.command} requires --include or --config with include paths")
+        stats: dict[str, object]
+        if args.command == "build":
+            try:
+                stats = dict(
+                    build_index(
+                        db_path=db_path,
+                        includes=list(includes),
+                        excludes=list(excludes),
+                        workspace=workspace,
+                        source_type=source_type,
+                        max_bytes=max_bytes,
+                        chunk_size=chunk_size,
+                    )
+                )
+            except (OSError, ValueError, sqlite3.DatabaseError) as exc:
+                parser.error(str(exc))
+        else:
+            try:
+                stats = update_index(
+                    db_path=db_path,
+                    includes=list(includes),
+                    excludes=list(excludes),
+                    workspace=workspace,
+                    source_type=source_type,
+                    max_bytes=max_bytes,
+                    chunk_size=chunk_size,
+                    dry_run=args.dry_run,
+                )
+            except (OSError, ValueError, sqlite3.DatabaseError) as exc:
+                parser.error(str(exc))
         return emit({"database": db_path.as_posix(), **stats}, args.json)
 
     if args.command == "query":
@@ -129,7 +165,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "inspect":
         if args.source_path:
             return emit(verify_canonical_source(db_path, args.source_path), args.json)
-        payload = {
+        payload: dict[str, object] = {
             "database": db_path.as_posix(),
             "sources": list_canonical_sources(db_path, limit=args.limit),
         }
@@ -180,19 +216,30 @@ def status(db_path: Path) -> dict[str, object]:
             "database": db_path.as_posix(),
             "database_exists": False,
             "records": 0,
+            "documents": 0,
+            "chunks": 0,
+            "schema_version": None,
+            "config_fingerprint": None,
             "source_types": {},
         }
     conn = connect(db_path)
     init_db(conn)
-    records = conn.execute("SELECT count(*) FROM records").fetchone()[0]
+    documents = conn.execute("SELECT count(*) FROM documents").fetchone()[0]
+    chunks = conn.execute("SELECT count(*) FROM chunks").fetchone()[0]
     rows = conn.execute(
-        "SELECT source_type, count(*) AS count FROM records GROUP BY source_type ORDER BY source_type"
+        "SELECT source_type, count(*) AS count FROM documents GROUP BY source_type ORDER BY source_type"
     ).fetchall()
+    metadata = conn.execute("SELECT config_fingerprint FROM index_metadata WHERE singleton = 1").fetchone()
+    version = schema_version(conn)
     conn.close()
     return {
         "database": db_path.as_posix(),
         "database_exists": True,
-        "records": records,
+        "records": documents,
+        "documents": documents,
+        "chunks": chunks,
+        "schema_version": version,
+        "config_fingerprint": metadata["config_fingerprint"] if metadata else None,
         "source_types": {row["source_type"]: row["count"] for row in rows},
     }
 
@@ -205,7 +252,7 @@ def _sqlite_fts5_health(db_path: Path) -> bool:
         conn.close()
 
 
-def emit(payload: dict[str, object], as_json: bool) -> int:
+def emit(payload: Mapping[str, object], as_json: bool) -> int:
     if as_json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
     else:
@@ -235,6 +282,7 @@ def print_eval_report(report: dict[str, object]) -> None:
     failures = report.get("failures", [])
     if failures:
         print("failures:")
+        assert isinstance(failures, list)
         for failure in failures:
             print(f"- {failure}")
 

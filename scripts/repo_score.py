@@ -32,7 +32,7 @@ CHECKS = {
     "research_notes": ("docs/research-notes.md", "Research Notes"),
     "contributing": ("CONTRIBUTING.md", "Contributing"),
     "security": ("SECURITY.md", "Security Policy"),
-    "changelog": ("CHANGELOG.md", "0.1.0 - Unreleased"),
+    "changelog": ("CHANGELOG.md", "# Changelog"),
     "issue_template": (".github/ISSUE_TEMPLATE/bug_report.md", "Bug report"),
     "pr_template": (".github/PULL_REQUEST_TEMPLATE.md", "Validation"),
     "architecture_docs": ("docs/architecture.md", "SQLite FTS5"),

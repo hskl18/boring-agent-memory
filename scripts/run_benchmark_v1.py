@@ -21,6 +21,7 @@ def main() -> int:
     report = run_benchmark(
         ROOT / "benchmarks" / "v1" / "corpus",
         ROOT / "benchmarks" / "v1" / "cases.jsonl",
+        benchmark_name="benchmark-v1",
     )
     report["environment"] = {
         "python": platform.python_version(),
@@ -37,7 +38,7 @@ def main() -> int:
 
     if not args.check:
         return 0
-    bm25 = report["strategies"]["bm25"]["metrics"]
+    bm25 = report["strategies"]["whole_document_bm25"]["metrics"]
     checks = (
         report["corpus"]["cases"] >= 100,
         bm25["recall_at_3"] >= 0.95,
