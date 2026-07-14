@@ -1,0 +1,1995 @@
+{
+  "benchmark": "benchmark-v2",
+  "corpus": {
+    "cases": 12,
+    "cases_sha256": "7bbd33439a93cf2c8420199fe2d055559405398d95f68758e3cc0138da02c777",
+    "category_counts": {
+      "code_symbol": 3,
+      "duplicate_heading": 2,
+      "embedded_secret": 2,
+      "negative_no_answer": 1,
+      "stale_conflict": 2,
+      "vague_query": 2
+    },
+    "corpus_sha256": "19f3bf508a229eba9ddb1d9ced0e1d1067452ca336c0ad74f9d66da2561e590d",
+    "documents": 7
+  },
+  "environment": {
+    "bam_version": "0.2.0",
+    "fastembed": null,
+    "git_commit": "e9af60e1c4c33ca51399499918b62250851ea5d0",
+    "git_dirty": false,
+    "machine": "arm64",
+    "python": "3.14.3",
+    "sqlite": "3.51.3",
+    "system": "Darwin"
+  },
+  "schema_version": 2,
+  "strategies": {
+    "chunked_bm25": {
+      "cases": [
+        {
+          "category": "duplicate_heading",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": 5,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 3,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_error",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "ClerkInvitationError expired ticket",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
+              "end_line": 5,
+              "heading": "Invitations > Retry",
+              "source": "canonical/invitations.md",
+              "start_line": 3
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "duplicate_heading",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": 9,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 7,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_route",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "browser callback original redirect",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "f2e870f63d5dcf5a9cf94a8ee458b9bd39f58102e34d369bb309bfb11dd958f1",
+              "citation": "canonical/invitations.md#Invitations > Retry:L7-L9",
+              "end_line": 9,
+              "heading": "Invitations > Retry",
+              "source": "canonical/invitations.md",
+              "start_line": 7
+            },
+            {
+              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "citation": "code/routes.md#Operator symbols:L1-L5",
+              "end_line": 5,
+              "heading": "Operator symbols",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_conflict",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "HTTP_409 migration request",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "citation": "code/routes.md#Operator symbols:L1-L5",
+              "end_line": 5,
+              "heading": "Operator symbols",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_update",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "bam update dry-run lifecycle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "citation": "code/routes.md#Operator symbols:L1-L5",
+              "end_line": 5,
+              "heading": "Operator symbols",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
+              "end_line": 3,
+              "heading": "Backup lifecycle",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
+              "end_line": 4,
+              "heading": "Removed source fixture",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_handler",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "foo::bar accept-token callback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "f3f00079ceb9bf2ab0655f13f677446700cb68b054c02031b4d186ef9b421122",
+              "citation": "code/routes.md#Operator symbols:L1-L5",
+              "end_line": 5,
+              "heading": "Operator symbols",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "f2e870f63d5dcf5a9cf94a8ee458b9bd39f58102e34d369bb309bfb11dd958f1",
+              "citation": "canonical/invitations.md#Invitations > Retry:L7-L9",
+              "end_line": 9,
+              "heading": "Invitations > Retry",
+              "source": "canonical/invitations.md",
+              "start_line": 7
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_procedure",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "deployment credential handling procedure",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "citation": "privacy/credentials.md#Credential handling:L1-L12",
+              "end_line": 12,
+              "heading": "Credential handling",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
+              "end_line": 4,
+              "heading": "Historical deployment note",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
+              "end_line": 4,
+              "heading": "Current deployment policy",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_source_control",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "source control credential example",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "citation": "privacy/credentials.md#Credential handling:L1-L12",
+              "end_line": 12,
+              "heading": "Credential handling",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
+              "end_line": 4,
+              "heading": "Removed source fixture",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_current_window",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "current sapphire rollback window fifteen minutes",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
+              "end_line": 4,
+              "heading": "Current deployment policy",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
+              "end_line": 4,
+              "heading": "Historical deployment note",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_health_check",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "sapphire verify health check before rollback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "c55cfcefdf24c6685c7d87bb4ae300b09a18906249d924f2be06d22c2a7511fb",
+              "citation": "canonical/deployments.md#Current deployment policy:L1-L4",
+              "end_line": 4,
+              "heading": "Current deployment policy",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
+              "end_line": 4,
+              "heading": "Historical deployment note",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
+              "end_line": 5,
+              "heading": "Invitations > Retry",
+              "source": "canonical/invitations.md",
+              "start_line": 3
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Backup lifecycle",
+          "expected_source": "canonical/backups.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_backup_removal",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "when can old backups go away after copies settle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
+              "end_line": 3,
+              "heading": "Backup lifecycle",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "8649e7ff7781762a62937fb10c32194fa202ed302c0e99e2bbf46b6c1f99a0fe",
+              "citation": "history/deployments-old.md#Historical deployment note:L1-L4",
+              "end_line": 4,
+              "heading": "Historical deployment note",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "b06257aead74c18818bfc273735dd4174d6b28b23e8a2b115185e2ca3b1799b7",
+              "citation": "privacy/credentials.md#Credential handling:L1-L12",
+              "end_line": 12,
+              "heading": "Credential handling",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/backups.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": true,
+          "evidence_rank": 1,
+          "expected_end_line": null,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_invitation_recovery",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "what should happen after an invite ticket is no longer usable",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "1cf8c7e0067746b1d338c2894feb110daf75863d4bcf14706c550360e76fe219",
+              "citation": "canonical/invitations.md#Invitations > Retry:L3-L5",
+              "end_line": 5,
+              "heading": "Invitations > Retry",
+              "source": "canonical/invitations.md",
+              "start_line": 3
+            },
+            {
+              "chunk_id": "a4bd5bc21dbf94af755fe9c2ffd62c93f59eb6b8ae10d3deef5c985b0293469f",
+              "citation": "lifecycle/removed-source.md#Removed source fixture:L1-L4",
+              "end_line": 4,
+              "heading": "Removed source fixture",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "47eb6ef909d22f529fb68d0d5fe3c9d7493bed66321522a5e135356c082a5926",
+              "citation": "canonical/backups.md#Backup lifecycle:L1-L3",
+              "end_line": 3,
+              "heading": "Backup lifecycle",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "negative_no_answer",
+          "correct": true,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": null,
+          "expected_source": null,
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "negative_unknown",
+          "no_answer_correct": true,
+          "privacy_leak_count": 0,
+          "query": "zephyr quantum orchard retention",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        }
+      ],
+      "categories": {
+        "code_symbol": {
+          "cases": 3,
+          "evidence_recall_at_1": 1.0,
+          "evidence_recall_at_3": 1.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "duplicate_heading": {
+          "cases": 2,
+          "evidence_recall_at_1": 1.0,
+          "evidence_recall_at_3": 1.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "embedded_secret": {
+          "cases": 2,
+          "evidence_recall_at_1": 1.0,
+          "evidence_recall_at_3": 1.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "negative_no_answer": {
+          "cases": 1,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 1.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "stale_conflict": {
+          "cases": 2,
+          "evidence_recall_at_1": 1.0,
+          "evidence_recall_at_3": 1.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 1.0
+        },
+        "vague_query": {
+          "cases": 2,
+          "evidence_recall_at_1": 1.0,
+          "evidence_recall_at_3": 1.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        }
+      },
+      "failures": [],
+      "index": {
+        "build_ms": 4.6,
+        "chunk_size": 1600,
+        "chunks": 9,
+        "config": {
+          "chunk_size": 1600,
+          "chunker_version": 1,
+          "document_id_version": 1,
+          "excludes": [],
+          "includes": [
+            "<BENCHMARK_CORPUS>"
+          ],
+          "max_bytes": 524288,
+          "privacy_policy": "0377ee3131cb8c758203ad0c1f6f86711dce4b00d37ff2468653115b576beff9",
+          "redaction_version": 2,
+          "schema_version": 2,
+          "source_type": "benchmark_fixture",
+          "tokenizer": "unicode61",
+          "workspace": "<BENCHMARK_CORPUS>"
+        },
+        "config_fingerprint": "8cea35779bb97bae4329d36f2c8cee30bd1610966eeedaee79bc7a969614ce32",
+        "documents": 7,
+        "size_bytes": 77824
+      },
+      "latency_ms": {
+        "median": 0.688,
+        "p95": 0.859
+      },
+      "metrics": {
+        "cases": 12,
+        "evidence_recall_at_1": 1.0,
+        "evidence_recall_at_3": 1.0,
+        "mrr": 1.0,
+        "no_answer_precision": 1.0,
+        "privacy_leak_count": 0,
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "source_accuracy": 1.0,
+        "stale_conflict_accuracy": 1.0
+      },
+      "status": "run"
+    },
+    "dense": {
+      "reason": "no explicit local embedding adapter was provided",
+      "status": "not_run"
+    },
+    "exact_phrase_grep": {
+      "cases": [
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 5,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 3,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_error",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "ClerkInvitationError expired ticket",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 9,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 7,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_route",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "browser callback original redirect",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_conflict",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "HTTP_409 migration request",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_update",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "bam update dry-run lifecycle",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_handler",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "foo::bar accept-token callback",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_procedure",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "deployment credential handling procedure",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_source_control",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "source control credential example",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_current_window",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "current sapphire rollback window fifteen minutes",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_health_check",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "sapphire verify health check before rollback",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Backup lifecycle",
+          "expected_source": "canonical/backups.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_backup_removal",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "when can old backups go away after copies settle",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_invitation_recovery",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "what should happen after an invite ticket is no longer usable",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "negative_no_answer",
+          "correct": true,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": null,
+          "expected_source": null,
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "negative_unknown",
+          "no_answer_correct": true,
+          "privacy_leak_count": 0,
+          "query": "zephyr quantum orchard retention",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        }
+      ],
+      "categories": {
+        "code_symbol": {
+          "cases": 3,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "duplicate_heading": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "embedded_secret": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "negative_no_answer": {
+          "cases": 1,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 1.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "stale_conflict": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "vague_query": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        }
+      },
+      "failures": [
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 5,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 3,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_error",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "ClerkInvitationError expired ticket",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 9,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 7,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_route",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "browser callback original redirect",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_conflict",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "HTTP_409 migration request",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_update",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "bam update dry-run lifecycle",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_handler",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "foo::bar accept-token callback",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_procedure",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "deployment credential handling procedure",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_source_control",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "source control credential example",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_current_window",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "current sapphire rollback window fifteen minutes",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_health_check",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "sapphire verify health check before rollback",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Backup lifecycle",
+          "expected_source": "canonical/backups.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_backup_removal",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "when can old backups go away after copies settle",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_invitation_recovery",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "what should happen after an invite ticket is no longer usable",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        }
+      ],
+      "latency_ms": {
+        "median": 0.003,
+        "p95": 0.003
+      },
+      "metrics": {
+        "cases": 12,
+        "evidence_recall_at_1": 0.0,
+        "evidence_recall_at_3": 0.0,
+        "mrr": 0.0,
+        "no_answer_precision": 1.0,
+        "privacy_leak_count": 0,
+        "recall_at_1": 0.0,
+        "recall_at_3": 0.0,
+        "source_accuracy": 0.0,
+        "stale_conflict_accuracy": 0.0
+      },
+      "status": "run"
+    },
+    "hybrid_rrf": {
+      "reason": "hybrid retrieval requires an explicit local embedding adapter",
+      "status": "not_run"
+    },
+    "whole_document_bm25": {
+      "cases": [
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 5,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 3,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_error",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "ClerkInvitationError expired ticket",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 9,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 7,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_route",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "browser callback original redirect",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_conflict",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "HTTP_409 migration request",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_update",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "bam update dry-run lifecycle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_handler",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "foo::bar accept-token callback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_procedure",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "deployment credential handling procedure",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_source_control",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "source control credential example",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_current_window",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "current sapphire rollback window fifteen minutes",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_health_check",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "sapphire verify health check before rollback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Backup lifecycle",
+          "expected_source": "canonical/backups.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_backup_removal",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "when can old backups go away after copies settle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/backups.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_invitation_recovery",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "what should happen after an invite ticket is no longer usable",
+          "rank": 2,
+          "results": [
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "lifecycle/removed-source.md"
+        },
+        {
+          "category": "negative_no_answer",
+          "correct": true,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": null,
+          "expected_source": null,
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "negative_unknown",
+          "no_answer_correct": true,
+          "privacy_leak_count": 0,
+          "query": "zephyr quantum orchard retention",
+          "rank": null,
+          "results": [],
+          "top_source": null
+        }
+      ],
+      "categories": {
+        "code_symbol": {
+          "cases": 3,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "duplicate_heading": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "embedded_secret": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "negative_no_answer": {
+          "cases": 1,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.0,
+          "no_answer_precision": 1.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "source_accuracy": 0.0,
+          "stale_conflict_accuracy": 0.0
+        },
+        "stale_conflict": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 1.0,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "source_accuracy": 1.0,
+          "stale_conflict_accuracy": 1.0
+        },
+        "vague_query": {
+          "cases": 2,
+          "evidence_recall_at_1": 0.0,
+          "evidence_recall_at_3": 0.0,
+          "mrr": 0.75,
+          "no_answer_precision": 0.0,
+          "privacy_leak_count": 0,
+          "recall_at_1": 0.5,
+          "recall_at_3": 1.0,
+          "source_accuracy": 0.5,
+          "stale_conflict_accuracy": 0.0
+        }
+      },
+      "failures": [
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 5,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 3,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_error",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "ClerkInvitationError expired ticket",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "duplicate_heading",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": 9,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": 7,
+          "forbidden_source_hit": false,
+          "id": "duplicate_heading_route",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "browser callback original redirect",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/invitations.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_conflict",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "HTTP_409 migration request",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_update",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "bam update dry-run lifecycle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "code_symbol",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Operator symbols",
+          "expected_source": "code/routes.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "code_symbol_handler",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "foo::bar accept-token callback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "code/routes.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_procedure",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "deployment credential handling procedure",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "embedded_secret",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Credential handling",
+          "expected_source": "privacy/credentials.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "embedded_secret_source_control",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "source control credential example",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "privacy/credentials.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_current_window",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "current sapphire rollback window fifteen minutes",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "stale_conflict",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Current deployment policy",
+          "expected_source": "canonical/deployments.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "stale_health_check",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "sapphire verify health check before rollback",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "436d976afeaa4a774e1fa2059803aa69c0fddf044f8f6db0ecc526d9f2a7a161",
+              "citation": "canonical/deployments.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "canonical/deployments.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "eb785447797df65e98dcab70703e72dbd3ac6c346869baff830243ad54dc35a8",
+              "citation": "history/deployments-old.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "history/deployments-old.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "640929cb8fde500e350f144d5517b1984cd2a643641cc25ea6af23eceac43a85",
+              "citation": "code/routes.md:L1-L5",
+              "end_line": 5,
+              "heading": "",
+              "source": "code/routes.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/deployments.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Backup lifecycle",
+          "expected_source": "canonical/backups.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_backup_removal",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "when can old backups go away after copies settle",
+          "rank": 1,
+          "results": [
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "31d6d18d5aedd9c7821be7e691b265b18fe5bd83178899eb531c7daeec1e5d78",
+              "citation": "privacy/credentials.md:L1-L12",
+              "end_line": 12,
+              "heading": "",
+              "source": "privacy/credentials.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "canonical/backups.md"
+        },
+        {
+          "category": "vague_query",
+          "correct": false,
+          "evidence_rank": null,
+          "expected_end_line": null,
+          "expected_heading": "Invitations > Retry",
+          "expected_source": "canonical/invitations.md",
+          "expected_start_line": null,
+          "forbidden_source_hit": false,
+          "id": "vague_invitation_recovery",
+          "no_answer_correct": false,
+          "privacy_leak_count": 0,
+          "query": "what should happen after an invite ticket is no longer usable",
+          "rank": 2,
+          "results": [
+            {
+              "chunk_id": "87949e0ab404484bf84be09544689c918a8fc788996766b7d626c67624e0693e",
+              "citation": "lifecycle/removed-source.md:L1-L4",
+              "end_line": 4,
+              "heading": "",
+              "source": "lifecycle/removed-source.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d1e9c1f3ce6d19cd341384a6bb6799a6207d1630751178aecc2ac4bfdbe6f291",
+              "citation": "canonical/invitations.md:L1-L9",
+              "end_line": 9,
+              "heading": "",
+              "source": "canonical/invitations.md",
+              "start_line": 1
+            },
+            {
+              "chunk_id": "d70dff601305fa8ae594695ea6cdfcf9de18815d56567322cbce8b78dda3c0d0",
+              "citation": "canonical/backups.md:L1-L3",
+              "end_line": 3,
+              "heading": "",
+              "source": "canonical/backups.md",
+              "start_line": 1
+            }
+          ],
+          "top_source": "lifecycle/removed-source.md"
+        }
+      ],
+      "index": {
+        "build_ms": 5.707,
+        "chunk_size": 0,
+        "chunks": 7,
+        "config": {
+          "chunk_size": 0,
+          "chunker_version": 1,
+          "document_id_version": 1,
+          "excludes": [],
+          "includes": [
+            "<BENCHMARK_CORPUS>"
+          ],
+          "max_bytes": 524288,
+          "privacy_policy": "0377ee3131cb8c758203ad0c1f6f86711dce4b00d37ff2468653115b576beff9",
+          "redaction_version": 2,
+          "schema_version": 2,
+          "source_type": "benchmark_fixture",
+          "tokenizer": "unicode61",
+          "workspace": "<BENCHMARK_CORPUS>"
+        },
+        "config_fingerprint": "2d4db451b78b747b36dc7b6ebdd0259a0bfdbd94714f0499630a2599d91b4f97",
+        "documents": 7,
+        "size_bytes": 77824
+      },
+      "latency_ms": {
+        "median": 0.762,
+        "p95": 0.858
+      },
+      "metrics": {
+        "cases": 12,
+        "evidence_recall_at_1": 0.0,
+        "evidence_recall_at_3": 0.0,
+        "mrr": 0.9545,
+        "no_answer_precision": 1.0,
+        "privacy_leak_count": 0,
+        "recall_at_1": 0.9091,
+        "recall_at_3": 1.0,
+        "source_accuracy": 0.9091,
+        "stale_conflict_accuracy": 1.0
+      },
+      "status": "run"
+    }
+  }
+}
