@@ -112,7 +112,7 @@ Agent:
 ## Example Local CLI Use
 
 ```bash
-bam query "CareerOS progress.md backend todo" --limit 5 --json
+bam query "careeroc progress.md backend todo" --limit 5 --json
 ```
 
 For stdio integration:
@@ -124,6 +124,6 @@ bam serve --stdio
 Send:
 
 ```json
-{"query":"CareerOS progress.md backend todo","limit":5}
+{"query":"careeroc progress.md backend todo","limit":5}
 ```
 
