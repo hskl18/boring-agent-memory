@@ -87,6 +87,7 @@ def git_commit() -> str | None:
         cwd=ROOT,
         text=True,
         capture_output=True,
+        check=False,
     )
     return result.stdout.strip() if result.returncode == 0 else None
 
@@ -97,6 +98,7 @@ def git_dirty() -> bool | None:
         cwd=ROOT,
         text=True,
         capture_output=True,
+        check=False,
     )
     return bool(result.stdout.strip()) if result.returncode == 0 else None
 

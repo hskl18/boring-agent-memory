@@ -153,6 +153,7 @@ class IndexUpdateTests(unittest.TestCase):
                     **os.environ,
                     "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
                 },
+                check=False,
             )
 
             self.assertEqual(result.returncode, 91)
