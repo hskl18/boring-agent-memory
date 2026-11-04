@@ -2,15 +2,14 @@ from __future__ import annotations
 
 import hashlib
 import json
-from glob import glob
+from collections.abc import Iterable
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from glob import glob
 from pathlib import Path
-from typing import Iterable
 
 from .chunking import DEFAULT_CHUNK_SIZE, TextChunk, chunk_text
 from .privacy import redact_secrets, should_exclude_path
-
 
 TEXT_EXTENSIONS = {
     ".adoc",

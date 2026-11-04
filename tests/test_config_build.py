@@ -13,7 +13,6 @@ from unittest.mock import patch
 from boring_agent_memory import index as index_module
 from boring_agent_memory.index import index_configuration
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

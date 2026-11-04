@@ -67,7 +67,7 @@ def _load_mapping(path: Path) -> dict[str, Any]:
     else:
         raise ValueError(f"Unsupported config format: {path.suffix}")
     if not isinstance(data, dict):
-        raise ValueError("Config root must be a mapping")
+        raise ValueError("Config root must be a mapping")  # noqa: TRY004
     return data
 
 

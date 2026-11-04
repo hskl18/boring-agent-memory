@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, replace
 from pathlib import Path
-from typing import Any, Protocol, Sequence, cast
+from typing import Any, Protocol, cast
 
 from .privacy import redact_secrets
 from .query import QueryResult

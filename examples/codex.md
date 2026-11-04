@@ -9,6 +9,6 @@ Suggested rule:
 Example:
 
 ```bash
-bam query "CareerOS judge demo static sanitized" --limit 5 --json
+bam query "careeroc judge demo static sanitized" --limit 5 --json
 ```
 

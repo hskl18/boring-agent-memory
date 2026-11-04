@@ -4,10 +4,10 @@ import hashlib
 import json
 import sqlite3
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
 
 from .chunking import CHUNKER_VERSION, DEFAULT_CHUNK_SIZE
 from .ingest import IngestedRecord, ingest_file, iter_candidate_files

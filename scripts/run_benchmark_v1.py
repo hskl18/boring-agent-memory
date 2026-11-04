@@ -8,7 +8,6 @@ from pathlib import Path
 
 from boring_agent_memory.benchmark import run_benchmark
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

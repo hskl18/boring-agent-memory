@@ -5,7 +5,6 @@ from pathlib import Path
 
 from .chunking import chunk_text
 
-
 DEFAULT_DB_PATH = Path(".bam/memory.db")
 SCHEMA_VERSION = 2
 

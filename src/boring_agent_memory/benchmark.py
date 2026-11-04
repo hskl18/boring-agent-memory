@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import shutil
 import statistics
 import tempfile
 import time
 from collections import Counter, defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from .embeddings import (
     DenseIndex,
@@ -290,7 +291,7 @@ def exact_phrase_grep(
         if needle not in text.casefold() and needle not in record.source_path.casefold():
             continue
         result_id = hashlib.sha256(
-            f"{record.id}\0exact_phrase_grep\0{record.content_hash}".encode("utf-8")
+            f"{record.id}\0exact_phrase_grep\0{record.content_hash}".encode()
         ).hexdigest()
         matches.append(
             QueryResult(
