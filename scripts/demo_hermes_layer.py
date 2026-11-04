@@ -4,9 +4,9 @@ import json
 import tempfile
 from pathlib import Path
 
+from boring_agent_memory.api import memory_query
 from boring_agent_memory.canonical import verify_canonical_source
 from boring_agent_memory.index import build_index
-from boring_agent_memory.api import memory_query
 
 
 def main() -> int:

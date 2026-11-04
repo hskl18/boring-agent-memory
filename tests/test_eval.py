@@ -9,7 +9,6 @@ from pathlib import Path
 
 from boring_agent_memory.eval import run_eval
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -75,6 +74,7 @@ class EvalTests(unittest.TestCase):
             env=env,
             text=True,
             capture_output=True,
+            check=False,
         )
 
         self.assertEqual(result.returncode, 1)

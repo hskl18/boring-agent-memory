@@ -8,7 +8,6 @@ from pathlib import Path
 from boring_agent_memory.index import build_index, update_index
 from boring_agent_memory.query import query_memory
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

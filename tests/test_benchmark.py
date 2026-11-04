@@ -6,7 +6,6 @@ from pathlib import Path
 
 from boring_agent_memory.benchmark import load_benchmark_cases, run_benchmark
 
-
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARK = ROOT / "benchmarks" / "v1"
 

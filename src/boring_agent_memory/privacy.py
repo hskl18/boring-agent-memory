@@ -4,7 +4,6 @@ import fnmatch
 import re
 from pathlib import Path
 
-
 REDACTION_VERSION = 2
 
 

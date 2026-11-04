@@ -12,7 +12,6 @@ from boring_agent_memory import __version__
 from boring_agent_memory.benchmark import run_benchmark
 from boring_agent_memory.embeddings import FastEmbedAdapter
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

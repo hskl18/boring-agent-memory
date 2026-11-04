@@ -4,7 +4,6 @@ import json
 import shutil
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARK = ROOT / "benchmarks" / "v1"
 CORPUS = BENCHMARK / "corpus"

@@ -7,7 +7,6 @@ import unicodedata
 from collections import Counter
 from dataclasses import dataclass, replace
 
-
 CHUNKER_VERSION = 2
 DEFAULT_CHUNK_SIZE = 1600
 
