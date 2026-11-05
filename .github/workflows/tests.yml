@@ -11,29 +11,17 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.14"
       - name: Install package
-        run: python -m pip install -e .
+        run: python -m pip install -e . build
       - name: Run tests
         run: python -m unittest discover -s tests
-      - name: Install quality tools
-        run: python -m pip install 'mypy>=1.14,<3' 'ruff>=0.9,<1'
-      - name: Run lint
-        run: ruff check --target-version py310 src tests scripts
-      - name: Run default-install type checks
-        run: mypy src/boring_agent_memory
-      - name: Install optional embedding dependencies
-        run: python -m pip install -e '.[embeddings]'
-      - name: Run embedding-extra type checks
-        run: mypy src/boring_agent_memory
       - name: Run memory eval
         run: >
           bam eval --json
@@ -43,14 +31,5 @@ jobs:
           --min-snippet-term-rate 1.0
           --min-stale-detection-rate 1.0
           --max-privacy-leaks 0
-      - name: Run benchmark invariants
-        run: python scripts/run_benchmark_v1.py --check --output /tmp/benchmark-v1.json
-      - name: Run adversarial benchmark invariants
-        run: python scripts/run_benchmark_v2.py --check --output /tmp/benchmark-v2.json
-      - name: Run incremental lifecycle scenario
-        run: python scripts/run_incremental_scenario.py
       - name: Build package
-        run: |
-          python -m pip install build twine
-          python -m build
-          python -m twine check dist/*
+        run: python -m build

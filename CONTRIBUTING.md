@@ -21,7 +21,7 @@ ruff check src tests scripts
 mypy src/boring_agent_memory
 ```
 
-CI runs the tests and the eval gates.
+CI runs the tests, the eval gates, and a package build on Python 3.14.
 [docs/release-checklist.md](docs/release-checklist.md) lists the longer checks to run before a release.
 
 ## Design Rules

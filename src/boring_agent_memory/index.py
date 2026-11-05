@@ -6,7 +6,7 @@ import sqlite3
 from collections import defaultdict
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from .chunking import CHUNKER_VERSION, DEFAULT_CHUNK_SIZE
@@ -404,7 +404,7 @@ def _write_index_metadata(
         (
             fingerprint,
             config_json,
-            datetime.now(timezone.utc).isoformat(),
+            datetime.now(UTC).isoformat(),
             CHUNKER_VERSION,
             chunk_size,
         ),
