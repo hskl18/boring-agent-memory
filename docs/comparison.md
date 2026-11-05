@@ -72,7 +72,5 @@ The claim is not that BM25 is always stronger than semantic memory. The claim is
 | Tradeoff | Current answer | Concept-compatible next step |
 | --- | --- | --- |
 | Vague semantic queries can miss relevant files | BM25-first lexical recall | Optional local semantic fallback after BM25, never authority |
-| Whole-file indexing can dilute long documents | Plain text file records | Heading-aware chunks that still cite canonical files |
-| Full rebuild is simple but inefficient | Deterministic rebuild | Incremental update mode with content hashes |
 | Privacy filters are guardrails | Common redaction patterns and exclude globs | Synthetic privacy leak eval corpus |
 | Eval is small | Deterministic regression fixture | Larger public fixture benchmark with baseline comparisons |
