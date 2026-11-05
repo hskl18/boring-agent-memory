@@ -71,16 +71,11 @@ bam update --config memory.yaml --dry-run --json
 bam update --config memory.yaml --json
 
 bam --db ~/.bam/memory.db query "rollback policy" --limit 5 --json
-bam --db ~/.bam/memory.db query "rollback policy" --workspace ~/project/app --json
-bam --db ~/.bam/memory.db inspect ~/agent/skills/deployments.md --json
 ```
 
-`--workspace` matches the exact `workspace` recorded at build time.
 A database that does not exist is an error, so a mistyped path cannot look like an empty memory.
 
 ## Use It From An Agent
-
-Python:
 
 ```python
 from boring_agent_memory import memory_query
@@ -97,40 +92,15 @@ for result in results:
     print(result.snippet)
 ```
 
-Any process, as JSON lines over stdio:
-
-```bash
-bam --db ~/.bam/memory.db serve --stdio
-```
-
-```json
-{"query":"rollback policy for database migrations","limit":5,"source_type":"canonical_file"}
-{"ok":true,"query":"rollback policy for database migrations","results":[...]}
-```
+Other processes can use `bam serve --stdio`, which speaks JSON lines. See the [CLI reference](https://github.com/hskl18/boring-agent-memory/blob/main/docs/cli.md).
 
 Agent instructions to copy are in [docs/agent-prompt.md](https://github.com/hskl18/boring-agent-memory/blob/main/docs/agent-prompt.md), with setups for [Claude Code](https://github.com/hskl18/boring-agent-memory/blob/main/examples/claude_code.md), [Codex](https://github.com/hskl18/boring-agent-memory/blob/main/examples/codex.md), and [Hermes](https://github.com/hskl18/boring-agent-memory/blob/main/docs/hermes-integration.md).
 
-## Why BM25 First
-
-- Workflow rules contain exact terms, paths, field names, and errors that lexical search finds directly.
-- Results are deterministic and debuggable, and rebuilds are reproducible from the source files.
-- No embedding model has to see private notes before the first useful result.
-
-An optional local adapter supports controlled dense and hybrid evaluation, but BM25 is the default.
-
 ## Evidence
 
-Benchmark v2 compares whole-document and chunked BM25 with raw per-case results:
-
-| Strategy | Recall@1 | Recall@3 | Evidence Recall@1 | Evidence Recall@3 | Privacy leaks |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Whole-document BM25 | 0.9091 | 1.0000 | 0.0000 | 0.0000 | 0 |
-| Chunked BM25 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 0 |
-| Dense | not run | not run | not run | not run | not run |
-| Hybrid RRF | not run | not run | not run | not run | not run |
-
-These are deterministic synthetic fixture results, not production traffic or a broad semantic-memory claim.
-See [docs/benchmark-v2.md](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v2.md) and [docs/evaluation.md](https://github.com/hskl18/boring-agent-memory/blob/main/docs/evaluation.md).
+On Benchmark v2's 12 synthetic queries, chunked BM25 finds the right lines first every time, while whole-document BM25 finds the right file 91% of the time and never the right lines.
+These are deterministic fixture results, not production traffic or a broad semantic-memory claim.
+See [Benchmark v2](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v2.md) and [why BM25 comes first](https://github.com/hskl18/boring-agent-memory/blob/main/docs/canonical-first-memory.md#why-bm25-first).
 
 ## What It Is Not
 
@@ -141,10 +111,8 @@ See [docs/benchmark-v2.md](https://github.com/hskl18/boring-agent-memory/blob/ma
 
 ## Privacy
 
-Secret-bearing paths such as `.env`, key files, `.git`, and `secrets` folders are skipped by default.
-Common API keys, private key blocks, bearer tokens, and `PASSWORD` or `TOKEN` style assignments are redacted before indexing.
-These filters are guardrails, not a formal secret scanner, so do not include raw inboxes, browser profiles, credential stores, or unsanitized transcripts.
-See [docs/privacy-model.md](https://github.com/hskl18/boring-agent-memory/blob/main/docs/privacy-model.md).
+Secret-bearing paths are skipped and common secret patterns are redacted before indexing, but these are guardrails, not a formal secret scanner.
+Read the [privacy model](https://github.com/hskl18/boring-agent-memory/blob/main/docs/privacy-model.md) before choosing what to index.
 
 ## Documentation
 
