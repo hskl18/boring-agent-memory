@@ -1,18 +1,13 @@
 from __future__ import annotations
 
 import json
-import sys
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from .chunking import DEFAULT_CHUNK_SIZE
 from .schema import DEFAULT_DB_PATH
-
-if sys.version_info >= (3, 11):
-    import tomllib as toml_loader
-else:  # pragma: no cover - exercised on Python 3.10.
-    import tomli as toml_loader
 
 
 @dataclass(frozen=True)
@@ -61,7 +56,7 @@ def _load_mapping(path: Path) -> dict[str, Any]:
     if suffix == ".json":
         data = json.loads(text)
     elif suffix == ".toml":
-        data = toml_loader.loads(text)
+        data = tomllib.loads(text)
     elif suffix in {".yaml", ".yml"}:
         data = _parse_simple_yaml(text)
     else:

@@ -16,7 +16,7 @@ The version must match `pyproject.toml` package metadata.
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests
-ruff check --target-version py310 src tests scripts
+ruff check --target-version py311 src tests scripts
 mypy src/boring_agent_memory
 PYTHONPATH=src python -m boring_agent_memory.cli eval --json \
   --min-recall-at-1 1.0 \
@@ -30,6 +30,7 @@ PYTHONPATH=src python scripts/run_benchmark_v1.py --check --output /tmp/benchmar
 PYTHONPATH=src python scripts/run_benchmark_v2.py --check --output /tmp/benchmark-v2.json
 ```
 
+Run the tests on Python 3.11 and on the newest Python as well, because CI covers only 3.14.
 Verify that the incremental scenario reports one modified, one moved, and one removed source.
 Verify that the removed source is no longer queryable.
 Verify that the process-interruption test leaves the previous index queryable.

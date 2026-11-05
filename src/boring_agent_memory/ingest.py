@@ -4,7 +4,7 @@ import hashlib
 import json
 from collections.abc import Iterable
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from glob import glob
 from pathlib import Path
 
@@ -134,7 +134,7 @@ def ingest_file(
     title = title_for_path(resolved)
     metadata = {
         "bytes": stat.st_size,
-        "mtime": datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat(),
+        "mtime": datetime.fromtimestamp(stat.st_mtime, tz=UTC).isoformat(),
         "extension": resolved.suffix.lower(),
         "redactions": redactions,
         "relative_path": relative_path,
@@ -151,7 +151,7 @@ def ingest_file(
         source_hash=source_hash,
         content_hash=content_hash,
         metadata_json=json.dumps(metadata, sort_keys=True),
-        updated_at=datetime.now(timezone.utc).isoformat(),
+        updated_at=datetime.now(UTC).isoformat(),
         chunks=chunks,
     )
 

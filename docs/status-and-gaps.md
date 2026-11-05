@@ -1,6 +1,6 @@
 # Project Status
 
-Boring Agent Memory 0.2.0 is working canonical-memory infrastructure for local agents.
+Boring Agent Memory is working canonical-memory infrastructure for local agents.
 
 ```text
 trusted files -> deterministic chunks -> SQLite FTS5/BM25 -> line citation -> canonical verification

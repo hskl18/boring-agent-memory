@@ -19,6 +19,8 @@ It needs no hosted service, embedding API, vector database, model download, or a
 python -m pip install boring-agent-memory
 ```
 
+It needs Python 3.11 or newer.
+
 ## Try It
 
 ```bash

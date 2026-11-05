@@ -10,11 +10,11 @@ Privacy-sensitive rebuilds also enable SQLite `secure_delete` and attempt FTS5 `
 
 ## Python Packaging
 
-The project metadata uses `pyproject.toml`, SPDX-style license metadata, `license-files`, and an environment-marked dependency for `tomli` on Python versions before 3.11. See the [Python Packaging User Guide](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/).
+The project metadata uses `pyproject.toml`, SPDX-style license metadata, and `license-files`. See the [Python Packaging User Guide](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/).
 
 ## GitHub Actions
 
-The CI workflow uses read-only `contents` permissions and `fail-fast: false` for the Python version matrix. This keeps token permissions narrow and reports all version failures instead of canceling the remaining matrix jobs after the first failure. See the [GitHub Actions workflow syntax documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax).
+CI runs the tests, eval gates, and a package build in one job on one Python version; the release checklist covers the rest.
 
 ## OpenSSF
 
