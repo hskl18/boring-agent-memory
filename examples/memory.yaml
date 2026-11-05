@@ -1,5 +1,4 @@
-# Backward-compatible example config.
-database: .bam/memory.db
+index_path: ~/.bam/memory.db
 source_type: canonical_file
 include:
   - ~/agent/memory/MEMORY.md

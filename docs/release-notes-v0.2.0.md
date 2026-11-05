@@ -18,5 +18,3 @@ The committed core snapshot does not run dense or hybrid retrieval and makes no 
 
 The package version now has one authority in `pyproject.toml`.
 Runtime `__version__` and `bam --version` derive from installed metadata.
-
-This release preparation does not merge, tag, publish, or create a GitHub Release.

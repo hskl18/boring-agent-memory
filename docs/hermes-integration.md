@@ -144,7 +144,7 @@ bam build --config memory.yaml
 Run the built-in demo without touching your real Hermes files:
 
 ```bash
-python scripts/demo_hermes_layer.py
+python scripts/demo.py
 ```
 
 The script creates temporary trusted files, builds an index, queries it, and verifies the cited canonical source.

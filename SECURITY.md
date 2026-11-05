@@ -4,13 +4,12 @@ Boring Agent Memory is local-first, but it can still index sensitive text if con
 
 ## Supported Versions
 
-Security fixes target the current main branch until formal releases begin.
+Security fixes target the latest release.
 
 ## Reporting A Vulnerability
 
-Please report suspected vulnerabilities privately to the project maintainer once a public security contact is available. Do not open a public issue containing secrets, credentials, raw logs, or private data.
-
-If the repository has no published security contact yet, open a public issue with only a high-level description and ask for a private contact path.
+Report suspected vulnerabilities privately through [GitHub private vulnerability reporting](https://github.com/hskl18/boring-agent-memory/security/advisories/new).
+Do not open a public issue containing secrets, credentials, or private content.
 
 ## Sensitive Data Guidance
 
@@ -37,4 +36,5 @@ The project provides privacy guardrails:
 - local SQLite storage
 - no hosted service dependency
 
-These guardrails are not a formal data-loss-prevention system. Users are responsible for selecting trusted include paths.
+These guardrails are not a formal data-loss-prevention system.
+Users are responsible for selecting trusted include paths.

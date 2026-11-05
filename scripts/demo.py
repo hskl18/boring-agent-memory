@@ -12,8 +12,8 @@ from boring_agent_memory.index import build_index
 def main() -> int:
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
-        skills = root / "hermes" / "skills"
-        reports = root / "hermes" / "reports" / "sanitized"
+        skills = root / "agent" / "skills"
+        reports = root / "agent" / "reports" / "sanitized"
         skills.mkdir(parents=True)
         reports.mkdir(parents=True)
 
@@ -29,18 +29,18 @@ def main() -> int:
             encoding="utf-8",
         )
 
-        db_path = root / ".bam" / "hermes-memory.db"
+        db_path = root / ".bam" / "memory.db"
         stats = build_index(
             db_path,
             includes=[str(skills), str(reports)],
             excludes=["**/.env", "**/secrets/**"],
             workspace=root,
-            source_type="hermes_file",
+            source_type="canonical_file",
         )
         results = memory_query(
             "Workday postingAvailable false",
             limit=3,
-            source_type="hermes_file",
+            source_type="canonical_file",
             db_path=db_path,
         )
         verification = verify_canonical_source(db_path, skill)

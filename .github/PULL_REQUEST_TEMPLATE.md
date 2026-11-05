@@ -5,8 +5,7 @@ Describe the change.
 ## Validation
 
 ```bash
-PYTHONPATH=src python -m unittest discover -s tests
-python scripts/repo_score.py
+python -m unittest discover -s tests
 ```
 
 ## Checklist
