@@ -1,6 +1,6 @@
 # Release Checklist
 
-This checklist prepares version 0.2.0 without merging, tagging, publishing, or creating a GitHub Release.
+Run this before tagging a release. GitHub Releases are the changelog.
 
 ## Clean Installation
 
@@ -10,7 +10,7 @@ python -m venv /tmp/bam-release-venv
 /tmp/bam-release-venv/bin/bam --version
 ```
 
-The version must be `bam 0.2.0` and must match `pyproject.toml` package metadata.
+The version must match `pyproject.toml` package metadata.
 
 ## Core Verification
 
@@ -18,7 +18,6 @@ The version must be `bam 0.2.0` and must match `pyproject.toml` package metadata
 PYTHONPATH=src python -m unittest discover -s tests
 ruff check --target-version py310 src tests scripts
 mypy src/boring_agent_memory
-python scripts/repo_score.py
 PYTHONPATH=src python -m boring_agent_memory.cli eval --json \
   --min-recall-at-1 1.0 \
   --min-recall-at-3 1.0 \
@@ -53,7 +52,7 @@ tar -tf dist/*.tar.gz
 ```
 
 Inspect the wheel and source distribution for secrets, local databases, caches, model files, temporary outputs, and private paths.
-Confirm that `CHANGELOG.md` was not manually edited.
+Install the wheel into a clean environment outside the repository and run the README's Try It commands.
 
 ## Pull Request Gate
 
@@ -62,5 +61,8 @@ Confirm that `CHANGELOG.md` was not manually edited.
 - Confirm the pull request targets `main`.
 - Wait for every GitHub check to finish.
 - Record any external blocker in the pull request.
-- Do not merge the pull request.
-- Do not create a Git tag or GitHub Release.
+
+## Publishing
+
+- Tag the merge commit as `vX.Y.Z` and create a GitHub Release with notes.
+- Build from that tag and upload with `python -m twine upload dist/*`.

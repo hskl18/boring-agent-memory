@@ -30,7 +30,6 @@ trusted files -> deterministic chunks -> SQLite FTS5/BM25 -> line citation -> ca
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests
-python scripts/repo_score.py
 PYTHONPATH=src python scripts/run_incremental_scenario.py
 PYTHONPATH=src python scripts/run_benchmark_v1.py --check --output /tmp/benchmark-v1.json
 PYTHONPATH=src python scripts/run_benchmark_v2.py --check --output /tmp/benchmark-v2.json

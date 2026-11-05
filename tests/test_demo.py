@@ -11,14 +11,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
-    def test_hermes_demo_runs_end_to_end(self) -> None:
+    def test_demo_runs_end_to_end(self) -> None:
         env = {
             **os.environ,
             "PYTHONPATH": str(ROOT / "src"),
             "PYTHONDONTWRITEBYTECODE": "1",
         }
         run = subprocess.run(
-            [sys.executable, "scripts/demo_hermes_layer.py"],
+            [sys.executable, "scripts/demo.py"],
             cwd=ROOT,
             env=env,
             text=True,
@@ -27,7 +27,7 @@ class DemoTests(unittest.TestCase):
         )
         payload = json.loads(run.stdout)
         self.assertEqual(payload["build"]["indexed"], 2)
-        self.assertEqual(payload["query_results"][0]["source_type"], "hermes_file")
+        self.assertEqual(payload["query_results"][0]["source_type"], "canonical_file")
         self.assertTrue(payload["canonical_verification"]["content_hash_match"])
 
 

@@ -25,3 +25,11 @@ Bad default inputs include:
 - temporary conclusions
 - untrusted downloaded files
 
+## Why BM25 First
+
+- Workflow rules contain exact terms, paths, field names, and errors that lexical search finds directly.
+- Results are deterministic and debuggable, and rebuilds are reproducible from the source files.
+- Source-grounded snippets make it obvious why a result matched.
+- No embedding model has to see private notes before the first useful result.
+
+An optional local adapter supports controlled dense and hybrid evaluation, but BM25 is the default.

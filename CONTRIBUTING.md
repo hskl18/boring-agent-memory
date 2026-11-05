@@ -15,10 +15,14 @@ python -m pip install -e .
 ## Test
 
 ```bash
-PYTHONPATH=src python -m unittest discover -s tests
-python scripts/repo_score.py
-python -m pip install -e . --dry-run
+python -m unittest discover -s tests
+python -m pip install 'mypy>=1.14,<3' 'ruff>=0.9,<1'
+ruff check src tests scripts
+mypy src/boring_agent_memory
 ```
+
+CI runs the tests and the eval gates.
+[docs/release-checklist.md](docs/release-checklist.md) lists the longer checks to run before a release.
 
 ## Design Rules
 
@@ -36,6 +40,11 @@ python -m pip install -e . --dry-run
 - New config fields are documented in `docs/configuration.md`.
 - New CLI behavior is documented in `docs/cli.md`.
 - Generated files, databases, caches, and local secrets are not included.
+
+## AI Assistance
+
+AI tools are welcome.
+Say in the pull request that you used one, run the change yourself, and be ready to explain every line.
 
 ## Reporting Bugs
 
