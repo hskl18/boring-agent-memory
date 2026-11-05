@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import re
 import sqlite3
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from .schema import connect, init_db
+from .schema import connect, init_db, require_index
 from .snippets import plain_snippet
 
 
@@ -36,7 +37,7 @@ def query_memory(
     source_type: str | None = None,
     workspace: Path | str | None = None,
 ) -> list[QueryResult]:
-    conn = connect(db_path)
+    conn = connect(require_index(db_path))
     init_db(conn)
     try:
         workspace_path = Path(workspace).expanduser().resolve() if workspace else None
@@ -53,39 +54,32 @@ def _query_memory(
     source_type: str | None,
     workspace: Path | None,
 ) -> list[QueryResult]:
+    if limit <= 0:
+        return []
+
     seen_documents: set[str] = set()
     results: list[QueryResult] = []
 
-    for strategy, fts_query in build_fts_queries(query):
-        try:
-            rows = run_fts_query(conn, fts_query, max(limit * 4, limit), source_type, workspace)
-        except sqlite3.DatabaseError:
-            continue
+    def collect(rows: Iterable[sqlite3.Row], strategy: str) -> bool:
+        # Rows are chunks but results are documents, so read only until enough distinct documents appear.
         for row in rows:
             if row["id"] in seen_documents:
                 continue
             seen_documents.add(row["id"])
             results.append(row_to_result(row, strategy, query))
             if len(results) >= limit:
+                return True
+        return False
+
+    for strategy, fts_query in build_fts_queries(query):
+        try:
+            if collect(run_fts_query(conn, fts_query, source_type, workspace), strategy):
                 return results
+        except sqlite3.DatabaseError:
+            continue
 
-    if len(results) < limit:
-        rows = run_like_query(
-            conn,
-            query,
-            max((limit - len(results)) * 4, limit),
-            source_type,
-            workspace,
-        )
-        for row in rows:
-            if row["id"] in seen_documents:
-                continue
-            seen_documents.add(row["id"])
-            results.append(row_to_result(row, "like", query))
-            if len(results) >= limit:
-                break
-
-    return results[:limit]
+    collect(run_like_query(conn, query, source_type, workspace), "like")
+    return results
 
 
 def build_fts_queries(query: str) -> list[tuple[str, str]]:
@@ -113,10 +107,9 @@ def quote_fts(value: str) -> str:
 def run_fts_query(
     conn: sqlite3.Connection,
     fts_query: str,
-    limit: int,
     source_type: str | None,
     workspace: Path | None,
-) -> list[sqlite3.Row]:
+) -> Iterable[sqlite3.Row]:
     params: list[object] = [fts_query]
     source_filter = ""
     if source_type:
@@ -126,7 +119,6 @@ def run_fts_query(
     if workspace:
         workspace_filter = "AND d.workspace = ?"
         params.append(workspace.as_posix())
-    params.append(limit)
 
     return conn.execute(
         f"""
@@ -150,19 +142,17 @@ def run_fts_query(
         {source_filter}
         {workspace_filter}
         ORDER BY rank ASC, c.id ASC
-        LIMIT ?
         """,
         params,
-    ).fetchall()
+    )
 
 
 def run_like_query(
     conn: sqlite3.Connection,
     query: str,
-    limit: int,
     source_type: str | None,
     workspace: Path | None,
-) -> list[sqlite3.Row]:
+) -> Iterable[sqlite3.Row]:
     like = f"%{query.lower()}%"
     params: list[object] = [like, like, like, like]
     source_filter = ""
@@ -173,7 +163,7 @@ def run_like_query(
     if workspace:
         workspace_filter = "AND d.workspace = ?"
         params.append(workspace.as_posix())
-    params.append(limit)
+    params.extend([like, like])
 
     return conn.execute(
         f"""
@@ -207,10 +197,9 @@ def run_like_query(
           END,
           d.title ASC,
           c.ordinal ASC
-        LIMIT ?
         """,
-        [*params[:4], like, like, *params[4:]],
-    ).fetchall()
+        params,
+    )
 
 
 def row_to_result(row: sqlite3.Row, strategy: str, query: str) -> QueryResult:

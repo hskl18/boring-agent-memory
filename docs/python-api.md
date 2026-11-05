@@ -16,6 +16,9 @@ results = memory_query(
 )
 ```
 
+`db_path` expands `~`.
+A missing database raises `FileNotFoundError` instead of creating an empty index.
+
 Returns a list of `QueryResult` objects:
 
 ```python

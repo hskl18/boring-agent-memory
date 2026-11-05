@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
     serve_parser.add_argument("--stdio", action="store_true", help="Read JSON lines from stdin")
 
     args = parser.parse_args(argv)
-    db_path = Path(args.db) if args.db else DEFAULT_DB_PATH
+    db_path = Path(args.db).expanduser() if args.db else DEFAULT_DB_PATH
 
     if args.command == "init":
         conn = connect(db_path)
@@ -100,8 +100,11 @@ def main(argv: list[str] | None = None) -> int:
         return emit({"database": db_path.as_posix(), "fts5": ok}, args.json)
 
     if args.command in {"build", "update"}:
-        config = load_config(args.config) if args.config else None
-        db_path = Path(args.db) if args.db else (config.index_path if config else DEFAULT_DB_PATH)
+        try:
+            config = load_config(args.config) if args.config else None
+        except (OSError, ValueError) as exc:
+            parser.error(str(exc))
+        db_path = Path(args.db).expanduser() if args.db else (config.index_path if config else DEFAULT_DB_PATH)
         includes = [*(config.include if config else ()), *args.include]
         excludes = [*(config.exclude if config else ()), *args.exclude]
         workspace = args.workspace or (config.workspace if config else None)
@@ -143,16 +146,19 @@ def main(argv: list[str] | None = None) -> int:
         return emit({"database": db_path.as_posix(), **stats}, args.json)
 
     if args.command == "query":
-        results = [
-            result.to_dict()
-            for result in query_memory(
-                db_path=db_path,
-                query=args.query,
-                limit=args.limit,
-                source_type=args.source_type,
-                workspace=args.workspace,
-            )
-        ]
+        try:
+            results = [
+                result.to_dict()
+                for result in query_memory(
+                    db_path=db_path,
+                    query=args.query,
+                    limit=args.limit,
+                    source_type=args.source_type,
+                    workspace=args.workspace,
+                )
+            ]
+        except FileNotFoundError as exc:
+            parser.error(str(exc))
         if args.json:
             print(json.dumps({"query": args.query, "results": results}, indent=2, ensure_ascii=False))
         else:
@@ -163,27 +169,28 @@ def main(argv: list[str] | None = None) -> int:
         return emit(status(db_path), args.json)
 
     if args.command == "inspect":
-        if args.source_path:
-            return emit(verify_canonical_source(db_path, args.source_path), args.json)
-        payload: dict[str, object] = {
-            "database": db_path.as_posix(),
-            "sources": list_canonical_sources(db_path, limit=args.limit),
-        }
+        try:
+            if args.source_path:
+                return emit(verify_canonical_source(db_path, args.source_path), args.json)
+            payload: dict[str, object] = {
+                "database": db_path.as_posix(),
+                "sources": list_canonical_sources(db_path, limit=args.limit),
+            }
+        except FileNotFoundError as exc:
+            parser.error(str(exc))
         return emit(payload, args.json)
 
     if args.command == "health":
         health = status(db_path)
-        health["sqlite_fts5"] = _sqlite_fts5_health(db_path)
+        health["sqlite_fts5"] = _sqlite_fts5_health()
         health["ok"] = health["sqlite_fts5"] and health["database_exists"]
         return emit(health, args.json)
 
     if args.command == "eval":
-        report = run_eval(
-            fixture_dir=args.fixtures,
-            golden_path=args.golden,
-            db_path=db_path if args.db else None,
-            limit=args.limit,
-        )
+        try:
+            report = run_eval(fixture_dir=args.fixtures, golden_path=args.golden, limit=args.limit)
+        except FileNotFoundError as exc:
+            parser.error(f"eval fixtures not found: {exc}; run from a repository checkout or pass --fixtures and --golden")
         failures = evaluate_gates(
             report,
             min_recall_at_1=args.min_recall_at_1,
@@ -244,8 +251,8 @@ def status(db_path: Path) -> dict[str, object]:
     }
 
 
-def _sqlite_fts5_health(db_path: Path) -> bool:
-    conn = connect(db_path)
+def _sqlite_fts5_health() -> bool:
+    conn = sqlite3.connect(":memory:")
     try:
         return fts5_available(conn)
     finally:

@@ -1,6 +1,8 @@
 # Configuration
 
 `bam build --config memory.yaml` and `bam update --config memory.yaml` accept YAML, TOML, or JSON.
+YAML support is a small dependency-free subset: top-level scalars, block lists, and one level of nested keys.
+Flow lists such as `include: ["docs"]`, keys mixed with list items, and escaped quotes are errors rather than guesses.
 
 ## Example
 

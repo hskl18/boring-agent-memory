@@ -9,6 +9,7 @@ bam [--db PATH] COMMAND
 ```
 
 `--db` defaults to `.bam/memory.db`.
+`query`, `inspect`, and `update` exit with an error when the database does not exist; only `init` and `build` create one.
 Config files can also set `index_path`.
 
 ```bash
@@ -43,6 +44,8 @@ bam build \
 
 `build` scans and chunks candidate files before replacing the complete index in one transaction.
 The JSON report includes document, chunk, and skipped-file counts.
+A named include path that does not exist is an error.
+A glob that matches nothing is allowed, but `build` will not replace a populated index with an empty one.
 
 ## update
 
@@ -62,6 +65,9 @@ An update is rejected when its effective indexing configuration differs from the
 bam --db ~/.bam/agent-memory.db query "postingAvailable false" --limit 5 --json
 bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/app --json
 ```
+
+`--workspace` matches the exact workspace recorded at build time, which is the `workspace` config value or else the directory `bam build` ran in.
+It does not select files beneath a directory.
 
 Results include:
 
@@ -112,6 +118,8 @@ bam eval --fixtures evals/fixtures --golden evals/golden.jsonl --json \
 ```
 
 The command exits non-zero when a configured retrieval, staleness, or privacy gate fails.
+It always builds a temporary index, so `--db` has no effect and your index is untouched.
+The default fixture paths exist only in a repository checkout.
 `--fixture` remains a compatibility alias for `--fixtures`.
 
 ## serve

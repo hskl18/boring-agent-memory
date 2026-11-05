@@ -83,7 +83,7 @@ def _expand_include(include: str, root: Path) -> list[Path]:
     elif path.exists():
         matches = [path]
     else:
-        matches = []
+        raise FileNotFoundError(f"include path does not exist: {include}")
 
     files: list[Path] = []
     for match in matches:

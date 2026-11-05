@@ -31,7 +31,6 @@ class EvalCase:
 def run_eval(
     fixture_dir: Path | str,
     golden_path: Path | str | None = None,
-    db_path: Path | str | None = None,
     limit: int = 3,
 ) -> dict[str, Any]:
     fixture_dir = Path(fixture_dir).expanduser().resolve()
@@ -41,7 +40,7 @@ def run_eval(
     with tempfile.TemporaryDirectory() as tmp:
         work_fixture = Path(tmp) / "fixtures"
         shutil.copytree(fixture_dir, work_fixture)
-        eval_db_path = Path(db_path).expanduser().resolve() if db_path else Path(tmp) / "memory.db"
+        eval_db_path = Path(tmp) / "memory.db"
 
         build_stats = build_index(
             db_path=eval_db_path,

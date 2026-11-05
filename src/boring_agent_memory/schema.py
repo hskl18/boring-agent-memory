@@ -9,8 +9,16 @@ DEFAULT_DB_PATH = Path(".bam/memory.db")
 SCHEMA_VERSION = 2
 
 
+def require_index(db_path: Path | str) -> Path:
+    """Reject a missing index, because connecting would silently create an empty one."""
+    path = Path(db_path).expanduser()
+    if not path.exists():
+        raise FileNotFoundError(f"index does not exist: {path}; run bam build first")
+    return path
+
+
 def connect(db_path: Path | str = DEFAULT_DB_PATH) -> sqlite3.Connection:
-    path = Path(db_path)
+    path = Path(db_path).expanduser()
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
