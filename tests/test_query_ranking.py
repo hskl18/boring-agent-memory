@@ -92,6 +92,36 @@ class QueryRankingTests(unittest.TestCase):
 
             self.assertEqual(query_memory(db_path, "postingAv%lable", limit=5), [])
 
+    def test_like_fallback_ranks_literal_title_source_path_and_content(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs" / "source%").mkdir(parents=True)
+            (root / "docs" / "title%.md").write_text(
+                "unrelated\n",
+                encoding="utf-8",
+            )
+            (root / "docs" / "source%" / "source.md").write_text(
+                "unrelated\n",
+                encoding="utf-8",
+            )
+            (root / "docs" / "content.md").write_text(
+                "contains % only in content\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root)
+
+            results = query_memory(db_path, "%", limit=3)
+
+            self.assertEqual(
+                [result.strategy for result in results],
+                ["like", "like", "like"],
+            )
+            self.assertEqual(
+                [result.title for result in results],
+                ["title%.md", "source.md", "content.md"],
+            )
+
     def test_like_fallback_treats_underscore_as_literal(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -104,6 +134,23 @@ class QueryRankingTests(unittest.TestCase):
             build_index(db_path, ["docs"], workspace=root)
 
             self.assertEqual(query_memory(db_path, "postingAv_ilable", limit=5), [])
+
+    def test_like_fallback_matches_literal_underscore_in_document(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "docs" / "flag.md").write_text(
+                "feature_flag_enabled\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root)
+
+            results = query_memory(db_path, "ure_fla", limit=5)
+
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].title, "flag.md")
+            self.assertEqual(results[0].strategy, "like")
 
     def test_like_fallback_treats_backslash_as_literal(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -141,13 +188,23 @@ class QueryRankingTests(unittest.TestCase):
 
             results = query_memory(
                 db_path,
-                "100%",
+                "%",
                 limit=5,
                 workspace=workspace_a,
             )
 
             self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].strategy, "like")
             self.assertEqual(results[0].workspace, workspace_a.resolve().as_posix())
+            self.assertEqual(
+                query_memory(
+                    db_path,
+                    "%",
+                    limit=5,
+                    workspace=workspace_b,
+                ),
+                [],
+            )
 
 
 if __name__ == "__main__":
