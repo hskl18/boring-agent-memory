@@ -8,7 +8,7 @@ from typing import Any, Protocol, cast
 
 from .privacy import redact_secrets
 from .query import QueryResult
-from .schema import connect, init_db
+from .schema import connect, init_db, require_index
 
 
 class EmbeddingAdapter(Protocol):
@@ -131,7 +131,7 @@ def load_embedding_documents(
     source_type: str | None = None,
     workspace: Path | str | None = None,
 ) -> list[EmbeddingDocument]:
-    conn = connect(db_path)
+    conn = connect(require_index(db_path))
     init_db(conn)
     try:
         filters: list[str] = []

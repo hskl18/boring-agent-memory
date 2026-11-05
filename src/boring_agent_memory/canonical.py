@@ -4,13 +4,13 @@ import hashlib
 import sqlite3
 from pathlib import Path
 
-from .schema import connect, init_db
+from .schema import connect, init_db, require_index
 
 
 def verify_canonical_source(db_path: Path | str, source_path: Path | str) -> dict[str, object]:
     """Compare an indexed record with the current canonical file on disk."""
     resolved = Path(source_path).expanduser().resolve()
-    conn = connect(db_path)
+    conn = connect(require_index(db_path))
     init_db(conn)
     try:
         row = conn.execute(
@@ -54,7 +54,7 @@ def verify_canonical_source(db_path: Path | str, source_path: Path | str) -> dic
 
 
 def list_canonical_sources(db_path: Path | str, limit: int = 50) -> list[dict[str, object]]:
-    conn = connect(db_path)
+    conn = connect(require_index(db_path))
     init_db(conn)
     try:
         rows = conn.execute(

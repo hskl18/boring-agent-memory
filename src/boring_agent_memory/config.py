@@ -76,13 +76,13 @@ def _parse_simple_yaml(text: str) -> dict[str, Any]:
     data: dict[str, Any] = {}
     current_key: str | None = None
 
-    for raw_line in text.splitlines():
-        line = raw_line.split("#", 1)[0].rstrip()
+    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        line = _strip_comment(raw_line).rstrip()
         if not line.strip():
             continue
 
         stripped = line.strip()
-        if not line.startswith(" ") and ":" in stripped:
+        if not line.startswith(" ") and ":" in stripped and not stripped.startswith("- "):
             key, value = stripped.split(":", 1)
             key = key.strip()
             value = value.strip()
@@ -95,22 +95,46 @@ def _parse_simple_yaml(text: str) -> dict[str, Any]:
             continue
 
         if stripped.startswith("- ") and current_key:
-            if not isinstance(data[current_key], list):
+            if data[current_key] == {}:
                 data[current_key] = []
+            if not isinstance(data[current_key], list):
+                raise ValueError(f"unsupported YAML on line {line_number}: {current_key} mixes keys and list items")
             data[current_key].append(_scalar(stripped[2:].strip()))
             continue
 
         if current_key and isinstance(data.get(current_key), dict) and ":" in stripped:
             key, value = stripped.split(":", 1)
             data[current_key][key.strip()] = _scalar(value.strip())
+            continue
+
+        raise ValueError(f"unsupported YAML on line {line_number}: {stripped}")
 
     return data
 
 
+def _strip_comment(line: str) -> str:
+    quote = ""
+    for index, char in enumerate(line):
+        starts_token = index == 0 or line[index - 1].isspace()
+        if quote:
+            if char == quote:
+                quote = ""
+        elif char in {"'", '"'} and starts_token:
+            quote = char
+        elif char == "#" and starts_token:
+            return line[:index]
+    return line
+
+
 def _scalar(value: str) -> Any:
     value = value.strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
-        return value[1:-1]
+    if value[:1] in {"[", "{"}:
+        raise ValueError(f"unsupported YAML flow syntax: {value}; use a block list")
+    if value[:1] in {"'", '"'}:
+        inner = value[1:-1]
+        if len(value) < 2 or value[-1] != value[0] or "''" in inner or (value[0] == '"' and "\\" in inner):
+            raise ValueError(f"unsupported YAML quoting: {value}")
+        return inner
     if value.lower() in {"true", "false"}:
         return value.lower() == "true"
     try:

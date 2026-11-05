@@ -12,7 +12,14 @@ from pathlib import Path
 from .chunking import CHUNKER_VERSION, DEFAULT_CHUNK_SIZE
 from .ingest import IngestedRecord, ingest_file, iter_candidate_files
 from .privacy import DEFAULT_EXCLUDE_GLOBS, REDACTION_VERSION, SECRET_PATTERNS
-from .schema import SCHEMA_VERSION, clear_index, connect, init_db, schema_version
+from .schema import (
+    SCHEMA_VERSION,
+    clear_index,
+    connect,
+    init_db,
+    require_index,
+    schema_version,
+)
 
 
 @dataclass(frozen=True)
@@ -56,7 +63,13 @@ def build_index(
     conn = connect(db_path)
     try:
         init_db(conn)
+        # Hold the write lock first, so another build cannot fill the index between this check and the clear.
+        # init_db commits on a new index but leaves a transaction open on an existing one.
+        if not conn.in_transaction:
+            conn.execute("BEGIN IMMEDIATE")
         with conn:
+            if not records and conn.execute("SELECT 1 FROM documents LIMIT 1").fetchone():
+                raise ValueError("no indexable files matched the include paths; refusing to replace a populated index")
             clear_index(conn)
             for record in records:
                 insert_record(conn, record)
@@ -84,9 +97,7 @@ def update_index(
     identity_namespace: str | None = None,
 ) -> dict[str, object]:
     """Apply a hash-based index update in one transaction."""
-    path = Path(db_path)
-    if not path.exists():
-        raise FileNotFoundError(f"index does not exist: {path}; run bam build first")
+    path = require_index(db_path)
 
     excludes = excludes or []
     workspace_path = _workspace_path(workspace)
