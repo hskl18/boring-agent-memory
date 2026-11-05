@@ -147,13 +147,18 @@ def run_fts_query(
     )
 
 
+def escape_like(value: str) -> str:
+    """Escape LIKE wildcards so the query is matched as literal text."""
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
 def run_like_query(
     conn: sqlite3.Connection,
     query: str,
     source_type: str | None,
     workspace: Path | None,
 ) -> Iterable[sqlite3.Row]:
-    like = f"%{query.lower()}%"
+    like = f"%{escape_like(query.lower())}%"
     params: list[object] = [like, like, like, like]
     source_filter = ""
     if source_type:
@@ -182,17 +187,17 @@ def run_like_query(
         FROM chunks c
         JOIN documents d ON d.id = c.document_id
         WHERE (
-          lower(d.title) LIKE ?
-          OR lower(c.heading) LIKE ?
-          OR lower(c.content) LIKE ?
-          OR lower(d.source_path) LIKE ?
+          lower(d.title) LIKE ? ESCAPE '\\'
+          OR lower(c.heading) LIKE ? ESCAPE '\\'
+          OR lower(c.content) LIKE ? ESCAPE '\\'
+          OR lower(d.source_path) LIKE ? ESCAPE '\\'
         )
         {source_filter}
         {workspace_filter}
         ORDER BY
           CASE
-            WHEN lower(d.title) LIKE ? THEN 0
-            WHEN lower(d.source_path) LIKE ? THEN 1
+            WHEN lower(d.title) LIKE ? ESCAPE '\\' THEN 0
+            WHEN lower(d.source_path) LIKE ? ESCAPE '\\' THEN 1
             ELSE 2
           END,
           d.title ASC,
