@@ -79,6 +79,76 @@ class QueryRankingTests(unittest.TestCase):
                 [],
             )
 
+    def test_like_fallback_treats_percent_as_literal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "docs" / "flag.md").write_text(
+                "postingAvailable\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root)
+
+            self.assertEqual(query_memory(db_path, "postingAv%lable", limit=5), [])
+
+    def test_like_fallback_treats_underscore_as_literal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "docs" / "flag.md").write_text(
+                "postingAvailable\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root)
+
+            self.assertEqual(query_memory(db_path, "postingAv_ilable", limit=5), [])
+
+    def test_like_fallback_treats_backslash_as_literal(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "docs" / "path.md").write_text(
+                "The cache lives in C:\\notes\\cache.\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, ["docs"], workspace=root)
+
+            results = query_memory(db_path, "\\", limit=5)
+
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].title, "path.md")
+
+    def test_like_fallback_escapes_wildcards_with_workspace_filter(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            workspace_a = root / "workspace-a"
+            workspace_b = root / "workspace-b"
+            (workspace_a / "docs").mkdir(parents=True)
+            (workspace_b / "docs").mkdir(parents=True)
+            (workspace_a / "docs" / "report.md").write_text(
+                "100% postingAvailable\n",
+                encoding="utf-8",
+            )
+            (workspace_b / "docs" / "report.md").write_text(
+                "100% postingAvailable\n",
+                encoding="utf-8",
+            )
+            db_path = root / ".bam" / "memory.db"
+            build_index(db_path, [str(workspace_a / "docs")], workspace=workspace_a)
+
+            results = query_memory(
+                db_path,
+                "100%",
+                limit=5,
+                workspace=workspace_a,
+            )
+
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0].workspace, workspace_a.resolve().as_posix())
+
 
 if __name__ == "__main__":
     unittest.main()
