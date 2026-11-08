@@ -65,5 +65,7 @@ Install the wheel into a clean environment outside the repository and run the RE
 
 ## Publishing
 
+- Before the first release only, add a pending publisher on PyPI for project `boring-agent-memory`: owner `hskl18`, repository `boring-agent-memory`, workflow `publish.yml`, environment `pypi`.
 - Tag the merge commit as `vX.Y.Z` and create a GitHub Release with notes.
-- Build from that tag and upload with `python -m twine upload dist/*`.
+- Publishing the release runs `.github/workflows/publish.yml`, which builds from the tag and uploads to PyPI through trusted publishing, so no token is stored.
+- The workflow refuses to upload when the tag does not match the `pyproject.toml` version, so the tag and the uploaded files always name the same version; PyPI never accepts a file name again, even after deletion.

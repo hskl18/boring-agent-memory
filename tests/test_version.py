@@ -17,8 +17,7 @@ class VersionTests(unittest.TestCase):
     def test_runtime_and_cli_derive_version_from_package_metadata(self) -> None:
         metadata_version = importlib.metadata.version("boring-agent-memory")
         pyproject = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-        self.assertEqual(pyproject["project"]["version"], "0.2.1")
-        self.assertEqual(metadata_version, "0.2.1")
+        self.assertEqual(metadata_version, pyproject["project"]["version"])
         self.assertEqual(__version__, metadata_version)
 
         result = subprocess.run(
@@ -29,7 +28,7 @@ class VersionTests(unittest.TestCase):
             capture_output=True,
             check=True,
         )
-        self.assertEqual(result.stdout.strip(), "bam 0.2.1")
+        self.assertEqual(result.stdout.strip(), f"bam {metadata_version}")
 
 
 if __name__ == "__main__":
