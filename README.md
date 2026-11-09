@@ -13,6 +13,10 @@ Boring Agent Memory indexes the docs, skills, runbooks, bug logs, and ADRs you c
 It returns source paths and snippets, and your agent reads the cited file before it acts.
 It needs no hosted service, embedding API, vector database, model download, or account.
 
+![Default query path: 100% Recall@3, returns nothing for 100% of easy no-answer queries and 0% of adversarial ones. With --strict: 80% Recall@3, returns nothing for 100% of both.](https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/media/abstention.png)
+
+*Benchmark v1, synthetic fixtures: strict mode gives up recall on vague queries in exchange for returning nothing when no file answers. [Numbers and method](https://github.com/hskl18/boring-agent-memory#evidence).*
+
 ## Install
 
 ```bash
