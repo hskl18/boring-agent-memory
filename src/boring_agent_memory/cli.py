@@ -52,6 +52,11 @@ def main(argv: list[str] | None = None) -> int:
     query_parser.add_argument("--source-type", default=None)
     query_parser.add_argument("--workspace", default=None)
     query_parser.add_argument("--json", action="store_true")
+    query_parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Skip the any-term and substring fallbacks; results match every Latin, digit, or CJK query term",
+    )
 
     status_parser = subparsers.add_parser("status", help="Show index status")
     status_parser.add_argument("--json", action="store_true")
@@ -155,6 +160,7 @@ def main(argv: list[str] | None = None) -> int:
                     limit=args.limit,
                     source_type=args.source_type,
                     workspace=args.workspace,
+                    strict=args.strict,
                 )
             ]
         except FileNotFoundError as exc:

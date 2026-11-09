@@ -16,6 +16,9 @@ results = memory_query(
 )
 ```
 
+Pass `strict=True` to drop the any-term and substring fallbacks, so every result matches every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) in its indexed fields (text, heading, title, and path) and a question no file answers is more likely to return nothing.
+Strict results still need the same source check as any other result.
+
 `db_path` expands `~`.
 A missing database raises `FileNotFoundError` instead of creating an empty index.
 

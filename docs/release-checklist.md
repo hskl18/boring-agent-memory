@@ -28,6 +28,7 @@ PYTHONPATH=src python -m boring_agent_memory.cli eval --json \
 PYTHONPATH=src python scripts/run_incremental_scenario.py
 PYTHONPATH=src python scripts/run_benchmark_v1.py --check --output /tmp/benchmark-v1.json
 PYTHONPATH=src python scripts/run_benchmark_v2.py --check --output /tmp/benchmark-v2.json
+PYTHONPATH=src python scripts/run_abstention_benchmark.py --check
 ```
 
 Run the tests on Python 3.11 and on the newest Python as well, because CI covers only 3.14.

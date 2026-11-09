@@ -23,6 +23,9 @@ def serve_stdio(
             limit = int(request.get("limit", 5))
             source_type = request.get("source_type")
             workspace = request.get("workspace")
+            strict = request.get("strict", False)
+            if not isinstance(strict, bool):
+                raise TypeError("strict must be true or false")
             results = [
                 result.to_dict()
                 for result in query_memory(
@@ -31,6 +34,7 @@ def serve_stdio(
                     limit=limit,
                     source_type=source_type,
                     workspace=workspace,
+                    strict=strict,
                 )
             ]
             response = {"ok": True, "query": query, "results": results}

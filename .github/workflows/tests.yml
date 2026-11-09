@@ -31,5 +31,7 @@ jobs:
           --min-snippet-term-rate 1.0
           --min-stale-detection-rate 1.0
           --max-privacy-leaks 0
+      - name: Run abstention benchmark
+        run: python scripts/run_abstention_benchmark.py --check
       - name: Build package
         run: python -m build
