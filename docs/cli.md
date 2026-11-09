@@ -64,7 +64,11 @@ An update is rejected when its effective indexing configuration differs from the
 ```bash
 bam --db ~/.bam/agent-memory.db query "postingAvailable false" --limit 5 --json
 bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/app --json
+bam --db ~/.bam/agent-memory.db query "cobalt idle timeout" --strict --json
 ```
+
+`--strict` skips the any-term fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) in one chunk's indexed fields (text, heading, title, and path), and a question whose terms are spread across unrelated files returns nothing.
+It does not make a result current or correct; read the cited lines as with any result.
 
 `--workspace` matches the exact workspace recorded at build time, which is the `workspace` config value or else the directory `bam build` ran in.
 It does not select files beneath a directory.
@@ -84,6 +88,9 @@ Results include:
 - `score`
 - `snippet`
 - `strategy`
+
+`strategy` says how a result matched: `phrase`, `and` (every kept query term in the chunk's indexed fields), `or` (at least one term, a partial match), or `like`.
+`--strict` never returns `or` matches.
 
 Use `--workspace` to restrict results to a workspace recorded during indexing.
 
@@ -133,3 +140,5 @@ The server reads one JSON request per line and returns one JSON response per lin
 ```json
 {"query":"canonical source rule","limit":5,"source_type":"canonical_file","workspace":"~/project/app"}
 ```
+
+Add `"strict": true` for the same behavior as `query --strict`; any other value than `true` or `false` is an error response.

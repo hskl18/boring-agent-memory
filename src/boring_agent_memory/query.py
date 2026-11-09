@@ -36,12 +36,17 @@ def query_memory(
     limit: int = 5,
     source_type: str | None = None,
     workspace: Path | str | None = None,
+    strict: bool = False,
 ) -> list[QueryResult]:
+    """Search the index; `strict` drops the any-term fallback, so a result matches every kept query term.
+
+    Kept terms are what `tokenize_query` keeps: Latin letters, digits, and CJK; other scripts are dropped.
+    """
     conn = connect(require_index(db_path))
     init_db(conn)
     try:
         workspace_path = Path(workspace).expanduser().resolve() if workspace else None
-        results = _query_memory(conn, query, limit, source_type, workspace_path)
+        results = _query_memory(conn, query, limit, source_type, workspace_path, strict)
     finally:
         conn.close()
     return results
@@ -53,6 +58,7 @@ def _query_memory(
     limit: int,
     source_type: str | None,
     workspace: Path | None,
+    strict: bool = False,
 ) -> list[QueryResult]:
     if limit <= 0:
         return []
@@ -72,6 +78,9 @@ def _query_memory(
         return False
 
     for strategy, fts_query in build_fts_queries(query):
+        # An "or" match can pair one system's name with another system's setting, so strict callers skip it.
+        if strict and strategy == "or":
+            continue
         try:
             if collect(run_fts_query(conn, fts_query, source_type, workspace), strategy):
                 return results

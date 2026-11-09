@@ -1,0 +1,51 @@
+{
+  "benchmark": "benchmark-v1-abstention",
+  "default": {
+    "adversarial_no_answer_precision": 0.0,
+    "easy_no_answer_precision": 1.0,
+    "no_answer_queries": {
+      "adversarial": 20,
+      "easy": 20
+    },
+    "positive_queries": 100,
+    "positive_recall_at_3": 1.0,
+    "recall_at_3_by_category": {
+      "exact_operational": 1.0,
+      "path_scoping": 1.0,
+      "secret_bearing": 1.0,
+      "stale_conflict": 1.0,
+      "vague_semantic": 1.0
+    }
+  },
+  "package_version": "0.2.2",
+  "platform": "darwin-arm64",
+  "python": "3.12.16",
+  "sqlite": "3.53.1",
+  "strict": {
+    "adversarial_no_answer_precision": 1.0,
+    "easy_no_answer_precision": 1.0,
+    "no_answer_queries": {
+      "adversarial": 20,
+      "easy": 20
+    },
+    "positive_queries": 100,
+    "positive_recall_at_3": 0.8,
+    "recall_at_3_by_category": {
+      "exact_operational": 1.0,
+      "path_scoping": 1.0,
+      "secret_bearing": 1.0,
+      "stale_conflict": 1.0,
+      "vague_semantic": 0.0
+    }
+  },
+  "top_result_in_corpus_term_coverage": {
+    "adversarial_no_answer": {
+      "0.75": 18,
+      "0.80": 2
+    },
+    "vague_semantic": {
+      "0.80": 18,
+      "1.00": 2
+    }
+  }
+}

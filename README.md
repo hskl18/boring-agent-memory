@@ -104,6 +104,21 @@ On Benchmark v2's 12 synthetic queries, chunked BM25 finds the right lines first
 These are deterministic fixture results, not production traffic or a broad semantic-memory claim.
 See [Benchmark v2](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v2.md) and [why BM25 comes first](https://github.com/hskl18/boring-agent-memory/blob/main/docs/canonical-first-memory.md#why-bm25-first).
 
+Knowing when to return nothing matters as much as recall.
+On Benchmark v1, 20 adversarial no-answer queries pair one system's name with another system's setting, such as "current cobalt idle timeout": every word is in the corpus, but no file answers it.
+
+| Query path | Recall@3 on 100 answerable queries | Vague queries | Easy no-answer returned nothing | Adversarial no-answer returned nothing |
+| --- | ---: | ---: | ---: | ---: |
+| Default | 1.00 | 1.00 | 20 of 20 | 0 of 20 |
+| `--strict` | 0.80 | 0.00 | 20 of 20 | 20 of 20 |
+
+The default falls back to an any-term match, so it answers every vague query and every adversarial one; those results carry `"strategy": "or"`, which marks a partial match.
+`--strict` skips that fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) across the chunk's indexed fields (text, heading, title, and path), and it refuses both.
+A term-coverage threshold seemed to split them, but mostly because of how many terms the templated queries have, so it was not adopted.
+Neither mode makes a result authoritative: strict results can still come from a stale note or match a term only in the path, so the agent still reads the cited lines.
+The default keeps recall; `--strict` is for callers that would rather get nothing than a partial match.
+See [Benchmark v1](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v1.md#adversarial-abstention).
+
 ## What It Is Not
 
 - Not a chatbot brain or an auto-capture memory system. It indexes only paths you name.

@@ -81,7 +81,7 @@ The current runner evaluates both whole-document and chunked BM25 and records ra
 BM25 retrieved every expected source within the first three results, but one expected file ranked second, producing Recall@1 and source accuracy of 0.990 rather than 1.000.
 This is retained as an honest ranking error rather than changing the fixture after observing the result.
 The exact phrase baseline missed 80 of 100 positive queries because the full query did not occur as one literal substring.
-Negative no-answer cases are deliberately easy lexical negatives and do not measure adversarial abstention.
+Negative no-answer cases are deliberately easy lexical negatives and do not measure adversarial abstention; the adversarial set below does.
 The vague category retains meaningful shared terms, so it is not a substitute for a human-authored semantic benchmark.
 The stale-conflict cases measure ranking, not automatic truth resolution, and callers must still verify the cited canonical source.
 
@@ -97,3 +97,25 @@ Version 0.2.0 adds atomic incremental additions, modifications, unique moves, an
 The executable benchmark v2 lifecycle scenario verifies one edit, one rename, and one deletion through dry-run and apply.
 Automatic corruption recovery remains future work.
 See [Benchmark v2](benchmark-v2.md) for current chunk-level and lifecycle evidence.
+
+## Adversarial abstention
+
+`benchmarks/v1/adversarial_no_answer.jsonl` adds 20 queries that pair one system's codename with another system's setting, such as `current cobalt idle timeout`.
+Every term exists in the corpus, but no file states that setting for that system, so the right answer is no result.
+`scripts/run_abstention_benchmark.py` runs them with the 120 original queries through the chunked index, in the default mode and in strict mode, which skips the any-term (`or`) fallback.
+
+| Mode | Recall@3, 100 answerable | Vague semantic | Easy no-answer precision | Adversarial no-answer precision |
+| --- | ---: | ---: | ---: | ---: |
+| Default | 1.00 | 1.00 | 1.00 | 0.00 |
+| Strict | 0.80 | 0.00 | 1.00 | 1.00 |
+
+Every vague query and every adversarial query is answered only by the `or` fallback, and neither has all its terms in the expected chunk.
+Lexically the two look alike, so on this corpus strictness buys abstention exactly at the cost of vague recall.
+
+A term-coverage threshold was also measured: the share of a query's in-corpus terms found in its top result is 0.8 for 18 vague queries and 1.0 for 2, against 0.75 for 18 adversarial queries and 0.8 for 2.
+A threshold at 0.8 would keep every vague query and refuse 18 adversarial ones, but that comes from query length: 18 vague queries have five in-corpus terms and miss one (4 of 5) and 2 miss none, while 18 adversarial queries have four and miss one (3 of 4) and the 2 with five reach 0.8 like most vague ones.
+That is an artifact of the templates, not a property of the queries, so it was not adopted; the report keeps the distribution as `top_result_in_corpus_term_coverage`.
+The default keeps recall because results carry their `strategy` and the agent reads the cited lines; strict mode is for callers that would rather get nothing than a partial match, and its results still need that check, since an `and` match can come from a stale note or from a term only in the path.
+CI runs the script with `--check`, which requires the default to keep full recall and strict mode to refuse every adversarial query.
+The committed report is [`results/abstention-python-3.12-macos-arm64.json`](../benchmarks/v1/results/abstention-python-3.12-macos-arm64.json).
+
