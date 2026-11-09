@@ -113,7 +113,7 @@ On Benchmark v1, 20 adversarial no-answer queries pair one system's name with an
 | `--strict` | 0.80 | 0.00 | 20 of 20 | 20 of 20 |
 
 The default falls back to an any-term match, so it answers every vague query and every adversarial one; those results carry `"strategy": "or"`, which marks a partial match.
-`--strict` skips that fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) across the chunk's indexed fields (text, heading, title, and path), and it refuses both.
+`--strict` skips that fallback and the substring fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) across the chunk's indexed fields (text, heading, title, and path), and it refuses both.
 A term-coverage threshold seemed to split them, but mostly because of how many terms the templated queries have, so it was not adopted.
 Neither mode makes a result authoritative: strict results can still come from a stale note or match a term only in the path, so the agent still reads the cited lines.
 The default keeps recall; `--strict` is for callers that would rather get nothing than a partial match.

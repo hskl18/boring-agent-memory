@@ -38,7 +38,7 @@ def query_memory(
     workspace: Path | str | None = None,
     strict: bool = False,
 ) -> list[QueryResult]:
-    """Search the index; `strict` drops the any-term fallback, so a result matches every kept query term.
+    """Search the index; `strict` drops the any-term and substring fallbacks, so a result matches every kept query term.
 
     Kept terms are what `tokenize_query` keeps: Latin letters, digits, and CJK; other scripts are dropped.
     """
@@ -87,7 +87,9 @@ def _query_memory(
         except sqlite3.DatabaseError:
             continue
 
-    collect(run_like_query(conn, query, source_type, workspace), "like")
+    # LIKE matches substrings, so "prod" would match "nonprod"; strict callers get term matches only.
+    if not strict:
+        collect(run_like_query(conn, query, source_type, workspace), "like")
     return results
 
 

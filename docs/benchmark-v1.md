@@ -102,7 +102,7 @@ See [Benchmark v2](benchmark-v2.md) for current chunk-level and lifecycle eviden
 
 `benchmarks/v1/adversarial_no_answer.jsonl` adds 20 queries that pair one system's codename with another system's setting, such as `current cobalt idle timeout`.
 Every term exists in the corpus, but no file states that setting for that system, so the right answer is no result.
-`scripts/run_abstention_benchmark.py` runs them with the 120 original queries through the chunked index, in the default mode and in strict mode, which skips the any-term (`or`) fallback.
+`scripts/run_abstention_benchmark.py` runs them with the 120 original queries through the chunked index, in the default mode and in strict mode, which skips the any-term (`or`) and substring (`like`) fallbacks.
 
 | Mode | Recall@3, 100 answerable | Vague semantic | Easy no-answer precision | Adversarial no-answer precision |
 | --- | ---: | ---: | ---: | ---: |

@@ -55,7 +55,7 @@ def main(argv: list[str] | None = None) -> int:
     query_parser.add_argument(
         "--strict",
         action="store_true",
-        help="Skip the any-term fallback; results match every Latin, digit, or CJK query term",
+        help="Skip the any-term and substring fallbacks; results match every Latin, digit, or CJK query term",
     )
 
     status_parser = subparsers.add_parser("status", help="Show index status")

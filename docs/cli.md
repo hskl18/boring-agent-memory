@@ -67,7 +67,7 @@ bam --db ~/.bam/agent-memory.db query "rollback policy" --workspace ~/project/ap
 bam --db ~/.bam/agent-memory.db query "cobalt idle timeout" --strict --json
 ```
 
-`--strict` skips the any-term fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) in one chunk's indexed fields (text, heading, title, and path), and a question whose terms are spread across unrelated files returns nothing.
+`--strict` skips the any-term and substring (`like`) fallbacks, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) in one chunk's indexed fields (text, heading, title, and path), and a question whose terms are spread across unrelated files returns nothing.
 It does not make a result current or correct; read the cited lines as with any result.
 
 `--workspace` matches the exact workspace recorded at build time, which is the `workspace` config value or else the directory `bam build` ran in.
@@ -90,7 +90,7 @@ Results include:
 - `strategy`
 
 `strategy` says how a result matched: `phrase`, `and` (every kept query term in the chunk's indexed fields), `or` (at least one term, a partial match), or `like`.
-`--strict` never returns `or` matches.
+`--strict` never returns `or` or `like` matches.
 
 Use `--workspace` to restrict results to a workspace recorded during indexing.
 

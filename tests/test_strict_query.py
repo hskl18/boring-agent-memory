@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -38,6 +39,15 @@ class StrictQueryTests(unittest.TestCase):
         [result] = memory_query("cobalt rollback window", db_path=self.db, strict=True)
         self.assertEqual(result.title, "deployments.md")
 
+    def test_strict_never_matches_a_term_inside_a_longer_word(self) -> None:
+        root = Path(self.tmp.name)
+        (root / "more").mkdir()
+        (root / "more" / "staging.md").write_text("# Staging\n\nThe nonprod timeout is ten minutes.\n", encoding="utf-8")
+        db = root / ".bam" / "more.db"
+        build_index(db, ["more"], workspace=root, source_type="doc")
+        self.assertTrue(memory_query("prod timeout", db_path=db))
+        self.assertEqual(memory_query("prod timeout", db_path=db, strict=True), [])
+
     def test_stdio_accepts_strict_and_rejects_a_non_boolean(self) -> None:
         stdin = io.StringIO(
             json.dumps({"query": "cobalt idle timeout", "strict": True}) + "\n"
@@ -51,7 +61,7 @@ class StrictQueryTests(unittest.TestCase):
 
     def test_cli_strict_flag(self) -> None:
         command = [sys.executable, "-m", "boring_agent_memory.cli", "--db", str(self.db), "query", "cobalt idle timeout", "--json"]
-        env = {"PYTHONPATH": str(ROOT / "src")}
+        env = {**os.environ, "PYTHONPATH": str(ROOT / "src")}
         default = json.loads(subprocess.run(command, capture_output=True, text=True, check=True, env=env).stdout)
         strict = json.loads(subprocess.run([*command, "--strict"], capture_output=True, text=True, check=True, env=env).stdout)
         self.assertTrue(default["results"])
