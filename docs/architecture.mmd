@@ -3,7 +3,7 @@ flowchart LR
   Ingest --> Chunk["Chunk<br/>heading-aware, deterministic IDs,<br/>line spans"]
   Chunk --> DB[("SQLite FTS5 index<br/>.bam/memory.db")]
   Files -->|"bam update: hash diff"| DB
-  Agent["Agent or script"] -->|"CLI, Python API,<br/>JSON-lines stdio"| Query["Query<br/>phrase, AND, OR,<br/>LIKE fallback"]
-  Query -->|"BM25"| DB
+  Agent["Agent or script"] -->|"CLI, Python API,<br/>JSON-lines stdio"| Query["Query<br/>phrase, AND, OR ranked by BM25,<br/>then a LIKE fallback"]
+  Query -->|"search"| DB
   Query -->|"source path, line span,<br/>snippet, citation"| Agent
   Agent -.->|"reads the cited file<br/>before acting"| Files

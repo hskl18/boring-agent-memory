@@ -106,7 +106,7 @@ Agent instructions to copy are in [docs/agent-prompt.md](https://github.com/hskl
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-dark.svg">
-  <img alt="Trusted files go through ingest (include globs, path filters, secret redaction) and heading-aware chunking into a SQLite FTS5 index, and bam update applies hash-based changes. An agent queries through the CLI, the Python API, or JSON-lines stdio; the query tries phrase, AND, OR, and LIKE matches ranked by BM25 and returns the source path, line span, snippet, and citation, and the agent reads the cited file before acting." src="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-light.svg">
+  <img alt="Trusted files go through ingest (include globs, path filters, secret redaction) and heading-aware chunking into a SQLite FTS5 index, and bam update applies hash-based changes. An agent queries through the CLI, the Python API, or JSON-lines stdio; the query tries phrase, AND, and OR matches ranked by BM25, then a LIKE fallback ordered by title and path, and returns the source path, line span, snippet, and citation, and the agent reads the cited file before acting." src="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-light.svg">
 </picture>
 
 The index is a recall cache over files you already trust, not the source of truth: every result names a file and line span, and the agent reads those lines before it acts.
