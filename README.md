@@ -102,6 +102,16 @@ Other processes can use `bam serve --stdio`, which speaks JSON lines. See the [C
 
 Agent instructions to copy are in [docs/agent-prompt.md](https://github.com/hskl18/boring-agent-memory/blob/main/docs/agent-prompt.md), with setups for [Claude Code](https://github.com/hskl18/boring-agent-memory/blob/main/examples/claude_code.md), [Codex](https://github.com/hskl18/boring-agent-memory/blob/main/examples/codex.md), and [Hermes](https://github.com/hskl18/boring-agent-memory/blob/main/docs/hermes-integration.md).
 
+## Architecture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-dark.svg">
+  <img alt="Trusted files go through ingest (include globs, path filters, secret redaction) and chunking (heading-aware for Markdown) into a SQLite FTS5 index; bam build replaces the index and bam update applies hash-based changes. An agent queries through the CLI, the Python API, or JSON-lines stdio; the query tries phrase, AND, and OR matches ranked by BM25, then a LIKE fallback, and returns the source path, line span, snippet, and citation, and the agent reads the cited file before acting." src="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-light.svg">
+</picture>
+
+The index is a recall cache over files you already trust, not the source of truth: every result names a file and line span, and the agent reads those lines before it acts.
+The [architecture notes](https://github.com/hskl18/boring-agent-memory/blob/main/docs/architecture.md) cover the schema, chunk IDs, transactional updates, and the query fallbacks.
+
 ## Evidence
 
 On Benchmark v2's 12 synthetic queries, chunked BM25 finds the right lines first every time, while whole-document BM25 finds the right file 91% of the time and never the right lines.
@@ -117,11 +127,9 @@ On Benchmark v1, 20 adversarial no-answer queries pair one system's name with an
 | `--strict` | 0.80 | 0.00 | 20 of 20 | 20 of 20 |
 
 The default falls back to an any-term match, so it answers every vague query and every adversarial one; those results carry `"strategy": "or"`, which marks a partial match.
-`--strict` skips that fallback and the substring fallback, so a result must match every term the query tokenizer keeps (Latin letters, digits, and CJK; other scripts are dropped) across the chunk's indexed fields (text, heading, title, and path), and it refuses both.
-A term-coverage threshold seemed to split them, but mostly because of how many terms the templated queries have, so it was not adopted.
-Neither mode makes a result authoritative: strict results can still come from a stale note or match a term only in the path, so the agent still reads the cited lines.
-The default keeps recall; `--strict` is for callers that would rather get nothing than a partial match.
-See [Benchmark v1](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v1.md#adversarial-abstention).
+`--strict` skips the any-term and substring fallbacks, so it refuses both the vague and the adversarial queries, at the cost of vague recall, and suits callers that would rather get nothing than a partial match.
+Neither mode makes a result authoritative, so the agent still reads the cited lines.
+See [Benchmark v1](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v1.md#adversarial-abstention) for the method and the [CLI reference](https://github.com/hskl18/boring-agent-memory/blob/main/docs/cli.md) for what `--strict` matches.
 
 ## What It Is Not
 
