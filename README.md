@@ -106,7 +106,7 @@ Agent instructions to copy are in [docs/agent-prompt.md](https://github.com/hskl
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-dark.svg">
-  <img alt="Trusted files go through ingest (include globs, path filters, secret redaction) and heading-aware chunking into a SQLite FTS5 index, and bam update applies hash-based changes. An agent queries through the CLI, the Python API, or JSON-lines stdio; the query tries phrase, AND, and OR matches ranked by BM25, then a LIKE fallback ordered by title and path, and returns the source path, line span, snippet, and citation, and the agent reads the cited file before acting." src="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-light.svg">
+  <img alt="Trusted files go through ingest (include globs, path filters, secret redaction) and chunking (heading-aware for Markdown) into a SQLite FTS5 index; bam build replaces the index and bam update applies hash-based changes. An agent queries through the CLI, the Python API, or JSON-lines stdio; the query tries phrase, AND, and OR matches ranked by BM25, then a LIKE fallback, and returns the source path, line span, snippet, and citation, and the agent reads the cited file before acting." src="https://raw.githubusercontent.com/hskl18/boring-agent-memory/main/docs/architecture-light.svg">
 </picture>
 
 The index is a recall cache over files you already trust, not the source of truth: every result names a file and line span, and the agent reads those lines before it acts.
@@ -127,9 +127,9 @@ On Benchmark v1, 20 adversarial no-answer queries pair one system's name with an
 | `--strict` | 0.80 | 0.00 | 20 of 20 | 20 of 20 |
 
 The default falls back to an any-term match, so it answers every vague query and every adversarial one; those results carry `"strategy": "or"`, which marks a partial match.
-`--strict` skips that fallback and refuses both, at the cost of vague recall, so it suits callers that would rather get nothing than a partial match.
+`--strict` skips the any-term and substring fallbacks and refuses both, at the cost of vague recall, so it suits callers that would rather get nothing than a partial match.
 Neither mode makes a result authoritative, so the agent still reads the cited lines.
-See [Benchmark v1](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v1.md#adversarial-abstention) for the method and the [CLI reference](https://github.com/hskl18/boring-agent-memory/blob/main/docs/cli.md) for exactly what `--strict` matches.
+See [Benchmark v1](https://github.com/hskl18/boring-agent-memory/blob/main/docs/benchmark-v1.md#adversarial-abstention) for the method and the [CLI reference](https://github.com/hskl18/boring-agent-memory/blob/main/docs/cli.md) for what `--strict` matches.
 
 ## What It Is Not
 

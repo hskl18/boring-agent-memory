@@ -1,9 +1,9 @@
 flowchart LR
   Files["Trusted files<br/>docs, skills, runbooks, logs"] --> Ingest["Ingest<br/>include globs, path filters,<br/>secret redaction"]
-  Ingest --> Chunk["Chunk<br/>heading-aware, deterministic IDs,<br/>line spans"]
-  Chunk --> DB[("SQLite FTS5 index<br/>.bam/memory.db")]
-  Files -->|"bam update: hash diff"| DB
+  Ingest --> Chunk["Chunk<br/>heading-aware for Markdown,<br/>deterministic IDs, line spans"]
+  Chunk -->|"bam build: replace all<br/>bam update: hash diff"| DB[("SQLite FTS5 index<br/>.bam/memory.db")]
   Agent["Agent or script"] -->|"CLI, Python API,<br/>JSON-lines stdio"| Query["Query<br/>phrase, AND, OR ranked by BM25,<br/>then a LIKE fallback"]
   Query -->|"search"| DB
   Query -->|"source path, line span,<br/>snippet, citation"| Agent
   Agent -.->|"reads the cited file<br/>before acting"| Files
+%% Edit this file, then render architecture-light.svg and architecture-dark.svg from it again.
